@@ -152,6 +152,7 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .ux-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
 .ux-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17365d;color:#fff;border-radius:11px;padding:12px 16px;z-index:9999;box-shadow:0 7px 22px #193c6560;font-size:12px;max-width:min(90vw,600px)}
 @media(max-width:700px){.ux-dashboard{padding:0 12px}.ux-title h2{font-size:15px}.ux-searchline input{width:100%}.ux-expert{flex:1 1 120px}}
+.sp-name-action{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;font:inherit;font-weight:750;color:inherit}.sp-name-action:hover{text-decoration:underline;color:#1d4ed8}.sp-name-action:focus-visible{outline:2px solid #2563eb;outline-offset:3px;border-radius:3px}
 .ux-specialist-target{border:2px solid #2563eb!important;background:#eff6ff!important;box-shadow:0 0 0 3px #2563eb15}
 </style><style id="especialistas2026Style">
 .sp-intro{font-size:12px;color:#667b92;line-height:1.5;margin:-6px 0 15px}
@@ -864,7 +865,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
     const cnt=t=>rows.filter(t).length, display=p==='SIN ESPECIALISTA ASIGNADO'?'Sin especialista asignado':p;
     const initials=p==='SIN ESPECIALISTA ASIGNADO'?'—':p.split(/\s+/).map(w=>w[0]||'').join('').slice(0,2);
     const items=[['preparatorio','Actos preparatorios',cnt(esActoPreparatorio),'pending'],['convocado','Convocados / evaluación',cnt(esConvocado),''],['desierto','Desiertos',cnt(esDesierto),'desert'],['cancelado','Cancelados',cnt(esCancelado),'cancel'],['culminado','Culminados',cnt(esCulminado),'complete']];
-    return '<article class="sp-person"><div class="sp-person-head"><span class="sp-avatar">'+safe(initials)+'</span><div><span class="sp-name">'+safe(display)+'</span><small class="sp-meta">'+(p==='SIN ESPECIALISTA ASIGNADO'?'Requieren revisar la asignación':'Especialista registrado')+'</small></div><button class="sp-count" type="button" '+key(p,'all')+'><strong>'+rows.length+'</strong> registros <span aria-hidden="true">↗</span></button></div><div class="sp-badges">'+items.map(([type,label,count,cl])=>'<button type="button" class="sp-tag '+cl+'" '+key(p,type)+'><strong>'+count+'</strong> '+label+' ↗</button>').join('')+'</div></article>';
+    return '<article class="sp-person"><div class="sp-person-head"><span class="sp-avatar">'+safe(initials)+'</span><div><button class="sp-name sp-name-action" type="button" '+key(p,'all')+' title="Ver registros de '+safe(display)+'">'+safe(display)+'</button><small class="sp-meta">'+(p==='SIN ESPECIALISTA ASIGNADO'?'Requieren revisar la asignación':'Especialista registrado')+'</small></div><button class="sp-count" type="button" '+key(p,'all')+'><strong>'+rows.length+'</strong> registros <span aria-hidden="true">↗</span></button></div><div class="sp-badges">'+items.map(([type,label,count,cl])=>'<button type="button" class="sp-tag '+cl+'" '+key(p,type)+'><strong>'+count+'</strong> '+label+' ↗</button>').join('')+'</div></article>';
    }).join('')+'</div><p class="sp-foot">Los conteos reflejan registros, no procedimientos únicos. Cada registro se cuenta en una sola categoria por estado actual. «Actos preparatorios» es un indicador operativo que incluye estados preparatorios, «Sin requerimiento» y «Pendiente del SIGA»; estos dos últimos no constituyen formalmente actos preparatorios. Convocados, desiertos, cancelados y culminados se cuentan por separado. Cada cifra abre sus registros.</p>';
  }
  root.addEventListener('click',event=>{
@@ -1250,11 +1251,16 @@ $u('uxExperts').addEventListener('click',e=>{
  resetQuickInputs();
  activateTab('all');
  render();experts();apply();
+ let selectedCard=null;
  document.querySelectorAll('#bars .sp-person').forEach(card=>{
   const name=card.querySelector('.sp-name')?.textContent?.trim()||'';
-  card.classList.toggle('ux-specialist-target',!!activeExpert&&name.toLocaleUpperCase('es')===activeExpert.toLocaleUpperCase('es'));
+  const selected=!!activeExpert&&name.toLocaleUpperCase('es')===activeExpert.toLocaleUpperCase('es');
+  card.classList.toggle('ux-specialist-target',selected);
+  if(selected)selectedCard=card;
  });
- jumpPanel('specialistsPanel');
+ const destination=selectedCard||$u('specialistsPanel');
+ const reduce=!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+ requestAnimationFrame(()=>destination?.scrollIntoView({behavior:reduce?'auto':'smooth',block:selectedCard?'center':'start'}));
 });
 $u('uxClear').onclick=()=>{quick='all';activeExpert='';sort='original';$u('uxSort').value='original';if($u('search'))$u('search').value='';for(const id of ['pacFilter','stateFilter','areaFilter','specFilter','yearFilter'])if($u(id))$u(id).value='';activateTab('all');render();experts();apply()};
 $u('search').addEventListener('input',updateSoon);
