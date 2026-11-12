@@ -385,8 +385,13 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
    '<div class="fin-visual-rows">'+rows+'</div>'+
    '<p class="fin-visual-warning">Comparación de conceptos distintos: cuantía, monto contratado, CCP y previsiones no deben sumarse entre sí.</p>'+
    '<div class="fin-visual-subtitle">Tarjetas de resumen <small>También puedes pulsar una tarjeta para ver su detalle.</small></div></section>';
-  host.querySelector('.fin-visual')?.remove();
-  host.insertAdjacentHTML('afterbegin',markup);
+  const cards='<div class="finance-grid">'+items.map(x=>
+    '<button type="button" class="finance-stat fin-detail-btn" data-fin-key="'+x.key+'" data-fin-doc="'+(x.doc||'')+'" data-fin-label="'+x.label+'" title="Abrir detalle de '+x.label+'">'+
+    '<small>'+x.label+'</small><strong>'+(x.count?money.format(x.total):'—')+'</strong>'+
+    '<span class="analysis-pill">'+x.count+' registros con importe · 👁 Ver detalle</span></button>'
+  ).join('')+'</div>';
+  const note='<p class="metric-note">Suma literal de importes por registro, que puede contener memorandos repetidos. Se debe consultar la pestaña presupuestaria para verificar posibles duplicidades. Estos importes no representan presupuesto aprobado ni gasto ejecutado.</p>';
+  host.innerHTML=markup+cards+note;
  }
  document.getElementById('chartFinance')?.addEventListener('click',e=>{
   const button=e.target.closest('[data-fin-metric]');if(!button)return;
@@ -410,9 +415,7 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
   const natureOf=r=>{const v=norm(r.naturaleza||'').replace(/\s+/g,' ');if(v.includes('CONTINUA'))return 'CONTINUA';if(v.includes('PERIODICA'))return 'PERIODICA';if(v.includes('UNICA'))return 'UNICA';return 'POR DETERMINAR'};
   const natureCounts=Object.fromEntries(natureCategories.map(([k])=>[k,0]));data.forEach(r=>natureCounts[natureOf(r)]++);
   document.getElementById('chartYears').innerHTML='<div class="nature-grid">'+natureCategories.map(([key,title,sub,color,icon])=>'<button class="nature-card" type="button" data-nature="'+key+'" style="--nature-accent:'+color+'" aria-label="Ver registros de naturaleza '+title+'"><span class="nature-icon" aria-hidden="true">'+icon+'</span><span class="nature-title">'+title+'</span><strong>'+natureCounts[key]+'</strong><span class="nature-sub">'+sub+'</span><span class="nature-link">👁 Ver registros</span></button>').join('')+'</div><p class="nature-disclaimer">Basado en el campo «Naturaleza de la prestación». Los registros reflejan contrataciones del cuadro y no necesariamente contratos únicos. La naturaleza no confirma por sí sola que corresponda renovar el servicio.</p>';
-  const fields=[['Cuantía registrada','cuantia',null],['Monto contratado','montoContratado',null],['CCP 2026','montoCCP2026','ccp2026'],['Previsión 2027','montoPrevision2027','prevision2027'],['Previsión 2028','montoPrevision2028','prevision2028'],['Previsión 2029','montoPrevision2029','prevision2029'],['Previsión 2030','montoPrevision2030','prevision2030']];
-  document.getElementById('chartFinance').innerHTML='<div class="finance-grid">'+fields.map(([label,key,docKey])=>{const vals=data.map(r=>{let a=n(r[key]);return a!==null?a:(docKey?n(r[docKey]):null)}).filter(v=>v!==null);const sum=vals.reduce((a,b)=>a+b,0);return `<button type="button" class="finance-stat fin-detail-btn" data-fin-key="${key}" data-fin-doc="${docKey||''}" data-fin-label="${label}" title="Abrir el detalle de ${label}"><small>${label}</small><strong>${vals.length?money.format(sum):'—'}</strong><span class="analysis-pill">${vals.length} registros con importe · 👁 Ver detalle</span></button>`}).join('')+'</div><p class="metric-note">Suma literal de importes por registro, que puede contener memorandos repetidos. Para evitar coincidencias exactas duplicadas, consulte el panel detallado de previsiones. No equivale a presupuesto aprobado ni gasto ejecutado.</p>';
-   renderFinanceBars();
+  renderFinanceBars();
  }
  function currencyCells(){const tb=document.getElementById('tbody');if(!tb)return;const rows=tb.querySelectorAll('tr');if(tab==='contracts')rows.forEach(tr=>{const td=tr.querySelectorAll('td');if(td.length>6){const v=currency(td[6].textContent);if(v){td[6].textContent=v;td[6].classList.add('money-cell')}}});if(tab==='previsiones')rows.forEach(tr=>{const td=tr.querySelectorAll('td');for(let i=4;i<=8&&i<td.length;i++){const v=currency(td[i].textContent);if(v){td[i].textContent=v;td[i].classList.add('money-cell')}}});}
  const oldRender=render;render=function(){oldRender();draw();currencyCells()};render();
