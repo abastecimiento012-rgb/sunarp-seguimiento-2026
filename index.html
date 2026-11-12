@@ -273,23 +273,8 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .fin-group{border:1px solid #dce7f2;border-radius:13px;padding:14px;margin:13px 0;background:#fff}
 .fin-group-head{display:flex;align-items:center;justify-content:space-between;gap:7px 14px;flex-wrap:wrap;margin-bottom:12px}
 .fin-group-head strong{font-size:12px;color:#203f5d}.fin-group-head small{font-size:11px;color:#688099}
-.fin-table-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;margin:20px 0 9px}
-.fin-table-header strong{font-size:13px;color:#24445f}.fin-table-header small{font-size:11px;color:#73839a}
-.fin-summary-scroll{overflow-x:auto;border:1px solid #dce7f0;border-radius:12px}
-.fin-summary-table{border-collapse:collapse;width:100%;min-width:690px}
-.fin-summary-table th{font-size:11px;background:#edf4fb;padding:10px 12px;color:#31506d;text-align:left}
-.fin-summary-table td{font-size:11px;color:#3f5875;padding:10px 12px;vertical-align:middle;border-top:1px solid #e8eff6}
-.fin-summary-table .fin-money{color:#17365d;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
-.fin-review-btn,.fin-detail-action{font-size:11px;padding:7px 9px;white-space:nowrap}
-.fin-review-btn{background:#fff7e7;color:#8f5813;border-color:#efd9af}.fin-review-btn:disabled{opacity:.5;cursor:default}
-.fin-detail-action{background:#edf6ff;border-color:#bad4ed;color:#245b8b}
-.fin-cards-toggle{display:block;margin:14px 0 8px;font-size:11px;color:#275c85;background:#f0f6fc;border-color:#ccdeef}
-.fin-detail-cards[hidden]{display:none!important}
-.fin-detail-cards .finance-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.fin-detail-cards .finance-stat strong{font-size:17px;overflow-wrap:anywhere}
 .fin-visual-warning{font-size:11px;line-height:1.55;margin-top:13px}
-@media(max-width:800px){.fin-detail-cards .finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:500px){.fin-detail-cards .finance-grid{grid-template-columns:1fr}.fin-group{padding:10px}.fin-group-head small{display:block}.fin-filter-count{width:100%}}
+@media(max-width:500px){.fin-group{padding:10px}.fin-group-head small{display:block}.fin-filter-count{width:100%}}
 </style></head><body><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div><section class="ux-dashboard" aria-label="Accesos directos de seguimiento"><div class="ux-frame">
 <div class="ux-title"><div><h2>◉ Centro de control · Consulta rápida</h2><p>Filtros dinámicos, responsables y alertas. Selecciona un registro para abrir su ficha con el ojito.</p></div><div class="ux-actions"><button class="ux-action" id="uxFocus" type="button" aria-pressed="false">▥ Vista resumida</button><button class="ux-action" id="uxCompact" type="button" aria-pressed="false">↕ Modo compacto</button><button class="ux-action" id="uxClear" type="button">↺ Limpiar filtros</button><button class="ux-action" id="uxExport" type="button">⇩ Exportar selección CSV</button></div></div>
 <div class="ux-searchline"><label for="uxSearch">Búsqueda inmediata</label><input id="uxSearch" type="search" placeholder="Buscar servicio, PAC, estado, proveedor o especialista…" autocomplete="off"><label for="uxSort">Ordenar</label><select id="uxSort"><option value="original">Orden original</option><option value="vencimiento">Vencimiento más próximo</option><option value="prioridad">Mayor prioridad</option><option value="descripcion">Servicio A–Z</option><option value="especialista">Especialista A–Z</option></select></div>
@@ -375,7 +360,7 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
  const currency=v=>{const k=n(v);return k===null?null:money.format(k)};
 
 
- let financeUnit='importe',financeExpert='',financeArea='',financeCardsOpen=false;
+ let financeUnit='importe',financeExpert='',financeArea='';
  const finDefs=[
  ['Cuantía registrada','cuantia',null,'contratos','#244a78'],
  ['Monto contratado','montoContratado',null,'contratos','#427db4'],
@@ -387,14 +372,8 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
  ];
  const finEsc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const finClean=v=>String(v??'').trim();
- const finNorm=v=>finClean(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
- const finNoData=new Set(['','-','—','NO APLICA','NO CORRESPONDE','NO REQUIERE','NINGUNO','SIN INFORMACION','CONTRATO VIGENTE','NO HAY CONTRATO VIGENTE']);
  const finPass=r=>(!financeExpert||finClean(r.especialista)===financeExpert)&&(!financeArea||finClean(r.area)===financeArea);
  const finNum=(r,f)=>{const v=n(r[f[1]]);return v!==null?v:(f[2]?n(r[f[2]]):null)};
- const finReview=(r,f)=>{
-  const v=finNum(r,f);if(v!==null)return v===0;
-  return [r[f[1]],f[2]?r[f[2]]:''].some(t=>{const w=finNorm(t);return w&&!finNoData.has(w)});
- };
  const finSoles=v=>v>=1000000?'S/ '+(v/1000000).toLocaleString('es-PE',{maximumFractionDigits:2})+' millones':v>=1000?'S/ '+(v/1000).toLocaleString('es-PE',{maximumFractionDigits:1})+' mil':money.format(v);
  const finAttr=f=>'data-fin-key="'+f[1]+'" data-fin-doc="'+(f[2]||'')+'" data-fin-label="'+finEsc(f[0])+'"';
  function finSelectedOptions(key,title,current){
@@ -402,23 +381,13 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
   return '<label class="fin-select-label">'+title+'<select data-fin-filter="'+key+'" aria-label="Filtrar por '+title+'"><option value="">Todos</option>'+
    names.map(v=>'<option value="'+finEsc(v)+'"'+(v===current?' selected':'')+'>'+finEsc(v)+'</option>').join('')+'</select></label>';
  }
- function finReviewDetails(f){
-  const entries=data.map((r,index)=>({r,index})).filter(x=>finPass(x.r)&&finReview(x.r,f));
-  const dialog=document.getElementById('insightDetail');if(!dialog)return;
-  document.getElementById('insightDetailTitle').textContent=f[0]+' · Registros por verificar ('+entries.length+')';
-  document.getElementById('insightDetailExplain').textContent='Referencias sin importe numérico, montos cero o textos que ameritan revisión. No confirma incumplimiento ni que corresponda exigir un documento para todos los procedimientos.';
-  document.getElementById('insightDetailRows').innerHTML=entries.length?'<table><thead><tr><th>N.º</th><th>Servicio</th><th>Especialista</th><th>Documento / dato registrado</th><th>Ficha</th></tr></thead><tbody>'+
-   entries.map(({r,index})=>'<tr><td>'+finEsc(r.id)+'</td><td>'+finEsc(r.descripcion||'—')+'</td><td>'+finEsc(r.especialista||'—')+'</td><td>'+finEsc((f[2]&&r[f[2]])||r[f[1]]||'—')+'</td><td><button type="button" class="eye-action" data-insight-record="'+index+'">👁 Ver ficha</button></td></tr>').join('')+'</tbody></table>':
-   '<p class="insight-empty">No hay registros por verificar con el filtro seleccionado.</p>';
-  if(!dialog.open)dialog.showModal();
- }
  function renderFinanceBars(){
   const host=document.getElementById('chartFinance');if(!host)return;
   window.sunarpFinanceRowVisible=finPass;
   const records=data.filter(finPass);
   const metrics=finDefs.map(f=>{
    const amounts=records.map(r=>finNum(r,f)).filter(v=>v!==null&&v>0);
-   return {f,total:amounts.reduce((x,y)=>x+y,0),count:amounts.length,review:records.filter(r=>finReview(r,f)).length};
+   return {f,total:amounts.reduce((x,y)=>x+y,0),count:amounts.length};
   });
   const useMoney=financeUnit==='importe';
   const makeGroup=(name,description,grp)=>{
@@ -433,18 +402,10 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
    '<button type="button" data-fin-metric="importe" aria-pressed="'+useMoney+'" class="'+(useMoney?'selected':'')+'">S/ Importes</button><button type="button" data-fin-metric="registros" aria-pressed="'+(!useMoney)+'" class="'+(!useMoney?'selected':'')+'">N.º registros</button></div></div>';
   const filters='<div class="fin-filter-line">'+finSelectedOptions('especialista','Especialista',financeExpert)+finSelectedOptions('area','Área usuaria',financeArea)+
    '<button type="button" data-fin-reset class="fin-reset"'+(!financeExpert&&!financeArea?' disabled':'')+'>↺ Limpiar filtros</button><span class="fin-filter-count">'+records.length+' de '+data.length+' registros</span></div>';
-  const table='<div class="fin-table-header"><strong>Resumen presupuestario y documental</strong><small>Importes por registro y referencias por verificar</small></div>'+
-   '<div class="fin-summary-scroll"><table class="fin-summary-table"><thead><tr><th>Concepto</th><th>Importe registrado</th><th>Con importe</th><th>Por verificar*</th><th>Consulta</th></tr></thead><tbody>'+
-   metrics.map(m=>'<tr><td><strong>'+finEsc(m.f[0])+'</strong></td><td class="fin-money">'+money.format(m.total)+'</td><td>'+m.count+'</td><td><button type="button" class="fin-review-btn" data-fin-review="'+m.f[1]+'"'+(m.review?'':' disabled')+'>'+m.review+' por verificar</button></td><td><button type="button" class="fin-detail-action" '+finAttr(m.f)+'>👁 Ver detalle</button></td></tr>').join('')+
-   '</tbody></table></div>';
-  const cards='<div class="fin-detail-cards"'+(financeCardsOpen?'':' hidden')+'><div class="finance-grid">'+metrics.map(m=>
-   '<button type="button" class="finance-stat fin-detail-btn" '+finAttr(m.f)+'><small>'+finEsc(m.f[0])+'</small><strong>'+(m.count?money.format(m.total):'—')+'</strong><span class="analysis-pill">'+m.count+' registros con importe · 👁 Ver detalle</span></button>'
-  ).join('')+'</div></div>';
-  const note='<p class="fin-visual-warning">* «Por verificar» muestra registros con importe cero o referencias sin monto numérico; no equivale a una obligación incumplida. Las sumas son literales por registro y pueden incluir memorandos repetidos. Cuantía, contratado, CCP y previsiones son conceptos distintos que no deben sumarse entre sí ni interpretarse como gasto ejecutado o presupuesto aprobado.</p>';
   host.innerHTML='<div class="fin-visual">'+heading+filters+
    makeGroup('1. Valores de contratación','Cuantía registrada frente a monto contratado','contratos')+
    makeGroup('2. CCP y previsiones presupuestarias','Comparación por ejercicio fiscal · escala separada del bloque anterior','presupuesto')+
-   table+'<button type="button" class="fin-cards-toggle" data-fin-cards aria-expanded="'+financeCardsOpen+'">'+(financeCardsOpen?'▴ Ocultar tarjetas':'▾ Mostrar tarjetas de importes')+'</button>'+cards+note+'</div>';
+   '<p class="fin-visual-warning">Los importes son sumas literales por registro y pueden incluir memorandos repetidos. Cuantía, monto contratado, CCP y previsiones son conceptos distintos, no deben sumarse entre sí ni representan gasto ejecutado o presupuesto aprobado. Selecciona una barra para ver el desglose y las fichas.</p></div>';
  }
  const finHost=document.getElementById('chartFinance');
  finHost?.addEventListener('change',e=>{
@@ -457,10 +418,6 @@ function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('
   const unit=e.target.closest('[data-fin-metric]');
   if(unit){financeUnit=unit.dataset.finMetric==='registros'?'registros':'importe';renderFinanceBars();return}
   if(e.target.closest('[data-fin-reset]')){financeExpert='';financeArea='';renderFinanceBars();return}
-  if(e.target.closest('[data-fin-cards]')){financeCardsOpen=!financeCardsOpen;renderFinanceBars();return}
-  const review=e.target.closest('[data-fin-review]');if(review){
-   const f=finDefs.find(x=>x[1]===review.dataset.finReview);if(f)finReviewDetails(f);
-  }
  });
  function draw(){
   const groups={};data.forEach(r=>{const k=group(r.estado);groups[k]=(groups[k]||0)+1});const entries=Object.entries(groups).sort((a,b)=>b[1]-a[1]);let pos=0;const total=data.length||1;
