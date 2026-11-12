@@ -588,8 +588,15 @@ document.getElementById('alerts').addEventListener('click',function(event){
    ['SI','SÍ'].includes(req)||
    ['PENDIENTE DEL SIGA','SIN ACTUACIONES REGISTRADAS','EN PROGRAMACION','EN PROGRAMACIÓN','EN EVALUACION','EN EVALUACIÓN','PUBLICADO','DESIERTO','CANCELADO'].some(x=>nu.includes(x));
  };
+ const esActoPreparatorio=r=>{
+  const st=group(r.estado);
+  if(['Convocado / evaluación','Culminado','Contrato vigente'].includes(st))return false;
+  return ['Actuaciones preparatorias','Sin requerimiento','Desierto','Cancelado'].includes(st)||
+   ['SI','SÍ'].includes(norm(r.nuevaConvocatoria))||
+   ['PENDIENTE DEL SIGA','SIN ACTUACIONES REGISTRADAS','ACTUACIONES PREPARATORIAS'].some(x=>norm(r.estadoNueva).includes(x));
+ };
  const getRows=(person,type)=>data.filter(r=>(person==='*'||persona(r)===person)&&(
-   type==='all'||(type==='signed'&&is2026(r))||(type==='vigente'&&group(r.estado)==='Contrato vigente')||(type==='pending'&&esPendiente(r))||(type==='convocado'&&esConvocado(r))||
+   type==='all'||(type==='signed'&&is2026(r))||(type==='vigente'&&group(r.estado)==='Contrato vigente')||(type==='pending'&&esPendiente(r))||(type==='preparatorio'&&esActoPreparatorio(r))||(type==='convocado'&&esConvocado(r))||
    (type==='desierto'&&esDesierto(r))||(type==='cancelado'&&esCancelado(r))));
  function render(){
   const groups=new Map();
@@ -608,18 +615,18 @@ document.getElementById('alerts').addEventListener('click',function(event){
    '<div class="sp-list">'+persons.map(([p,rows])=>{
     const cnt=t=>rows.filter(t).length, display=p==='SIN ESPECIALISTA ASIGNADO'?'Sin especialista asignado':p;
     const initials=p==='SIN ESPECIALISTA ASIGNADO'?'—':p.split(/\s+/).map(w=>w[0]||'').join('').slice(0,2);
-    const items=[['pending','Actos preparatorios',cnt(esPendiente),'pending'],['convocado','Convocados / evaluación',cnt(esConvocado),''],['desierto','Desiertos',cnt(esDesierto),'desert'],['cancelado','Cancelados',cnt(esCancelado),'cancel']];
+    const items=[['preparatorio','Actos preparatorios',cnt(esActoPreparatorio),'pending'],['convocado','Convocados / evaluación',cnt(esConvocado),''],['desierto','Desiertos',cnt(esDesierto),'desert'],['cancelado','Cancelados',cnt(esCancelado),'cancel']];
     return '<article class="sp-person"><div class="sp-person-head"><span class="sp-avatar">'+safe(initials)+'</span><div><span class="sp-name">'+safe(display)+'</span><small class="sp-meta">'+(p==='SIN ESPECIALISTA ASIGNADO'?'Requieren revisar la asignación':'Especialista registrado')+'</small></div><button class="sp-count" type="button" '+key(p,'all')+'><strong>'+rows.length+'</strong> registros <span aria-hidden="true">↗</span></button></div><div class="sp-badges">'+items.map(([type,label,count,cl])=>'<button type="button" class="sp-tag '+cl+'" '+key(p,type)+'><strong>'+count+'</strong> '+label+' ↗</button>').join('')+'</div></article>';
-   }).join('')+'</div><p class="sp-foot">Los conteos reflejan registros, no procedimientos únicos. «Actos preparatorios» conserva el conteo operativo anterior (no es un recuento exclusivo de esta etapa): incluye estados preparatorios, sin requerimiento, convocados, desiertos, cancelados o registros que señalan nueva convocatoria o actuaciones por iniciar. Puede coincidir con otros indicadores; no implica incumplimiento.</p>';
+   }).join('')+'</div><p class="sp-foot">Los conteos reflejan registros, no procedimientos únicos. «Actos preparatorios» muestra los registros pendientes de preparación o nueva convocatoria; excluye los ya convocados, culminados o con contrato vigente. Por seguimiento, puede incluir desiertos o cancelados que requieren nuevas actuaciones, por lo que no equivale exclusivamente a una etapa formal. Cada cifra abre sus registros.</p>';
  }
  root.addEventListener('click',event=>{
   const btn=event.target.closest('button[data-sp-type]');if(!btn)return;
   const person=btn.dataset.spPerson,type=btn.dataset.spType;
-  const titles={signed:'Contratos suscritos en 2026',vigente:'Contratos vigentes según estado registrado',all:'Todos los registros',pending:'Actuaciones por revisar',convocado:'Convocados / en evaluación',desierto:'Procedimientos desiertos',cancelado:'Procedimientos cancelados'};
+  const titles={signed:'Contratos suscritos en 2026',vigente:'Contratos vigentes según estado registrado',all:'Todos los registros',pending:'Actuaciones por revisar',preparatorio:'Actos preparatorios',convocado:'Convocados / en evaluación',desierto:'Procedimientos desiertos',cancelado:'Procedimientos cancelados'};
   const rows=getRows(person,type);
   const title=(person==='*'?'Todos los responsables':person==='SIN ESPECIALISTA ASIGNADO'?'Sin especialista asignado':person)+' · '+titles[type]+' · '+rows.length+' registros';
   document.getElementById('insightDetailTitle').textContent=title;
-  document.getElementById('insightDetailExplain').textContent='Registros procedentes de la base del aplicativo. Los pendientes son una clasificación orientativa basada en estados y campos de seguimiento; se debe confirmar cada actuación documentalmente. Selecciona el ojito para abrir la ficha.';
+  document.getElementById('insightDetailExplain').textContent=type==='preparatorio'?'Registros que requieren preparación o nueva convocatoria. Se excluyen convocados, culminados o con contrato vigente; puede haber desiertos o cancelados sujetos a nuevas actuaciones. Selecciona el ojito para ver la ficha.':'Registros procedentes de la base del aplicativo. Los pendientes son una clasificación orientativa basada en estados y campos de seguimiento; se debe confirmar cada actuación documentalmente. Selecciona el ojito para abrir la ficha.';
   document.getElementById('insightDetailRows').innerHTML=rows.length?'<table><thead><tr><th>N.º</th><th>Servicio / procedimiento</th><th>PAC</th><th>Responsable / área</th><th>Estado / próxima actuación</th><th>Contrato / vencimiento</th><th>Ficha</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><strong>'+safe(r.descripcion||'—')+'</strong><div class="muted">'+safe(r.procedimiento||'—')+'</div></td><td>'+safe(r.pac||'—')+'</td><td>'+safe(r.especialista||'—')+'<div class="muted">'+safe(r.area||'—')+'</div></td><td>'+safe(r.estado||'—')+'<div class="muted">'+safe(r.estadoNueva||r.seguimientoExcel||'')+'</div></td><td>'+safe(r.numeroContrato||r.contratoVigente||'—')+'<div class="muted">Vence: '+safe(r.vencimiento||'—')+'</div></td><td><button class="eye-action" type="button" data-insight-record="'+data.indexOf(r)+'">👁 Ver ficha</button></td></tr>').join('')+'</tbody></table>':'<div class="insight-empty">No hay registros en esta categoría.</div>';
   if(!modal.open)modal.showModal();
  });
