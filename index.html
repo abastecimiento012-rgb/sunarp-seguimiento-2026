@@ -293,6 +293,48 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .tablewrap th{position:sticky;top:0;z-index:2;box-shadow:0 1px 0 #d5e2ef}
 @media(max-width:550px){.table-scroll-title{display:none}.table-scroll-tools{margin-top:4px}.tablewrap{max-height:65vh}}
 @media(prefers-reduced-motion:reduce){.tablewrap{scroll-behavior:auto}.table-scroll-actions button{transition:none}}
+</style><style id="sunarpCompactTable2026">
+/* Tabla gerencial con filtros adaptables, ojito pequeño y columnas prioritarias. */
+.panel>.filters{display:grid;grid-template-columns:minmax(190px,2.1fr) repeat(5,minmax(0,1fr));gap:8px;align-items:stretch}
+.panel>.filters>input,.panel>.filters>select{min-width:0!important;width:100%!important;max-width:100%;height:42px;padding:8px 10px;font-size:12px;flex:none}
+.tablewrap #tbody td{padding:8px 10px;line-height:1.35}
+.tablewrap #thead th{padding:10px;font-size:11px}
+.tablewrap #tbody td.desc{position:relative;padding-right:49px!important;min-width:265px!important;max-width:350px!important;line-height:1.4}
+.tablewrap .desc .detail-under-service{position:absolute;top:8px;right:8px;display:block;margin:0!important}
+.tablewrap .desc .eye-action{display:grid!important;place-items:center!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;max-width:32px!important;padding:5px!important;margin:0!important;border-radius:9px!important;white-space:nowrap!important;line-height:1!important}
+.tablewrap .desc .eye-action svg{width:18px!important;height:18px!important}
+.tablewrap .desc .eye-action span{display:none}
+.tablewrap #tbody .obs-box{padding:7px 9px}
+.tablewrap #tbody .obs-box strong{margin-bottom:3px}
+.tablewrap[data-view="all"] #tbody .obs-stack{max-height:125px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#afc7df #f0f5fb}
+.tablewrap[data-view="all"] #tbody .control-info{max-height:125px;overflow-y:auto;scrollbar-width:thin}
+.tablewrap[data-view="all"] #tbody td:nth-child(1),.tablewrap[data-view="all"] #thead th:nth-child(1){min-width:52px!important;width:52px;max-width:52px}
+.tablewrap[data-view="all"] #tbody td:nth-child(2),.tablewrap[data-view="all"] #thead th:nth-child(2){min-width:110px!important;width:110px;max-width:130px}
+.tablewrap[data-view="all"] #tbody td:nth-child(4),.tablewrap[data-view="all"] #thead th:nth-child(4){min-width:78px!important;width:78px;max-width:100px}
+.tablewrap[data-view="all"] #tbody td:nth-child(5),.tablewrap[data-view="all"] #thead th:nth-child(5){min-width:112px!important;width:112px;max-width:135px}
+.tablewrap[data-view="all"] #tbody td:nth-child(6),.tablewrap[data-view="all"] #thead th:nth-child(6){min-width:145px!important;width:145px;max-width:175px}
+.tablewrap[data-view="all"] #thead th:nth-child(-n+6),.tablewrap[data-view="all"] #tbody td:nth-child(-n+6){position:sticky;left:0;z-index:3;background:#fff}
+.tablewrap[data-view="all"] #thead th:nth-child(-n+6){z-index:6;background:#eaf0f7}
+.tablewrap[data-view="all"] #tbody tr:hover td:nth-child(-n+6){background:#f5f9fe}
+.tablewrap[data-view="all"] #thead th:nth-child(1),.tablewrap[data-view="all"] #tbody td:nth-child(1){left:var(--sun-sticky-1,0px)}
+.tablewrap[data-view="all"] #thead th:nth-child(2),.tablewrap[data-view="all"] #tbody td:nth-child(2){left:var(--sun-sticky-2,52px)}
+.tablewrap[data-view="all"] #thead th:nth-child(3),.tablewrap[data-view="all"] #tbody td:nth-child(3){left:var(--sun-sticky-3,162px)}
+.tablewrap[data-view="all"] #thead th:nth-child(4),.tablewrap[data-view="all"] #tbody td:nth-child(4){left:var(--sun-sticky-4,477px)}
+.tablewrap[data-view="all"] #thead th:nth-child(5),.tablewrap[data-view="all"] #tbody td:nth-child(5){left:var(--sun-sticky-5,555px)}
+.tablewrap[data-view="all"] #thead th:nth-child(6),.tablewrap[data-view="all"] #tbody td:nth-child(6){left:var(--sun-sticky-6,667px);box-shadow:3px 0 7px -6px #284b6b}
+@media(max-width:1130px){
+ .panel>.filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .panel>.filters>input[type=search]{grid-column:span 2}
+ .tablewrap[data-view="all"] #thead th:nth-child(n+4):nth-child(-n+6),.tablewrap[data-view="all"] #tbody td:nth-child(n+4):nth-child(-n+6){position:static}
+ .tablewrap[data-view="all"] #thead th:nth-child(3),.tablewrap[data-view="all"] #tbody td:nth-child(3){box-shadow:3px 0 7px -6px #284b6b}
+}
+@media(max-width:680px){
+ .panel>.filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .panel>.filters>input[type=search]{grid-column:1/-1}
+ .tablewrap[data-view="all"] #thead th:nth-child(n+2):nth-child(-n+6),.tablewrap[data-view="all"] #tbody td:nth-child(n+2):nth-child(-n+6){position:static;box-shadow:none}
+ .tablewrap #tbody td.desc{min-width:230px!important}
+}
+@media(max-width:400px){.panel>.filters{grid-template-columns:1fr}.panel>.filters>input[type=search]{grid-column:1}.tablewrap #tbody td.desc{min-width:215px!important}}
 </style></head><body><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div><section class="ux-dashboard" aria-label="Accesos directos de seguimiento"><div class="ux-frame">
 <div class="ux-title"><div><h2>◉ Centro de control · Consulta rápida</h2><p>Filtros dinámicos, responsables y alertas. Selecciona un registro para abrir su ficha con el ojito.</p></div><div class="ux-actions"><button class="ux-action" id="uxFocus" type="button" aria-pressed="false">▥ Vista resumida</button><button class="ux-action" id="uxCompact" type="button" aria-pressed="false">↕ Modo compacto</button><button class="ux-action" id="uxClear" type="button">↺ Limpiar filtros</button><button class="ux-action" id="uxExport" type="button">⇩ Exportar selección CSV</button></div></div>
 <div class="ux-searchline"><label for="uxSearch">Búsqueda inmediata</label><input id="uxSearch" type="search" placeholder="Buscar servicio, PAC, estado, proveedor o especialista…" autocomplete="off"><label for="uxSort">Ordenar</label><select id="uxSort"><option value="original">Orden original</option><option value="vencimiento">Vencimiento más próximo</option><option value="prioridad">Mayor prioridad</option><option value="descripcion">Servicio A–Z</option><option value="especialista">Especialista A–Z</option></select></div>
@@ -309,7 +351,25 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
   <button type="button" data-table-scroll="down" aria-label="Ver filas siguientes" title="Desplazar filas hacia abajo">↓</button>
  </div>
 </div>
-<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><p class="footer">Base actualizada desde el Excel adjunto. Los datos se guardan en este navegador. Para compartir cambios entre equipos, exporta e importa un respaldo JSON. No existe sincronización multiusuario ni conexión con SEACE/OECE. Los estados y fechas se basan en el archivo proporcionado y requieren validación documental.</p></main><script id="sunarpTableScrollControls2026">
+<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p></main><script id="sunarpStickyColumns2026">
+(function(){
+ const wrapper=document.querySelector('.tablewrap'),heading=document.getElementById('thead');
+ if(!wrapper||!heading)return;
+ let pending=false;
+ function sync(){
+  pending=false;
+  let left=0;
+  Array.from(heading.querySelectorAll('th')).slice(0,6).forEach((col,i)=>{
+   wrapper.style.setProperty('--sun-sticky-'+(i+1),left+'px');
+   left+=col.getBoundingClientRect().width;
+  });
+ }
+ function requestSync(){if(pending)return;pending=true;requestAnimationFrame(sync)}
+ new MutationObserver(requestSync).observe(heading,{childList:true,subtree:true});
+ window.addEventListener('resize',requestSync);
+ requestSync();
+})();
+</script><script id="sunarpTableScrollControls2026">
 (function(){
  const tools=document.querySelector('.table-scroll-tools');
  const table=document.querySelector('.tablewrap');
@@ -373,7 +433,7 @@ function budgetCell(r,k,i){
   const showDoc=doc&&!['-','NO APLICA'].includes(norm(doc));
  return (showDoc?'<div class="pv-doc">'+esc(doc)+'</div>':'')+(amount?'<div class="pv-amount">'+esc(money(amount))+'</div>':'')+(!showDoc&&!amount?'<span class="muted">—</span>':'');
 }
-function render(){cards();refreshFilters();let q=norm($('search').value),pac=$('pacFilter').value,st=$('stateFilter').value,ar=$('areaFilter').value,sp=$('specFilter').value,y=$('yearFilter').value;let rows=data.filter(r=>(tab==='all'||is2026(r))&&(!q||Object.values(r).some(v=>norm(v).includes(q)))&&(!pac||(pac==='programado'?programmed(r):!programmed(r)))&&(!st||r.estado===st)&&(!ar||r.area===ar)&&(!sp||r.especialista===sp)&&(!y||(y==='none'?!date(r.vencimiento):String(yr(r.vencimiento))===y)));if(tab==='all'){
+function render(){cards();refreshFilters();const tw=document.querySelector('.tablewrap');if(tw)tw.dataset.view=tab;let q=norm($('search').value),pac=$('pacFilter').value,st=$('stateFilter').value,ar=$('areaFilter').value,sp=$('specFilter').value,y=$('yearFilter').value;let rows=data.filter(r=>(tab==='all'||is2026(r))&&(!q||Object.values(r).some(v=>norm(v).includes(q)))&&(!pac||(pac==='programado'?programmed(r):!programmed(r)))&&(!st||r.estado===st)&&(!ar||r.area===ar)&&(!sp||r.especialista===sp)&&(!y||(y==='none'?!date(r.vencimiento):String(yr(r.vencimiento))===y)));if(tab==='all'){
  const target=document.getElementById('pacVisualNuevo');
  if(target){const n=rows.length,yes=rows.filter(r=>programmed(r)).length,no=n-yes;
  const pc=n?Math.round(100*yes/n):0;
