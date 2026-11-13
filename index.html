@@ -171,9 +171,17 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .sp-simple-bar{display:block;background:linear-gradient(90deg,#60a5db,#1f66a5);border-radius:6px;height:100%}
 .sp-simple-number{font-size:19px;font-weight:850;color:#153f69;text-align:right;font-variant-numeric:tabular-nums}
 .sp-simple-eye{color:#275f95;text-align:center;font-size:19px}
-.sp-simple-footer{display:flex;gap:5px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:12px;color:#698098;font-size:11px}
-.sp-simple-footer strong{color:#244e78}
-@media(max-width:570px){.sp-simple{padding:12px}.sp-simple-head h3{font-size:16px}.sp-simple-total{padding:6px 9px}.sp-simple-total b{font-size:18px}.sp-simple-total span{font-size:10px}.sp-simple-row{grid-template-columns:81px minmax(35px,1fr) 28px 24px;gap:7px;padding:9px 8px;min-height:54px}.sp-simple-person{font-size:10px;gap:4px}.sp-simple-avatar{font-size:17px}.sp-simple-track{height:14px}.sp-simple-number{font-size:15px}.sp-simple-eye{font-size:16px}.sp-simple-footer{font-size:10px}}
+.sp-pending-note{border-top:1px solid #e5edf5;margin-top:13px;padding-top:12px}
+.sp-pending-title{font-size:12px;color:#254b72;font-weight:800;margin:0 0 7px}
+.sp-pending-lines{display:grid;gap:5px}
+.sp-pending-line{display:grid;grid-template-columns:66px 105px minmax(0,1fr) 25px;align-items:center;gap:8px;width:100%;padding:6px 8px;border:1px solid transparent;border-radius:7px;background:#f7faff;text-align:left;cursor:pointer;color:#42607a;font-size:11px}
+.sp-pending-line:hover,.sp-pending-line:focus-visible{background:#eaf4ff;border-color:#80b6e5;outline:none}
+.sp-pending-name{font-weight:800;color:#254b72;font-size:11px}
+.sp-pending-count{font-weight:750;color:#935e16}
+.sp-pending-desc{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#60778e}
+.sp-pending-eye{text-align:center;font-size:15px}
+@media(max-width:570px){.sp-pending-line{grid-template-columns:58px minmax(80px,1fr) 24px;gap:6px}.sp-pending-desc{grid-column:1/-1;grid-row:2;white-space:normal;line-height:1.35}.sp-pending-name{font-size:10px}.sp-pending-count{font-size:10px}}
+@media(max-width:570px){.sp-simple{padding:12px}.sp-simple-head h3{font-size:16px}.sp-simple-total{padding:6px 9px}.sp-simple-total b{font-size:18px}.sp-simple-total span{font-size:10px}.sp-simple-row{grid-template-columns:81px minmax(35px,1fr) 28px 24px;gap:7px;padding:9px 8px;min-height:54px}.sp-simple-person{font-size:10px;gap:4px}.sp-simple-avatar{font-size:17px}.sp-simple-track{height:14px}.sp-simple-number{font-size:15px}.sp-simple-eye{font-size:16px}}
 </style><style id="finDetalleStyle">
 .fin-detail-btn{cursor:pointer;text-align:left;width:100%;font-family:inherit;border:1px solid #dbe5f1;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .fin-detail-btn:hover{border-color:#4f8ac4;transform:translateY(-2px);box-shadow:0 5px 15px #153c6220;background:#eef6ff}
@@ -1088,7 +1096,6 @@ document.getElementById('alerts').addEventListener('click',function(event){
   const results=names.map(name=>({name,count:getRows(name,'all').length}));
   const total=results.reduce((n,r)=>n+r.count,0);
   const largest=Math.max(...results.map(r=>r.count));
-  const smallest=Math.min(...results.map(r=>r.count));
   const rows=results.map(({name,count})=>{
     const width=largest?Math.round(count/largest*100):0;
     const avatar=name==='HERMES'?'👨':'👩';
@@ -1102,8 +1109,25 @@ document.getElementById('alerts').addEventListener('click',function(event){
   root.innerHTML='<section class="sp-simple" aria-label="Carga de procesos por especialista">'+
     '<div class="sp-simple-head"><div><h3>Carga por especialista</h3><p>Selecciona a un especialista para ver sus procedimientos.</p></div>'+
     '<div class="sp-simple-total"><b>'+total+'</b><span>registros asignados</span></div></div>'+
-    '<div class="sp-simple-rows">'+rows+'</div>'+
-    '<div class="sp-simple-footer"><span>Diferencia de carga: <strong>'+(largest-smallest)+'</strong> registros</span><span>El gráfico muestra cantidades, no complejidad.</span></div>'+
+  const pendingNotes=names.map(name=>{
+    const pending=getRows(name,'pending');
+    const titles=pending.slice(0,2).map(r=>{
+      const title=String(r.descripcion||r.procedimiento||'Procedimiento sin descripción').trim();
+      return safe(title.length>55?title.slice(0,52)+'…':title);
+    });
+    const rest=pending.length-titles.length;
+    const details=titles.length?titles.join(' · ')+(rest>0?' · +'+rest+' más':''):'Sin registros pendientes';
+    return '<button type="button" class="sp-pending-line" data-sp-person="'+safe(name)+'" data-sp-type="pending" aria-label="Ver '+pending.length+' registros pendientes de '+safe(name)+'">'+
+      '<span class="sp-pending-name">'+safe(name)+'</span>'+
+      '<strong class="sp-pending-count">'+pending.length+' pendiente'+(pending.length===1?'':'s')+'</strong>'+
+      '<span class="sp-pending-desc">'+details+'</span>'+
+      '<span class="sp-pending-eye" aria-hidden="true">👁</span></button>';
+  }).join('');
+
+    '<div class="sp-pending-note" aria-label="Nota de pendientes por especialista">'+
+      '<div class="sp-pending-title">📝 Pendientes por especialista</div>'+
+      '<div class="sp-pending-lines">'+pendingNotes+'</div>'+
+    '</div>'+
     '</section>';
  }
  root.addEventListener('click',event=>{
