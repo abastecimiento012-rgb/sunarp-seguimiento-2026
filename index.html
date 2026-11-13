@@ -145,9 +145,6 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .ux-searchline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.ux-searchline label{font-size:12px;color:#425c77;font-weight:700}.ux-searchline input{min-width:180px;flex:1;border-radius:10px;padding:10px 12px}.ux-searchline select{min-width:160px;flex:0 1 auto}
 .ux-fav{font-size:19px;min-width:35px;border:1px solid #d4e1ee;background:#fff;color:#a0b2c5;border-radius:10px;padding:5px 8px;cursor:pointer}.ux-fav.ux-marked{color:#d58d0a;background:#fff6dc;border-color:#edd79f}
 .ux-hidden-row{display:none!important}
-.ux-compact #tbody td{padding:7px 9px!important}.ux-compact .obs-box{padding:6px 8px!important}.ux-compact .control-info{gap:3px!important}.ux-compact #tbody .desc{max-width:280px!important;min-width:230px!important}
-.ux-focus #thead th:nth-child(7),.ux-focus #tbody td:nth-child(7),.ux-focus #thead th:nth-child(8),.ux-focus #tbody td:nth-child(8){display:none}
-.ux-focus #thead th:nth-child(3),.ux-focus #tbody td:nth-child(3){min-width:300px}
 .ux-export-note{font-size:12px;color:#627a92;margin:9px 0 0}
 .ux-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
 .ux-toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17365d;color:#fff;border-radius:11px;padding:12px 16px;z-index:9999;box-shadow:0 7px 22px #193c6560;font-size:12px;max-width:min(90vw,600px)}
@@ -406,7 +403,7 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
     </details>
   </div>
 </nav><section class="ux-dashboard" id="dashboardHome" aria-label="Accesos directos de seguimiento"><div class="ux-frame">
-<div class="ux-title"><div><h2>◉ Centro de control · Consulta rápida</h2><p>Filtros dinámicos, responsables y alertas. Selecciona un registro para abrir su ficha con el ojito.</p></div><div class="ux-actions"><button class="ux-action" id="uxFocus" type="button" aria-pressed="false">▥ Vista resumida</button><button class="ux-action" id="uxCompact" type="button" aria-pressed="false">↕ Modo compacto</button><button class="ux-action" id="uxClear" type="button">↺ Limpiar filtros</button><button class="ux-action" id="uxExport" type="button">⇩ Exportar selección CSV</button></div></div>
+<div class="ux-title"><div><h2>◉ Centro de control · Consulta rápida</h2><p>Filtros dinámicos, responsables y alertas. Selecciona un registro para abrir su ficha con el ojito.</p></div><div class="ux-actions"><button class="ux-action" id="uxClear" type="button">↺ Limpiar filtros</button><button class="ux-action" id="uxExport" type="button">⇩ Exportar selección CSV</button></div></div>
 <div class="ux-searchline ux-sort-only"><label for="uxSort">Ordenar procedimientos</label><select id="uxSort"><option value="original">Orden original</option><option value="vencimiento">Vencimiento más próximo</option><option value="prioridad">Mayor prioridad</option><option value="descripcion">Servicio A–Z</option><option value="especialista">Especialista A–Z</option></select></div>
 <div class="ux-section-label">Atención rápida</div><div class="ux-chips" id="uxChips" role="group" aria-label="Consultas de atención rápida"></div>
 <div class="ux-section-label">Vista por responsable</div><div class="ux-experts" id="uxExperts"></div>
@@ -1226,7 +1223,7 @@ const normalized=v=>String(v??'').toUpperCase().normalize('NFD').replace(/[\u030
 const has=v=>{const s=normalized(v);return !!s&&!['-','NO APLICA','NO CORRESPONDE','POR REVISAR'].includes(s)};
 const k='sunarp_ux_2026_favoritos';
 let favorites=new Set();try{const f=JSON.parse(localStorage.getItem(k)||'[]');if(Array.isArray(f))favorites=new Set(f.map(String))}catch(e){}
-let quick='all',sort='original',compact=false,focus=false,activeExpert='',busy=false;
+let quick='all',sort='original',activeExpert='',busy=false;
 const dateSafe=v=>{if(typeof date==='function')return date(v);return null};
 const remaining=r=>{const d=dateSafe(r.vencimiento);if(!d)return null;const now=new Date();now.setHours(0,0,0,0);return Math.ceil((d-now)/86400000)};
 const signed=r=>{const d=dateSafe(r.fechaSuscripcion);return d&&d.getFullYear()===2026};
@@ -1355,8 +1352,6 @@ $u('uxExperts').addEventListener('click',e=>{
 $u('uxClear').onclick=()=>{quick='all';activeExpert='';sort='original';$u('uxSort').value='original';if($u('search'))$u('search').value='';for(const id of ['pacFilter','stateFilter','areaFilter','specFilter','yearFilter'])if($u(id))$u(id).value='';activateTab('all');render();experts();apply()};
 $u('search').addEventListener('input',updateSoon);
 $u('uxSort').onchange=e=>{sort=e.target.value;if(sort==='original')render();apply()};
-$u('uxCompact').onclick=()=>{compact=!compact;document.body.classList.toggle('ux-compact',compact);$u('uxCompact').setAttribute('aria-pressed',compact);$u('uxCompact').textContent=compact?'↕ Espaciado normal':'↕ Modo compacto'};
-$u('uxFocus').onclick=()=>{focus=!focus;document.body.classList.toggle('ux-focus',focus);$u('uxFocus').setAttribute('aria-pressed',focus);$u('uxFocus').textContent=focus?'▦ Vista completa':'▥ Vista resumida'};
 $u('tbody').addEventListener('click',e=>{const b=e.target.closest('[data-favorite]');if(!b)return;e.stopPropagation();const id=b.dataset.favorite;if(favorites.has(id))favorites.delete(id);else favorites.add(id);try{localStorage.setItem(k,JSON.stringify([...favorites]))}catch(e){}apply()},{capture:true});
 $u('uxExport').onclick=()=>{const ids=currentRowIds(),rows=baseRows().filter(r=>ids.has(String(r.id))&&checks[quick](r)&&(!activeExpert||r.especialista===activeExpert));const keys=Object.keys(data[0]||{});const line=arr=>arr.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';');const content='\ufeff'+[line(keys),...rows.map(r=>line(keys.map(k=>r[k])))].join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='SUNARP_2026_SELECCION_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 document.addEventListener('keydown',e=>{const search=$u('search');if(!search)return;if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement?.tagName)){e.preventDefault();search.scrollIntoView({behavior:'smooth',block:'center'});search.focus()}if(e.key==='Escape'&&document.activeElement===search)search.blur()});
