@@ -1695,4 +1695,127 @@ experts();apply();
  go(current(),false);
 })();
 </script>
-</body></html>
+<script id="sunContractNewFlowScript">
+(function(){
+'use strict';
+const el=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=v=>String(v??'').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const txt=v=>{let t=String(v??'').trim();return !t||['-','NO APLICA','NO CORRESPONDE'].includes(norm(t))?'No registrado':t};
+const yes=r=>norm(r.nuevaConvocatoria)==='SI';
+const spec=r=>txt(r.especialista)==='No registrado'?'Por asignar':txt(r.especialista);
+const dated=v=>typeof date==='function'?date(v):null;
+function current(r){
+ const c=txt(r.contratoVigente),d=dated(r.vencimiento),now=new Date();now.setHours(0,0,0,0);
+ return c!=='No registrado'&&!/NO HAY.*CONTRATO VIGENTE/i.test(c)&&!!d&&d>=now;
+}
+const rows=()=>data.map((r,i)=>({r,i}));
+const flagged=()=>rows().filter(({r})=>yes(r));
+const inForce=()=>rows().filter(({r})=>current(r)).sort((a,b)=>dated(a.r.vencimiento)-dated(b.r.vencimiento));
+const status=r=>!yes(r)?'Nueva convocatoria no registrada':txt(r.estadoNueva)==='No registrado'?'Estado por verificar':txt(r.estadoNueva);
+const pending=r=>!yes(r)||['NO INICIADA','PENDIENTE DE REQUERIMIENTO','CONTRATO VIGENTE','PROGRAMADO PARA DICIEMBRE'].includes(norm(r.estadoNueva));
+let focused=null,contractTab='vigentes';
+function tabs(){
+ document.body.dataset.sunContractTab=contractTab;
+ document.querySelectorAll('[data-sun-contract-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sunContractTab===contractTab)));
+}
+function card(n,label,css){return '<div class="'+css+'"><strong>'+n+'</strong><'+(css==='sun-ct-kpi'?'span':'small')+'>'+esc(label)+'</'+(css==='sun-ct-kpi'?'span':'small')+'></div>'}
+function contracts(){
+ const host=el('sunContractsList');if(!host)return;
+ const list=inForce(),yesList=list.filter(({r})=>yes(r)),unassigned=yesList.filter(({r})=>spec(r)==='Por asignar');
+ host.innerHTML='<div class="sun-ct-overview">'+card(list.length,'Contratos vigentes por fecha','sun-ct-kpi')+card(yesList.length,'Con nueva convocatoria registrada','sun-ct-kpi')+card(unassigned.length,'Con especialista por asignar','sun-ct-kpi')+'</div>'+
+ '<p class="sun-ct-note">Vigencia calculada según el contrato y su fecha de vencimiento registrados. La alerta no significa que la nueva convocatoria ya se haya publicado.</p>'+
+ '<div class="sun-ct-table-wrap"><table class="sun-ct-table"><thead><tr><th>N.º</th><th>Servicio / Contrato</th><th>Vencimiento</th><th>Nueva convocatoria</th><th>Especialista</th><th>Alerta</th></tr></thead><tbody>'+
+ list.map(({r,i})=>'<tr data-sun-contract-id="'+esc(r.id)+'"><td>'+esc(r.id)+'</td><td class="sun-service">'+esc(txt(r.descripcion))+'<small>'+esc(txt(r.contratoVigente))+'</small></td><td>'+esc(txt(r.vencimiento))+'</td>'+
+ '<td><span class="sun-ct-label '+(yes(r)?'is-new':'not-new')+'">'+(yes(r)?'Requiere nueva convocatoria':'No registrada')+'</span><small>'+esc(status(r))+'</small></td><td>'+esc(spec(r))+'</td>'+
+ '<td><button type="button" class="sun-ct-alert '+(yes(r)?'':'muted')+'" data-sun-open-new="'+i+'">'+(yes(r)?'⚠ Ver alerta y seguimiento':'◷ Consultar nueva contratación')+'</button></td></tr>').join('')+
+ '</tbody></table></div>';
+}
+function statNew(){
+ const entries=flagged();
+ el('sunNewConvStats').innerHTML=card(entries.length,'Requieren nueva convocatoria','sun-newconv-stat')+card(entries.filter(({r})=>spec(r)!=='Por asignar').length,'Con especialista registrado','sun-newconv-stat')+
+ card(entries.filter(({r})=>spec(r)==='Por asignar').length,'Por asignar','sun-newconv-stat');
+}
+function listNew(){
+ const search=norm(el('sunNewConvSearch')?.value);
+ const result=flagged().filter(({r})=>!search||norm([r.descripcion,r.especialista,r.estadoNueva,r.estado,r.pac].join(' ')).includes(search));
+ el('sunNewConvList').innerHTML=result.map(({r,i})=>'<button type="button" class="sun-newconv-item" data-sun-focus-new="'+i+'" aria-current="'+(String(r.id)===focused)+'"><b>'+esc(txt(r.descripcion))+'</b><small>Registro '+esc(r.id)+' · '+esc(spec(r))+' · '+esc(status(r))+'</small></button>').join('')||'<p class="sun-ct-note">Sin resultados para la búsqueda.</p>';
+}
+const field=(label,v)=>'<div class="sun-newconv-field"><small>'+esc(label)+'</small><strong>'+esc(txt(v))+'</strong></div>';
+function details(id){
+ const i=data.findIndex(r=>String(r.id)===String(id)),host=el('sunNewConvDetail');
+ if(i<0){focused=null;host.innerHTML='<p>Selecciona un registro para consultar su nueva convocatoria.</p>';listNew();return}
+ const r=data[i];focused=String(r.id);
+ host.innerHTML='<span class="sun-newconv-status '+(pending(r)?'warn':'')+'">'+esc(status(r))+'</span><h3>'+esc(txt(r.descripcion))+'</h3>'+
+ '<p>'+(yes(r)?'El Excel registra necesidad de nueva convocatoria; verifica las actuaciones para identificar la etapa efectiva.':'Este contrato no tiene nueva convocatoria registrada en el Excel. No se presupone que ya haya comenzado.')+'</p>'+
+ '<div class="sun-newconv-fields">'+field('N.º registro',r.id)+field('Especialista encargado',spec(r))+
+ field('Estado actual',r.estado)+field('Estado de nueva convocatoria',status(r))+
+ field('¿Requiere nueva convocatoria?',r.nuevaConvocatoria)+field('Área usuaria',r.area)+
+ field('Tipo / número de procedimiento',r.procedimiento)+field('PAC',r.pac)+
+ field('Fecha esperada',r.fechaEsperada)+field('Fecha de requerimiento',r.fechaRequerimiento)+
+ field('Fecha de convocatoria',r.fechaConvocatoria)+field('Documentos de requerimiento',r.documentosRequerimiento)+
+ field('Contrato vigente / anterior',r.contratoVigente)+field('Vencimiento contractual',r.vencimiento)+'</div>'+
+ '<h4>Observaciones y próximas actuaciones</h4><div class="sun-newconv-notes">'+esc(txt(r.observaciones))+'</div>'+
+ '<h4>Seguimiento registrado</h4><div class="sun-newconv-notes">'+esc(txt(r.seguimientoExcel))+'</div>'+
+ '<div class="sun-newconv-actions"><button type="button" class="primary" data-sun-view-original="'+i+'">👁 Ver ficha completa</button>'+
+ (current(r)?'<button type="button" data-sun-back-contract="'+i+'">▣ Volver al contrato vigente</button>':'<button type="button" data-sun-procedures>☷ Ver Procedimientos</button>')+'</div>';
+ listNew();
+}
+function openRecord(i,go=true){
+ if(!Number.isInteger(i)||!data[i])return;
+ if(go)window.sunarpNavigate?.('convocatorias');
+ const r=data[i],u=new URL(location.href);
+ u.searchParams.set('pagina','convocatorias');u.searchParams.set('registro',String(r.id));
+ history.replaceState({pagina:'convocatorias',registro:String(r.id)},'',u.pathname+u.search+u.hash);
+ details(r.id);
+ if(go)requestAnimationFrame(()=>el('sunNewConvDetail')?.scrollIntoView({behavior:'smooth',block:'nearest'}));
+}
+window.sunarpOpenNuevaConvocatoria=openRecord;
+function addAlertToRows(){
+ if(!['procedimientos','contratos'].includes(document.body.dataset.sunPage))return;
+ const tbody=el('tbody');if(!tbody)return;
+ tbody.querySelectorAll('tr').forEach(tr=>{
+  if(tr.querySelector('[data-sun-open-new]'))return;
+  const id=String(tr.dataset.uxid||tr.cells?.[0]?.textContent||'').replace(/[★☆]/g,'').trim();
+  const i=data.findIndex(r=>String(r.id)===id);
+  if(i<0||!current(data[i])||!yes(data[i]))return;
+  const holder=tr.querySelector('.detail-under-service');if(!holder)return;
+  const b=document.createElement('button');b.type='button';b.className='sun-ct-alert';b.dataset.sunOpenNew=String(i);
+  b.textContent='⚠ Nueva convocatoria';b.style.margin='6px 0 0 6px';holder.appendChild(b);
+ });
+}
+function refresh(){
+ tabs();contracts();statNew();listNew();addAlertToRows();
+ if(document.body.dataset.sunPage==='convocatorias'){
+  const id=new URLSearchParams(location.search).get('registro');
+  if(id&&data.some(r=>String(r.id)===id))details(id);
+  else if(focused&&data.some(r=>String(r.id)===focused))details(focused);
+  else if(flagged().length)details(flagged()[0].r.id);
+  else el('sunNewConvDetail').innerHTML='<p>No hay nuevas convocatorias registradas.</p>';
+ }
+}
+const old=render;render=function(){old();refresh()};
+document.addEventListener('click',e=>{
+ const a=e.target.closest('[data-sun-open-new]');
+ if(a){e.preventDefault();e.stopPropagation();const dlg=el('gerDetail');if(dlg?.open)dlg.close();openRecord(Number(a.dataset.sunOpenNew),true);return}
+ const t=e.target.closest('[data-sun-contract-tab]');
+ if(t){contractTab=t.dataset.sunContractTab;tabs();addAlertToRows();return}
+ const n=e.target.closest('[data-sun-focus-new]');
+ if(n){openRecord(Number(n.dataset.sunFocusNew),false);return}
+ const f=e.target.closest('[data-sun-view-original]');
+ if(f){edit(Number(f.dataset.sunViewOriginal));return}
+ const c=e.target.closest('[data-sun-back-contract]');
+ if(c){const i=Number(c.dataset.sunBackContract),key=String(data[i]?.id||'');window.sunarpNavigate?.('contratos');contractTab='vigentes';refresh();const tr=Array.from(document.querySelectorAll('[data-sun-contract-id]')).find(x=>x.dataset.sunContractId===key);requestAnimationFrame(()=>tr?.scrollIntoView({behavior:'smooth',block:'center'}));return}
+ if(e.target.closest('[data-sun-procedures]'))window.sunarpNavigate?.('procedimientos');
+});
+el('sunNewConvSearch')?.addEventListener('input',listNew);
+window.addEventListener('sunarp:pagechange',e=>{
+ if(e.detail?.page==='contratos'){contractTab='vigentes';tabs()}
+ if(e.detail?.page==='convocatorias'){const id=new URLSearchParams(location.search).get('registro');if(id&&data.some(r=>String(r.id)===id))details(id);else if(flagged().length)details(flagged()[0].r.id)}
+ addAlertToRows();
+});
+window.addEventListener('popstate',()=>{const id=new URLSearchParams(location.search).get('registro');if(document.body.dataset.sunPage==='convocatorias'&&id)details(id)});
+el('updateExcelFile')?.addEventListener('change',()=>setTimeout(refresh,1200));
+refresh();
+})();
+</script></body></html>
