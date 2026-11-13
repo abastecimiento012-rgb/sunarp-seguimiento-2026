@@ -1584,7 +1584,13 @@ experts();apply();
     if(u.href!==location.href)history.pushState({pagina:p},'',u.pathname+u.search+u.hash);
   }
   window.scrollTo(0,0);
-  if(p==='indicadores')requestAnimationFrame(()=>window.dispatchEvent(new Event('resize')));
+  requestAnimationFrame(()=>{
+   if(p!=='inicio'&&header&&!header.hidden){
+    const top=Math.max(0,window.scrollY+header.getBoundingClientRect().top-nav.getBoundingClientRect().height-12);
+    window.scrollTo({top,behavior:'instant'});
+   }
+   if(p==='indicadores')window.dispatchEvent(new Event('resize'));
+  });
  }
  window.sunarpNavigate=go;
  nav.addEventListener('click',e=>{const b=e.target.closest('[data-sun-route]');if(b)go(b.dataset.sunRoute)});
