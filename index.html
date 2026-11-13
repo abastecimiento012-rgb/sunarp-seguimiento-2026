@@ -154,6 +154,34 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .sp-name-action{border:0;background:transparent;padding:0;text-align:left;cursor:pointer;font:inherit;font-weight:750;color:inherit}.sp-name-action:hover{text-decoration:underline;color:#1d4ed8}.sp-name-action:focus-visible{outline:2px solid #2563eb;outline-offset:3px;border-radius:3px}
 .ux-specialist-target{border:2px solid #2563eb!important;background:#eff6ff!important;box-shadow:0 0 0 3px #2563eb15}
 </style><style id="especialistas2026Style">
+.sp-balance{border:1px solid #dce8f4;border-radius:15px;background:linear-gradient(160deg,#f7fbff,#fff 70%);padding:18px;margin:0 0 17px}
+.sp-balance-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:13px;flex-wrap:wrap;margin-bottom:13px}
+.sp-balance-heading h3{font-size:16px;font-weight:800;color:#173b66;margin:0 0 5px}
+.sp-balance-heading p{font-size:12px;color:#60758d;line-height:1.5;margin:0;max-width:640px}
+.sp-balance-state{font-size:11px;padding:8px 10px;border-radius:9px;font-weight:750;background:#eef3fa;color:#36597b}
+.sp-balance-state.moderado{background:#fff4de;color:#8d5d11}
+.sp-balance-state.revisar{background:#fff0e5;color:#a04820}
+.sp-balance-state.equilibrado{background:#e9f7ef;color:#176144}
+.sp-balance-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:17px}
+.sp-balance-summary>div{border:1px solid #e1eaf3;background:#fff;border-radius:11px;padding:11px 13px;min-width:0}
+.sp-balance-summary strong{display:block;color:#214d77;font-size:25px;font-weight:850;font-variant-numeric:tabular-nums;line-height:1.2}
+.sp-balance-summary small{display:block;color:#6a7d93;font-size:11px;margin-top:5px}
+.sp-balance-plot{display:grid;gap:9px}
+.sp-balance-row{width:100%;display:grid;grid-template-columns:92px minmax(90px,1fr) 154px;align-items:center;gap:14px;background:#fff;border:1px solid #dfe9f3;border-radius:11px;padding:10px 12px;text-align:left;min-width:0}
+.sp-balance-row:hover,.sp-balance-row:focus-visible{background:#edf6ff;border-color:#8db9e1}
+.sp-balance-person{font-size:13px;color:#25476a;font-weight:850}
+.sp-balance-track{display:block;position:relative;width:100%;height:25px;border-radius:6px;background:#eaf0f7;overflow:hidden}
+.sp-balance-bar{height:100%;background:linear-gradient(90deg,#427cb5,#21568e);display:block;min-width:0;border-radius:5px}
+.sp-balance-reference{position:absolute;top:0;bottom:0;border-left:2px dashed #de902a;z-index:2;pointer-events:none}
+.sp-balance-quantity{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.sp-balance-quantity b{color:#163e6c;font-size:18px;line-height:1.2;font-variant-numeric:tabular-nums}
+.sp-balance-quantity small{font-size:10px;color:#647b91;line-height:1.4}
+.sp-balance-legend{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:11px;color:#607991;margin-top:11px}
+.sp-balance-dash{display:inline-block;height:13px;vertical-align:middle;border-left:2px dashed #de902a;margin-right:6px}
+.sp-balance-disclaimer{font-size:11px;line-height:1.6;color:#697b91;margin:12px 0 0}
+@media(max-width:760px){.sp-balance-row{grid-template-columns:76px minmax(75px,1fr) 115px;gap:8px;padding:9px}.sp-balance-quantity b{font-size:16px}.sp-balance-heading h3{font-size:15px}}
+@media(max-width:520px){.sp-balance{padding:12px}.sp-balance-summary>div{padding:10px 8px}.sp-balance-summary strong{font-size:20px}.sp-balance-summary small{font-size:10px}.sp-balance-row{grid-template-columns:68px minmax(65px,1fr) 87px;gap:7px}.sp-balance-person{font-size:11px}.sp-balance-quantity small{font-size:9px}.sp-balance-row{padding:8px}.sp-balance-track{height:23px}}
+
 .sp-intro{font-size:12px;color:#667b92;line-height:1.5;margin:-6px 0 15px}
 .sp-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:15px}
 .sp-mini{background:#f2f7fd;border:1px solid #dae8f8;border-radius:12px;padding:11px;min-width:0;text-align:left;display:flex;flex-direction:column;gap:5px;color:#28425f}
@@ -1083,6 +1111,41 @@ document.getElementById('alerts').addEventListener('click',function(event){
  const getRows=(person,type)=>data.filter(r=>(person==='*'||persona(r)===person)&&(
    type==='all'||(type==='signed'&&is2026(r))||(type==='vigente'&&group(r.estado)==='Contrato vigente')||(type==='pending'&&esPendiente(r))||(type==='preparatorio'&&esActoPreparatorio(r))||(type==='sinrequerimiento'&&esSinRequerimiento(r))||(type==='culminado'&&esCulminado(r))||(type==='convocado'&&esConvocado(r))||
    (type==='desierto'&&esDesierto(r))||(type==='cancelado'&&esCancelado(r))));
+ function renderBalance(){
+  // El indicador cuenta registros asignados en el Excel. No supone igual complejidad entre procesos.
+  const names=['SHEYLA','SONIA','HERMES'];
+  const results=names.map(name=>({name,count:data.filter(r=>persona(r)===name).length}));
+  const total=results.reduce((sum,x)=>sum+x.count,0);
+  const avg=total/names.length;
+  const high=Math.max(...results.map(x=>x.count));
+  const low=Math.min(...results.map(x=>x.count));
+  const gap=high-low;
+  const level=gap<=1?'equilibrado':gap<=3?'moderado':'revisar';
+  const label=level==='equilibrado'?'Distribución próxima al promedio':level==='moderado'?'Diferencias moderadas entre especialistas':'Revisar distribución de procesos';
+  const scale=Math.max(1,high,Math.ceil(avg));
+  const averageWidth=(100*avg/scale).toFixed(2);
+  const fmt=n=>n.toLocaleString('es-PE',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const rows=results.map(x=>{
+    const width=(100*x.count/scale).toFixed(2);
+    const percent=total?Math.round(100*x.count/total):0;
+    const delta=x.count-avg;
+    const offset=Math.abs(delta)<0.05?'En el promedio':(delta>0?'+':'−')+fmt(Math.abs(delta))+' del promedio';
+    return '<button type="button" class="sp-balance-row" data-sp-person="'+safe(x.name)+'" data-sp-type="all" aria-label="Ver '+x.count+' registros de '+safe(x.name)+'; '+percent+' por ciento de los asignados">'+
+      '<span class="sp-balance-person">'+safe(x.name)+'</span>'+
+      '<span class="sp-balance-track"><span class="sp-balance-bar" style="width:'+width+'%"></span><span class="sp-balance-reference" style="left:'+averageWidth+'%" aria-hidden="true"></span></span>'+
+      '<span class="sp-balance-quantity"><b>'+x.count+'</b><small>'+percent+'% del total</small><small>'+offset+'</small></span></button>';
+  }).join('');
+  return '<section class="sp-balance" aria-label="Balance de carga por especialista">'+
+   '<div class="sp-balance-heading"><div><h3>Balance de carga por especialista</h3><p>Registros de seguimiento asignados a Sheyla, Sonia y Hermes. Selecciona una barra para revisar sus procesos.</p></div><span class="sp-balance-state '+level+'">'+label+'</span></div>'+
+   '<div class="sp-balance-summary">'+
+   '<div><strong>'+total+'</strong><small>Registros asignados</small></div>'+
+   '<div><strong>'+fmt(avg)+'</strong><small>Promedio por especialista</small></div>'+
+   '<div><strong>'+gap+'</strong><small>Diferencia máximo–mínimo</small></div></div>'+
+   '<div class="sp-balance-plot">'+rows+'</div>'+
+   '<div class="sp-balance-legend"><span><i class="sp-balance-dash"></i> Línea vertical: promedio teórico de '+fmt(avg)+' registros</span><span>Presiona una barra para visualizar el detalle</span></div>'+
+   '<p class="sp-balance-disclaimer">Los conteos reflejan registros asignados (incluidos los culminados), no necesariamente procedimientos únicos ni carga horaria. El criterio de equilibrio es orientativo: diferencia entre extremos de 0–1, próxima al promedio; 2–3, moderada; más de 3, revisar. Antes de redistribuir, considera complejidad, etapas y fechas de vencimiento.</p>'+
+   '</section>';
+ }
  function render(){
   const groups=new Map();
   data.forEach(r=>{const k=persona(r);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});
@@ -1092,7 +1155,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
   const assigned=data.filter(r=>!noAsignado(r.especialista)).length;
   const pending=data.filter(esPendiente).length;
   const key=(p,type)=>'data-sp-person="'+safe(p)+'" data-sp-type="'+type+'"';
-  root.innerHTML='<div class="sp-summary">'+
+  root.innerHTML=renderBalance()+'<div class="sp-summary">'+
    '<button type="button" class="sp-mini" '+key('*','all')+'><strong>'+data.length+'</strong><small>Registros totales · ver todos ↗</small></button>'+
    '<button type="button" class="sp-mini" '+key('*','pending')+'><strong>'+pending+'</strong><small>Con indicios de actuación pendiente ↗</small></button>'+
    '<button type="button" class="sp-mini" '+key('*','signed')+'><strong>'+contratados+'</strong><small>Contratos suscritos en 2026 ↗</small></button></div>'+
