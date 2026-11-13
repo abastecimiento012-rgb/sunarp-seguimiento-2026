@@ -181,27 +181,21 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .sp-balance-arrow{font-size:21px;color:#4d83b4;margin-left:2px;line-height:1}
 .sp-balance-foot{font-size:10.5px;color:#77879a;margin:10px 0 0;line-height:1.45}
 @media(max-width:540px){.sp-balance{padding:12px}.sp-balance-heading h3{font-size:15px}.sp-balance-heading p{font-size:11px}.sp-balance-filters{width:100%}.sp-balance-filters button{flex:1}.sp-balance-row{grid-template-columns:78px minmax(50px,1fr) 55px;gap:7px;padding:9px 7px}.sp-balance-person{font-size:10px;gap:3px}.sp-balance-avatar{font-size:16px}.sp-balance-quantity b{font-size:14px}.sp-balance-quantity small{font-size:9px}.sp-balance-arrow{font-size:16px}.sp-balance-stats{gap:6px}.sp-balance-state{margin-left:0}}
-.sp-intro{font-size:12px;color:#667b92;line-height:1.5;margin:-6px 0 15px}
-.sp-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:15px}
-.sp-mini{background:#f2f7fd;border:1px solid #dae8f8;border-radius:12px;padding:11px;min-width:0;text-align:left;display:flex;flex-direction:column;gap:5px;color:#28425f}
-.sp-mini strong{font-size:23px;color:#164d84}.sp-mini small{font-size:11px;line-height:1.35}
-.sp-list{display:grid;gap:9px}
-.sp-person{border:1px solid #e0e7f0;border-radius:12px;padding:12px;background:#fff}
-.sp-person-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
-.sp-avatar{flex-shrink:0;background:#e9f2ff;color:#174d83;border-radius:10px;min-width:38px;height:38px;display:grid;place-items:center;font-size:12px;font-weight:800}
-.sp-name{font-size:13px;font-weight:750;color:#233c5a}.sp-meta{display:block;color:#71839a;font-size:11px;margin-top:2px}
-.sp-count{margin-left:auto;display:flex;align-items:center;gap:7px;background:#eaf2fc;border-color:#bfd6f2;color:#174c80;font-size:12px;padding:8px 11px}
-.sp-badges{display:flex;gap:6px;flex-wrap:wrap}
-.sp-tag{display:inline-flex;gap:5px;align-items:center;background:#f6f8fc;color:#344f70;border:1px solid #e1e8f1;border-radius:8px;padding:7px 9px;font-size:11px;text-align:left;line-height:1.35}
-.sp-tag strong{font-weight:800;font-variant-numeric:tabular-nums}
-.sp-tag.pending{background:#fff7e9;border-color:#f3dfb7;color:#885112}
-.sp-tag.desert{background:#fff0f0;border-color:#f3cccc;color:#a33438}
-.sp-tag.cancel{background:#fff0f0;border-color:#f3cccc;color:#a33438}
-.sp-tag.complete{background:#eaf8f0;border-color:#c0e5ce;color:#206640}
-.sp-tag:hover,.sp-count:hover,.sp-mini:hover{border-color:#78a9dc;background:#eaf4ff}
-.sp-tag:focus-visible,.sp-count:focus-visible,.sp-mini:focus-visible{outline:3px solid #8db9ed;outline-offset:2px}
-.sp-foot{font-size:11px;color:#677d95;margin:13px 0 0;line-height:1.55}
-@media(max-width:630px){.sp-summary{grid-template-columns:1fr 1fr}.sp-person{padding:10px}.sp-badges{gap:5px}.sp-tag{font-size:10px;padding:7px}}
+
+.sp-compact{border:1px solid #e0e8f2;border-radius:13px;background:#fff;padding:14px}
+.sp-compact-title{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sp-compact-title h3{margin:0;color:#173b66;font-size:14px;font-weight:800}
+.sp-compact-title span{font-size:11px;color:#74869b}
+.sp-compact-list{display:grid;gap:7px}
+.sp-compact-row{display:grid;grid-template-columns:85px minmax(0,1fr) 110px;align-items:center;gap:10px;padding:8px 10px;border:1px solid #e8eef6;border-radius:9px;background:#fafcff}
+.sp-compact-name{font-size:12px;font-weight:800;color:#25476a}
+.sp-compact-stages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.sp-stage-chip{display:flex;justify-content:space-between;align-items:center;gap:5px;min-width:0;padding:7px 9px;border:1px solid #dfebf6;border-radius:7px;background:#fff;color:#506a85;font-size:11px;cursor:pointer}
+.sp-stage-chip strong{font-size:15px;font-weight:850;color:#1e5e97;font-variant-numeric:tabular-nums}
+.sp-stage-chip:hover,.sp-stage-chip:focus-visible,.sp-view-all:hover,.sp-view-all:focus-visible{background:#eaf4ff;border-color:#8db9e1;outline:none}
+.sp-view-all{border:1px solid #d5e5f4;border-radius:7px;background:#f0f7ff;color:#1c5f9a;padding:8px;white-space:nowrap;cursor:pointer;font-size:11px;font-weight:750}
+@media(max-width:770px){.sp-compact-row{grid-template-columns:1fr auto;gap:7px}.sp-compact-name{grid-column:1;grid-row:1}.sp-view-all{grid-column:2;grid-row:1}.sp-compact-stages{grid-column:1 / -1;grid-row:2}}
+@media(max-width:450px){.sp-compact{padding:10px}.sp-compact-row{padding:9px 7px}.sp-compact-stages{gap:4px}.sp-stage-chip{font-size:10px;padding:7px 5px;gap:3px}.sp-stage-chip strong{font-size:14px}.sp-compact-title span{font-size:10px}}
 </style><style id="finDetalleStyle">
 .fin-detail-btn{cursor:pointer;text-align:left;width:100%;font-family:inherit;border:1px solid #dbe5f1;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .fin-detail-btn:hover{border-color:#4f8ac4;transform:translateY(-2px);box-shadow:0 5px 15px #153c6220;background:#eef6ff}
@@ -531,7 +525,7 @@ body[data-sun-page="contratos"][data-sun-contract-tab="suscritos"] #sunContracts
 <div class="ux-section-label">Atención rápida</div><div class="ux-chips" id="uxChips" role="group" aria-label="Consultas de atención rápida"></div>
 <div class="ux-section-label">Vista por responsable</div><div class="ux-experts" id="uxExperts"></div>
 <div class="ux-footer"><div class="ux-status" id="uxStatus" aria-live="polite"></div><span class="ux-note">Indicadores sobre registros del aplicativo, no sobre el número oficial de procedimientos únicos.</span></div>
-</div></section><main class="shell"><header id="sunPageHeader" class="sun-page-head" hidden aria-live="polite"><div class="sun-page-head-inner"><div><span class="sun-page-overline">SUNARP 2026 · Unidad de Abastecimiento y Patrimonio</span><h2 id="sunPageTitle"></h2><p id="sunPageDescription"></p></div><button type="button" id="sunBackHome" class="sun-back-home">⌂ Volver a Inicio</button></div></header><div class="update-line"><span>◷ Datos de origen: Excel (8) · 10/11/2026</span><span>Modo local · los cambios se guardan en este navegador</span></div><p class="hint" style="background:#eaf2fb;padding:12px;border-radius:9px;margin:0 0 16px">Base actualizada desde PROCEDIMIENTO_DE_SELECCION_2026(8).xlsx. Se conservan las funciones existentes. Esta versión utiliza una base nueva del Excel actualizado. Los cambios locales de versiones anteriores permanecen en el navegador anterior y no se mezclan automáticamente; conserva tus respaldos JSON. Exporta un respaldo antes de trabajar en otro equipo. Los importes y referencias presupuestales se muestran tal como figuran en el Excel y requieren verificación documental.</p><section class="cards" id="cards"></section><div class="layout"><section class="panel" id="specialistsPanel"><h2>Seguimiento por especialista <span class="sp-release-tag" title="Versión de clasificación de especialistas">v. 12-13</span></h2><p class="sp-intro">Responsables, pendientes y procedimientos que requieren seguimiento. Pulsa cualquier cifra para ver los registros.</p><div id="bars" aria-label="Panel interactivo por especialista"></div></section><section class="panel" id="schedulePanel"><div class="timeline-title"><div><h2>Cronograma de vencimientos de contratos</h2><p>Fechas agrupadas por mes, con consulta inmediata de cada contrato.</p></div><span class="timeline-count" id="timelineTotal"></span></div><div class="timeline-controls"><label for="timelineYear">Año</label><select id="timelineYear" aria-label="Seleccionar año de vencimiento"><option value="all">Todos los años</option></select><label for="timelineWindow">Periodo</label><select id="timelineWindow" aria-label="Filtrar periodo"><option value="all">Todos los vencimientos</option><option value="90">Próximos 90 días</option><option value="365">Próximos 12 meses</option><option value="expired">Ya vencidos</option></select></div><div id="timelineEntries" class="timeline-entries" aria-live="polite"></div><p class="timeline-foot">Solo se incluyen registros con evidencia de contrato y fecha de vencimiento válida. Las fechas son las consignadas en el archivo y deben verificarse.</p></section></div><div id="alerts" hidden aria-hidden="true"></div><section id="visualSummary" aria-label="Gráficos y análisis de procedimientos" class="visual-grid"><div class="visual-card"><h3>Distribución de procedimientos</h3><p class="sub">Gráfico por situación registrada en el Excel · No equivale a cumplimiento oficial del PAC</p><div id="chartDonut"></div><div class="legend" id="chartLegend"></div></div><div class="visual-card" id="natureSection"><h3>Contrataciones por naturaleza de la prestación</h3><p class="sub">Clasificación del Excel para planificar servicios y consultar sus contratos. Selecciona una categoría para ver las fichas.</p><div id="chartYears" aria-live="polite"></div></div><div class="visual-card fin-overview-card"><h3>Montos y previsiones registradas</h3><p class="sub">Resumen gerencial por concepto y ejercicio</p><div id="chartFinance"></div></div></section><div class="section-title"><h2>Seguimiento de procedimientos de selección</h2><p>Vista principal: etapas, responsables, estados y contratos. El PAC 2026 se consulta como información complementaria mediante el filtro de programación.</p></div><div id="sunPacQuick" class="sun-pac-quick" role="group" aria-label="Filtros de programación PAC 2026">
+</div></section><main class="shell"><header id="sunPageHeader" class="sun-page-head" hidden aria-live="polite"><div class="sun-page-head-inner"><div><span class="sun-page-overline">SUNARP 2026 · Unidad de Abastecimiento y Patrimonio</span><h2 id="sunPageTitle"></h2><p id="sunPageDescription"></p></div><button type="button" id="sunBackHome" class="sun-back-home">⌂ Volver a Inicio</button></div></header><div class="update-line"><span>◷ Datos de origen: Excel (8) · 10/11/2026</span><span>Modo local · los cambios se guardan en este navegador</span></div><p class="hint" style="background:#eaf2fb;padding:12px;border-radius:9px;margin:0 0 16px">Base actualizada desde PROCEDIMIENTO_DE_SELECCION_2026(8).xlsx. Se conservan las funciones existentes. Esta versión utiliza una base nueva del Excel actualizado. Los cambios locales de versiones anteriores permanecen en el navegador anterior y no se mezclan automáticamente; conserva tus respaldos JSON. Exporta un respaldo antes de trabajar en otro equipo. Los importes y referencias presupuestales se muestran tal como figuran en el Excel y requieren verificación documental.</p><section class="cards" id="cards"></section><div class="layout"><section class="panel" id="specialistsPanel"><h2>Especialistas</h2><div id="bars" aria-label="Panel interactivo por especialista"></div></section><section class="panel" id="schedulePanel"><div class="timeline-title"><div><h2>Cronograma de vencimientos de contratos</h2><p>Fechas agrupadas por mes, con consulta inmediata de cada contrato.</p></div><span class="timeline-count" id="timelineTotal"></span></div><div class="timeline-controls"><label for="timelineYear">Año</label><select id="timelineYear" aria-label="Seleccionar año de vencimiento"><option value="all">Todos los años</option></select><label for="timelineWindow">Periodo</label><select id="timelineWindow" aria-label="Filtrar periodo"><option value="all">Todos los vencimientos</option><option value="90">Próximos 90 días</option><option value="365">Próximos 12 meses</option><option value="expired">Ya vencidos</option></select></div><div id="timelineEntries" class="timeline-entries" aria-live="polite"></div><p class="timeline-foot">Solo se incluyen registros con evidencia de contrato y fecha de vencimiento válida. Las fechas son las consignadas en el archivo y deben verificarse.</p></section></div><div id="alerts" hidden aria-hidden="true"></div><section id="visualSummary" aria-label="Gráficos y análisis de procedimientos" class="visual-grid"><div class="visual-card"><h3>Distribución de procedimientos</h3><p class="sub">Gráfico por situación registrada en el Excel · No equivale a cumplimiento oficial del PAC</p><div id="chartDonut"></div><div class="legend" id="chartLegend"></div></div><div class="visual-card" id="natureSection"><h3>Contrataciones por naturaleza de la prestación</h3><p class="sub">Clasificación del Excel para planificar servicios y consultar sus contratos. Selecciona una categoría para ver las fichas.</p><div id="chartYears" aria-live="polite"></div></div><div class="visual-card fin-overview-card"><h3>Montos y previsiones registradas</h3><p class="sub">Resumen gerencial por concepto y ejercicio</p><div id="chartFinance"></div></div></section><div class="section-title"><h2>Seguimiento de procedimientos de selección</h2><p>Vista principal: etapas, responsables, estados y contratos. El PAC 2026 se consulta como información complementaria mediante el filtro de programación.</p></div><div id="sunPacQuick" class="sun-pac-quick" role="group" aria-label="Filtros de programación PAC 2026">
  <div class="sun-pac-quick-intro"><strong>Filtrar por programación PAC</strong><small>Selecciona una categoría para consultar los procedimientos en la tabla.</small></div>
  <button type="button" data-pac-quick="programado" aria-pressed="false">▦ Programados PAC <strong data-pac-count="programado">—</strong></button>
  <button type="button" data-pac-quick="no" aria-pressed="false">◫ No programados <strong data-pac-count="no">—</strong></button>
@@ -1143,27 +1137,31 @@ document.getElementById('alerts').addEventListener('click',function(event){
    '</section>';
  }
 
+
  function render(){
-  const groups=new Map();
-  data.forEach(r=>{const k=persona(r);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});
-  const persons=[...groups.entries()].filter(([p])=>p!=='SIN ESPECIALISTA ASIGNADO').sort((a,b)=>a[0]==='SIN ESPECIALISTA ASIGNADO'?1:b[0]==='SIN ESPECIALISTA ASIGNADO'?-1:b[1].length-a[1].length||a[0].localeCompare(b[0],'es'));
-  const contratados=data.filter(r=>is2026(r)).length;
-  const vigentes=data.filter(r=>group(r.estado)==='Contrato vigente').length;
-  const assigned=data.filter(r=>!noAsignado(r.especialista)).length;
-  const pending=data.filter(esPendiente).length;
-  const key=(p,type)=>'data-sp-person="'+safe(p)+'" data-sp-type="'+type+'"';
-  root.innerHTML=renderBalance()+'<div class="sp-summary">'+
-   '<button type="button" class="sp-mini" '+key('*','all')+'><strong>'+data.length+'</strong><small>Registros totales · ver todos ↗</small></button>'+
-   '<button type="button" class="sp-mini" '+key('*','pending')+'><strong>'+pending+'</strong><small>Con indicios de actuación pendiente ↗</small></button>'+
-   '<button type="button" class="sp-mini" '+key('*','signed')+'><strong>'+contratados+'</strong><small>Contratos suscritos en 2026 ↗</small></button></div>'+
-   '<div class="sp-contract-row"><button type="button" class="sp-tag" '+key('*','vigente')+'><strong>'+vigentes+'</strong> registros clasificados como contrato vigente ↗</button><span>Los contratos suscritos y los vigentes son indicadores distintos.</span></div>'+ 
-   '<div class="sp-list">'+persons.map(([p,rows])=>{
-    const cnt=t=>rows.filter(t).length, display=p==='SIN ESPECIALISTA ASIGNADO'?'Sin especialista asignado':p;
-    const initials=p==='SIN ESPECIALISTA ASIGNADO'?'—':p.split(/\s+/).map(w=>w[0]||'').join('').slice(0,2);
-    const items=[['preparatorio','Actos preparatorios',cnt(esActoPreparatorio),'pending'],...(p==='SHEYLA'||cnt(esSinRequerimiento)>0?[['sinrequerimiento','S/ requerimiento',cnt(esSinRequerimiento),'no-request']]:[]),['convocado','Convocados / evaluación',cnt(esConvocado),''],['desierto','Desiertos',cnt(esDesierto),'desert'],['cancelado','Cancelados',cnt(esCancelado),'cancel'],['culminado','Culminados',cnt(esCulminado),'complete']];
-    return '<article class="sp-person"><div class="sp-person-head"><span class="sp-avatar">'+safe(initials)+'</span><div><button class="sp-name sp-name-action" type="button" '+key(p,'all')+' title="Ver registros de '+safe(display)+'">'+safe(display)+'</button><small class="sp-meta">'+(p==='SIN ESPECIALISTA ASIGNADO'?'Requieren revisar la asignación':'Especialista registrado')+'</small></div><button class="sp-count" type="button" '+key(p,'all')+'><strong>'+rows.length+'</strong> registros <span aria-hidden="true">↗</span></button></div><div class="sp-badges">'+items.map(([type,label,count,cl])=>'<button type="button" class="sp-tag '+cl+'" '+key(p,type)+'><strong>'+count+'</strong> '+label+' ↗</button>').join('')+'</div></article>';
-   }).join('')+'</div><p class="sp-foot">Los conteos reflejan registros, no procedimientos únicos. Cada registro se cuenta en una sola categoria por estado actual. «Sin requerimiento» se muestra por separado de «Actos preparatorios». «Pendiente del SIGA» se mantiene como indicador operativo en actos preparatorios, aunque no constituye por sí mismo una etapa formal. Convocados, desiertos, cancelados y culminados se cuentan por separado. Cada cifra abre sus registros.</p>';
+  const names=['SHEYLA','SONIA','HERMES'];
+  const stages=[
+   ['preparatorio','Preparación',esActoPreparatorio],
+   ['convocado','Convocados',esConvocado],
+   ['culminado','Culminados',esCulminado]
+  ];
+  const rows=names.map(name=>{
+   const assigned=getRows(name,'all');
+   const chips=stages.map(([type,label,test])=>{
+    const count=assigned.filter(test).length;
+    return '<button type="button" class="sp-stage-chip" data-sp-person="'+safe(name)+'" data-sp-type="'+type+'" aria-label="Ver '+count+' registros de '+safe(name)+' en '+label+'"><span>'+label+'</span><strong>'+count+'</strong></button>';
+   }).join('');
+   return '<div class="sp-compact-row"><strong class="sp-compact-name">'+safe(name)+'</strong>'+
+    '<div class="sp-compact-stages">'+chips+'</div>'+
+    '<button type="button" class="sp-view-all" data-sp-person="'+safe(name)+'" data-sp-type="all" aria-label="Ver todos los registros de '+safe(name)+'" title="Ver todos los procedimientos">👁 <span>Ver todos</span></button></div>';
+  }).join('');
+  root.innerHTML=renderBalance()+
+   '<section class="sp-compact" aria-label="Resumen por etapas">'+
+   '<div class="sp-compact-title"><h3>Resumen por etapa</h3><span>Selecciona una cifra para consultar sus procesos.</span></div>'+
+   '<div class="sp-compact-list">'+rows+'</div>'+
+   '</section>';
  }
+
  root.addEventListener('click',event=>{
   const filter=event.target.closest('button[data-sp-balance-filter]');
   if(filter){balanceFilter=filter.dataset.spBalanceFilter==='pending'?'pending':'all';const card=root.querySelector('.sp-balance');if(card)card.outerHTML=renderBalance();return;}
