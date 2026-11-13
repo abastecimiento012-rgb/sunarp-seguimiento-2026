@@ -1505,7 +1505,7 @@ experts();apply();
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const reports=document.getElementById('sunNavReports');
  const sections={inicio:'dashboardHome',especialistas:'specialistsPanel',vencimientos:'schedulePanel',indicadores:'visualSummary',pac:'sunPacQuick',procedimientos:'proceduresPanel',contratos:'proceduresPanel',previsiones:'proceduresPanel'};
- const tabs={procedimientos:'tabAll',contratos:'tabContracts',previsiones:'tabPrevisiones'};
+ const tabs={pac:'tabAll',procedimientos:'tabAll',contratos:'tabContracts',previsiones:'tabPrevisiones'};
  function select(route){
   buttons.forEach(b=>{const on=b.dataset.sunRoute===route;b.classList.toggle('is-active',on);if(on)b.setAttribute('aria-current','location');else b.removeAttribute('aria-current')});
  }
