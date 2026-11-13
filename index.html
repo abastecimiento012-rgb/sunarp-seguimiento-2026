@@ -1124,7 +1124,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
   const label=level==='equilibrado'?'Distribución próxima al promedio':level==='moderado'?'Diferencias moderadas entre especialistas':'Revisar distribución de procesos';
   const scale=Math.max(1,high,Math.ceil(avg));
   const averageWidth=(100*avg/scale).toFixed(2);
-  const fmt=n=>n.toLocaleString('es-PE',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const fmt=n=>Number(n).toFixed(1).replace('.',',');
   const rows=results.map(x=>{
     const width=(100*x.count/scale).toFixed(2);
     const percent=total?Math.round(100*x.count/total):0;
