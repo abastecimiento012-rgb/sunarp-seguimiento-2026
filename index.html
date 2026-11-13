@@ -471,6 +471,16 @@ body[data-sun-page="contratos"][data-sun-contract-tab="suscritos"] #sunContracts
 @media(max-width:900px){.sun-newconv-layout{grid-template-columns:1fr}.sun-newconv-list{max-height:345px}}
 @media(max-width:650px){.sun-ct-overview,.sun-newconv-stats{grid-template-columns:1fr 1fr}.sun-newconv-fields{grid-template-columns:1fr}.sun-ct-kpi strong,.sun-newconv-stat strong{font-size:22px}}
 @media print{.sun-contract-tabs,.sun-newconv-actions,.sun-ct-alert,.gd-newalert button{display:none!important}}
+</style><style id="sunNewConvObsAlert2026">
+/* Alerta de nueva convocatoria dentro de Observaciones en Procedimientos */
+.obs-next-alert{min-width:0;border:1px solid #e5b45a;background:#fff5df;border-left:5px solid #e8a128;border-radius:10px;box-shadow:0 1px 5px #6e511509}
+.obs-next-alert-btn{display:flex!important;width:100%;text-align:left;align-items:flex-start;gap:10px;padding:11px 12px!important;background:transparent!important;border:0!important;color:#65420b!important;white-space:normal}
+.obs-next-alert-btn:hover,.obs-next-alert-btn:focus-visible{background:#ffebbc!important;outline-offset:-3px}
+.obs-next-alert-icon{font-size:24px;line-height:1.1;flex:none}
+.obs-next-alert-body{display:flex;flex-direction:column;gap:5px;min-width:0}
+.obs-next-alert-body b{font-size:12px;line-height:1.45}
+.obs-next-alert-body>span{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.obs-next-alert-hint{color:#955f0e;text-decoration:underline;font-weight:750}
 </style></head><body data-sun-page="inicio" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
@@ -589,8 +599,22 @@ function observacionesVisibles(r){
  if(valid(r.observaciones))blocks.push(['Observaciones',r.observaciones,'obs-observacion']);
  if(valid(r.seguimientoExcel)&&String(r.seguimientoExcel).trim()!==String(r.observaciones||'').trim())blocks.push(['Seguimiento registrado',r.seguimientoExcel,'obs-seguimiento']);
  if(valid(r.estadoNueva)&&!['EN CURSO'].includes(String(r.estadoNueva).trim().toUpperCase()))blocks.push(['Nueva convocatoria',r.estadoNueva,'obs-estado']);
- if(!blocks.length)return '<div class="obs-empty">Sin observaciones o actuaciones registradas en el Excel</div>';
- return '<div class="obs-stack">'+blocks.map(([label,value,cls])=>'<div class="obs-box '+cls+'"><strong>'+esc(label)+'</strong><div class="obs-text">'+esc(value)+'</div></div>').join('')+'</div>';
+ // El botón de alerta aparece en Observaciones solo cuando el Excel marca nueva convocatoria.
+ // "Convocatoria iniciada" se reserva a estados expresos de publicación; los actos preparatorios se distinguen.
+ const requiresNew=norm(r.nuevaConvocatoria)==='SI';
+ let alert='';
+ if(requiresNew){
+  const phase=norm(r.estadoNueva),general=norm(r.estado);
+  const published=phase.includes('CONVOCATORIA PUBLICADA')||general.includes('CONVOCATORIA PUBLICADA');
+  const preparing=phase.includes('ACTUACIONES PREPARATORIAS')||phase.includes('PENDIENTE DEL SIGA')||phase.includes('EN EVALUACION');
+  const pending=phase.includes('PENDIENTE DE REQUERIMIENTO')||phase==='NO INICIADA'||phase.includes('PROGRAMADO PARA')||phase==='CONTRATO VIGENTE';
+  const alertLabel=published?'Nueva convocatoria iniciada':preparing?'Nueva contratación en trámite':pending?'Nueva convocatoria pendiente':'Nueva convocatoria en seguimiento';
+  const assigned=valid(r.especialista)?r.especialista:'Por asignar';
+  const idx=data.indexOf(r);
+  if(idx>=0)alert='<div class="obs-next-alert"><button type="button" class="obs-next-alert-btn" data-sun-open-new="'+idx+'" title="Abrir el seguimiento completo de la nueva convocatoria del registro '+esc(r.id)+'" aria-label="Alerta: '+esc(alertLabel)+'. Ver nueva convocatoria del registro '+esc(r.id)+'"><span class="obs-next-alert-icon" aria-hidden="true">⚠</span><span class="obs-next-alert-body"><b>'+esc(alertLabel)+'</b><span>Especialista: '+esc(assigned)+' · '+esc(valid(r.estadoNueva)?r.estadoNueva:'Estado por verificar')+'</span><span class="obs-next-alert-hint">Ver toda la información y actuaciones de la nueva convocatoria ›</span></span></button></div>';
+ }
+ if(!blocks.length&&!alert)return '<div class="obs-empty">Sin observaciones o actuaciones registradas en el Excel</div>';
+ return '<div class="obs-stack">'+alert+blocks.map(([label,value,cls])=>'<div class="obs-box '+cls+'"><strong>'+esc(label)+'</strong><div class="obs-text">'+esc(value)+'</div></div>').join('')+'</div>';
 }
 function eyeButton(idx){return '<button class="eye-action" aria-label="Abrir detalle del procedimiento" data-edit="'+idx+'" title="Ver ficha completa del procedimiento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg> <span>Visualizar detalle</span></button>'}
 function budgetCell(r,k,i){
@@ -1712,7 +1736,7 @@ function current(r){
 const rows=()=>data.map((r,i)=>({r,i}));
 const flagged=()=>rows().filter(({r})=>yes(r));
 const inForce=()=>rows().filter(({r})=>current(r)).sort((a,b)=>dated(a.r.vencimiento)-dated(b.r.vencimiento));
-const status=r=>!yes(r)?'Nueva convocatoria no registrada':txt(r.estadoNueva)==='No registrado'?'Estado por verificar':txt(r.estadoNueva);
+const status=r=>!yes(r)?'Nueva convocatoria no registrada':txt(r.estadoNueva)==='No registrado'?'Estado por verificar':norm(r.estadoNueva)==='CONTRATO VIGENTE'?'Estado de nueva convocatoria por confirmar':txt(r.estadoNueva);
 const pending=r=>!yes(r)||['NO INICIADA','PENDIENTE DE REQUERIMIENTO','CONTRATO VIGENTE','PROGRAMADO PARA DICIEMBRE'].includes(norm(r.estadoNueva));
 let focused=null,contractTab='vigentes';
 function tabs(){
@@ -1754,6 +1778,9 @@ function details(id){
  field('Tipo / número de procedimiento',r.procedimiento)+field('PAC',r.pac)+
  field('Fecha esperada',r.fechaEsperada)+field('Fecha de requerimiento',r.fechaRequerimiento)+
  field('Fecha de convocatoria',r.fechaConvocatoria)+field('Documentos de requerimiento',r.documentosRequerimiento)+
+ field('Fecha de buena pro',r.fechaBuenaPro)+field('Fecha de consentimiento',r.fechaConsentimiento)+
+ field('Fecha de firma / suscripción',r.fechaFirma)+field('Plazo de documentos',r.plazoDocumentos)+
+ field('Modalidad de contratación',r.modalidadContratacion)+field('Cuantía estimada',r.cuantia)+
  field('Contrato vigente / anterior',r.contratoVigente)+field('Vencimiento contractual',r.vencimiento)+'</div>'+
  '<h4>Observaciones y próximas actuaciones</h4><div class="sun-newconv-notes">'+esc(txt(r.observaciones))+'</div>'+
  '<h4>Seguimiento registrado</h4><div class="sun-newconv-notes">'+esc(txt(r.seguimientoExcel))+'</div>'+
@@ -1772,7 +1799,7 @@ function openRecord(i,go=true){
 }
 window.sunarpOpenNuevaConvocatoria=openRecord;
 function addAlertToRows(){
- if(!['procedimientos','contratos'].includes(document.body.dataset.sunPage))return;
+ if(document.body.dataset.sunPage!=='contratos')return;
  const tbody=el('tbody');if(!tbody)return;
  tbody.querySelectorAll('tr').forEach(tr=>{
   if(tr.querySelector('[data-sun-open-new]'))return;
