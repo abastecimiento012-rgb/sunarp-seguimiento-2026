@@ -411,7 +411,67 @@ body[data-sun-page] main.shell{min-height:55vh}
 #sunReportsStatus:not(:empty){padding:10px 13px;background:#edf6ff;border-radius:8px;color:#174c78;font-size:12px}
 @media(max-width:760px){.sun-reports-grid{grid-template-columns:1fr}.sun-page-head{padding:16px}.sun-page-head h2{font-size:19px}body[data-sun-page="indicadores"] #visualSummary{grid-template-columns:1fr}}
 @media print{.sun-page-head{background:white;color:#17365d;border:1px solid #dce5ef}.sun-page-head h2{color:#17365d}}
-</style></head><body data-sun-page="inicio"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
+</style><style id="sunContractAlertsPages2026">
+body[data-sun-page] #sunContractsPanel,body[data-sun-page] #sunNewConvocationsPage{display:none!important}
+body[data-sun-page="contratos"] #sunContractsPanel,body[data-sun-page="convocatorias"] #sunNewConvocationsPage{display:block!important}
+body[data-sun-page="contratos"][data-sun-contract-tab="vigentes"] #proceduresPanel{display:none!important}
+body[data-sun-page="contratos"][data-sun-contract-tab="suscritos"] #sunContractsList{display:none!important}
+.sun-contract-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.sun-contract-tabs button{background:#f7fbff;border:1px solid #ccdfef;border-radius:10px;color:#24567c;font-size:12px}
+.sun-contract-tabs button[aria-pressed="true"]{background:#e0efff;border-color:#4386c9;color:#124c84;box-shadow:inset 0 -2px #367cd0}
+.sun-ct-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:15px}
+.sun-ct-kpi{background:white;border:1px solid #d9e5f0;border-radius:12px;padding:15px;display:flex;flex-direction:column;gap:6px}
+.sun-ct-kpi strong{font-size:27px;color:#173b65;font-variant-numeric:tabular-nums}
+.sun-ct-kpi span{font-size:12px;color:#5e7288}
+.sun-ct-note{font-size:12px;color:#5b7087;margin:0 0 14px;line-height:1.6}
+.sun-ct-table-wrap{overflow:auto;border:1px solid #dce5ee;border-radius:13px;background:white}
+.sun-ct-table{width:100%;border-collapse:collapse;min-width:820px;font-size:12px}
+.sun-ct-table th{background:#e9f3ff;text-align:left;color:#254b72;white-space:nowrap;padding:12px}
+.sun-ct-table td{padding:12px;border-top:1px solid #edf2f7;vertical-align:top;color:#2c445f}
+.sun-ct-table td:first-child{font-weight:700;white-space:nowrap}
+.sun-ct-table .sun-service{font-weight:700;min-width:225px;max-width:440px;line-height:1.5}
+.sun-ct-table small{display:block;font-size:11px;color:#657b91;line-height:1.5;margin-top:5px}
+.sun-ct-alert{border:1px solid #eebd6b!important;background:#fff2d9!important;color:#81500d!important;font-size:11px!important;padding:8px 10px!important;white-space:normal}
+.sun-ct-alert:hover{background:#ffe6b1!important}
+.sun-ct-alert.muted{border-color:#d1dee9!important;background:#f4f8fc!important;color:#496987!important}
+.sun-ct-label{display:inline-block;border-radius:7px;padding:5px 8px;font-size:11px;font-weight:700;background:#eaf3fd;color:#245c89}
+.sun-ct-label.is-new{background:#fff0d2;color:#895610}
+.sun-ct-label.not-new{background:#eef2f6;color:#5a6f83}
+.sun-newconv-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:15px}
+.sun-newconv-stat{background:white;border:1px solid #dae6f1;border-radius:12px;padding:15px}
+.sun-newconv-stat strong{font-size:26px;color:#17446d;display:block}
+.sun-newconv-stat small{font-size:11px;color:#61778d}
+.sun-newconv-layout{display:grid;grid-template-columns:minmax(280px,0.9fr) minmax(0,1.4fr);gap:16px;align-items:start}
+.sun-newconv-list-col{min-width:0}
+.sun-newconv-toolbar{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.sun-newconv-toolbar label{font-weight:700;font-size:12px;color:#325476}
+.sun-newconv-toolbar input{width:100%;background:white}
+.sun-newconv-list{display:grid;gap:9px;max-height:70vh;overflow:auto;padding-right:3px}
+.sun-newconv-item{border:1px solid #dbe6f1;border-radius:12px;background:white;padding:13px;display:block;width:100%;text-align:left}
+.sun-newconv-item:hover{background:#f2f8ff;border-color:#9abfe5}
+.sun-newconv-item[aria-current="true"]{border-color:#337dc4;background:#eaf4ff;box-shadow:inset 3px 0 #287bc6}
+.sun-newconv-item b{font-size:12px;color:#1c4267;display:block;line-height:1.5}
+.sun-newconv-item small{font-size:11px;display:block;color:#687f93;margin-top:6px;line-height:1.55}
+.sun-newconv-detail{background:white;border:1px solid #d5e4f2;border-radius:14px;padding:22px;min-height:250px}
+.sun-newconv-detail h3{font-size:17px;color:#193f68;margin:3px 0 9px;line-height:1.4}
+.sun-newconv-detail p{font-size:12px;line-height:1.7;color:#597089}
+.sun-newconv-status{display:inline-block;border-radius:8px;background:#eaf3fc;color:#205d8a;padding:5px 9px;font-size:11px;font-weight:750}
+.sun-newconv-status.warn{background:#fff2d9;color:#8a590c}
+.sun-newconv-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:16px 0}
+.sun-newconv-field{border:1px solid #e3ebf4;background:#f7faff;border-radius:9px;padding:11px;min-width:0}
+.sun-newconv-field small{color:#6c7e90;font-size:10px;display:block;margin-bottom:6px}
+.sun-newconv-field strong{color:#284765;font-size:12px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.sun-newconv-notes{background:#f6f9fe;border-left:4px solid #2e76ae;padding:13px;border-radius:6px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;color:#2b4867;margin:10px 0}
+.sun-newconv-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.sun-newconv-actions button{font-size:12px}
+.gd-newalert{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff6e5;border:1px solid #e8c789;border-radius:10px;padding:13px 15px;margin-bottom:15px}
+.gd-newalert strong{display:block;color:#7e520f;font-size:13px}
+.gd-newalert p{margin:4px 0 0;font-size:11px;color:#6f5c40;line-height:1.5}
+.gd-newalert button{background:#fff1cf;color:#77500f;border-color:#d7ac55;font-size:12px}
+@media(max-width:900px){.sun-newconv-layout{grid-template-columns:1fr}.sun-newconv-list{max-height:345px}}
+@media(max-width:650px){.sun-ct-overview,.sun-newconv-stats{grid-template-columns:1fr 1fr}.sun-newconv-fields{grid-template-columns:1fr}.sun-ct-kpi strong,.sun-newconv-stat strong{font-size:22px}}
+@media print{.sun-contract-tabs,.sun-newconv-actions,.sun-ct-alert,.gd-newalert button{display:none!important}}
+</style></head><body data-sun-page="inicio" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
@@ -423,6 +483,7 @@ body[data-sun-page] main.shell{min-height:55vh}
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
       <button type="button" class="sun-nav-link" data-sun-route="contratos">▣ Contratos</button>
+      <button type="button" class="sun-nav-link" data-sun-route="convocatorias">⚑ Nueva convocatoria</button>
       <button type="button" class="sun-nav-link" data-sun-route="previsiones">▥ Previsiones</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
@@ -438,7 +499,13 @@ body[data-sun-page] main.shell{min-height:55vh}
  <button type="button" data-pac-quick="programado" aria-pressed="false">▦ Programados PAC <strong data-pac-count="programado">—</strong></button>
  <button type="button" data-pac-quick="no" aria-pressed="false">◫ No programados <strong data-pac-count="no">—</strong></button>
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
-</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><div class="tabbar"><button class="active" id="tabAll"><span class="tab-icon">▦</span> Seguimiento de procedimientos de selección</button><button id="tabContracts"><span class="tab-icon">▤</span> Contratos suscritos en 2026</button><button id="tabPrevisiones"><span class="tab-icon">▥</span> CCP y previsiones · 2026–2030</button></div><section class="panel" id="proceduresPanel"><div id="uxTableRoute" class="ux-table-route" role="status" hidden></div><div class="filters"><input id="search" aria-label="Buscar procedimientos por descripción, PAC, contrato, estado, proveedor o especialista" placeholder="Buscar procedimientos: servicio, PAC, contrato, estado, proveedor..." type="search" autocomplete="off"/><select id="pacFilter"><option value="">Todos los PAC</option><option value="programado">Programados</option><option value="no">No programados</option></select><select id="stateFilter"><option value="">Todos los estados</option></select><select id="areaFilter"><option value="">Todas las áreas</option></select><select id="specFilter"><option value="">Todos los especialistas</option></select><select id="yearFilter"><option value="">Todos los vencimientos</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option value="none">Sin fecha</option></select></div><div id="previsionSummary" style="display:none;margin:12px 0 16px"></div><div class="table-scroll-tools" aria-label="Controles de desplazamiento de la tabla">
+</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunContractsPanel" class="sun-current-contracts-page" aria-label="Contratos vigentes y alertas de nueva convocatoria">
+ <div class="sun-contract-tabs" role="group" aria-label="Secciones de contratos">
+  <button type="button" data-sun-contract-tab="vigentes" aria-pressed="true">◷ Contratos vigentes y alertas</button>
+  <button type="button" data-sun-contract-tab="suscritos" aria-pressed="false">▣ Suscritos en 2026</button>
+ </div>
+ <div id="sunContractsList" aria-live="polite"></div>
+</section><div class="tabbar"><button class="active" id="tabAll"><span class="tab-icon">▦</span> Seguimiento de procedimientos de selección</button><button id="tabContracts"><span class="tab-icon">▤</span> Contratos suscritos en 2026</button><button id="tabPrevisiones"><span class="tab-icon">▥</span> CCP y previsiones · 2026–2030</button></div><section class="panel" id="proceduresPanel"><div id="uxTableRoute" class="ux-table-route" role="status" hidden></div><div class="filters"><input id="search" aria-label="Buscar procedimientos por descripción, PAC, contrato, estado, proveedor o especialista" placeholder="Buscar procedimientos: servicio, PAC, contrato, estado, proveedor..." type="search" autocomplete="off"/><select id="pacFilter"><option value="">Todos los PAC</option><option value="programado">Programados</option><option value="no">No programados</option></select><select id="stateFilter"><option value="">Todos los estados</option></select><select id="areaFilter"><option value="">Todas las áreas</option></select><select id="specFilter"><option value="">Todos los especialistas</option></select><select id="yearFilter"><option value="">Todos los vencimientos</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option value="none">Sin fecha</option></select></div><div id="previsionSummary" style="display:none;margin:12px 0 16px"></div><div class="table-scroll-tools" aria-label="Controles de desplazamiento de la tabla">
  <span class="table-scroll-title">Mover tabla</span>
  <div class="table-scroll-actions">
   <button type="button" data-table-scroll="left" aria-label="Ver columnas anteriores" title="Desplazar columnas a la izquierda">←</button>
@@ -448,7 +515,16 @@ body[data-sun-page] main.shell{min-height:55vh}
   <button type="button" data-table-scroll="down" aria-label="Ver filas siguientes" title="Desplazar filas hacia abajo">↓</button>
  </div>
 </div>
-<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
+<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><section id="sunNewConvocationsPage" class="sun-newconv-page" aria-label="Seguimiento de nuevas convocatorias">
+ <div id="sunNewConvStats" class="sun-newconv-stats"></div>
+ <div class="sun-newconv-layout">
+  <div class="sun-newconv-list-col">
+   <div class="sun-newconv-toolbar"><label for="sunNewConvSearch">Buscar nueva contratación</label><input type="search" id="sunNewConvSearch" placeholder="Servicio, especialista, estado, PAC..." autocomplete="off"/></div>
+   <div id="sunNewConvList" class="sun-newconv-list"></div>
+  </div>
+  <div id="sunNewConvDetail" class="sun-newconv-detail" aria-live="polite"><p>Selecciona una nueva contratación para consultar su estado, responsable y actuaciones.</p></div>
+ </div>
+</section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
 <article class="sun-report-card"><span class="sun-report-icon">▣</span><h3>Presentación PowerPoint</h3><p>Diapositivas para una reunión gerencial con indicadores, procedimientos, PAC, contratos y previsiones.</p><button type="button" class="primary" data-sun-report="reportPpt">Descargar PowerPoint (.pptx)</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Resumen de seguimiento listo para imprimir o guardar como PDF.</p><button type="button" data-sun-report="reportPdf">Abrir reporte PDF</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
@@ -1252,7 +1328,9 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const isVigente=!!currentContractState||!!(hasCurrentContract&&expiry&&expiry>=today);
  const omitBudget=isVigente||document.body.dataset.sunPage==='contratos';
  const extra='<div class="gd-grid">'+cell('Ítem CMN',r.itemCMN)+cell('Clasificador de gasto',r.clasificador)+cell('Meta presupuestal',r.meta)+cell('Inversión',r.inversion)+cell('CUI',r.cui)+cell('Compatibilización',r.compatibilizacion)+cell('Informe de software',r.informeSoftware)+cell('Monto adjudicado',moneySafe(r.montoAdjudicado))+cell('Primer devengado',moneySafe(r.primerDevengado))+'</div>';
- body.innerHTML='<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+metric('Vencimiento registrado',noContract?'NO CORRESPONDE':r.vencimiento)+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('◉ Observaciones y actuaciones pendientes',obs)+sec('▦ Información del procedimiento',info)+sec('◷ Cronología de actuaciones',timeline)+sec('▤ Contrato y seguimiento contractual',contract)+(omitBudget?'':sec('▥ CCP 2026 y previsiones 2027–2030',budget))+sec('▣ Información administrativa complementaria',extra);
+ const newRegistered=['SI','SÍ'].includes(String(r.nuevaConvocatoria||'').trim().toUpperCase());
+ const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
+ body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+metric('Vencimiento registrado',noContract?'NO CORRESPONDE':r.vencimiento)+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('◉ Observaciones y actuaciones pendientes',obs)+sec('▦ Información del procedimiento',info)+sec('◷ Cronología de actuaciones',timeline)+sec('▤ Contrato y seguimiento contractual',contract)+(omitBudget?'':sec('▥ CCP 2026 y previsiones 2027–2030',budget))+sec('▣ Información administrativa complementaria',extra);
  body.scrollTop=0;dlg.showModal();}
  edit=show;
  document.getElementById('gdClose').onclick=()=>dlg.close();document.getElementById('gdCloseBottom').onclick=()=>dlg.close();document.getElementById('gdPrint').onclick=()=>window.print();
@@ -1569,7 +1647,8 @@ experts();apply();
   indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
   pac:['PAC 2026','Consulta los procedimientos programados y no programados con acceso a sus detalles.'],
   procedimientos:['Procedimientos de selección','Consulta estados, responsables, actuaciones y documentos.'],
-  contratos:['Contratos suscritos en 2026','Consulta la información contractual y sus fechas registradas.'],
+  contratos:['Contratos vigentes y alertas','Consulta los contratos vigentes, verifica cuáles requieren una nueva convocatoria y accede al seguimiento del especialista.'],
+  convocatorias:['Seguimiento de nuevas convocatorias','Consulta el estado de las nuevas contrataciones registradas, el especialista responsable y las actuaciones realizadas.'],
   previsiones:['CCP y previsiones 2026–2030','Revisa los documentos presupuestarios y montos consignados por ejercicio.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
  };
@@ -1585,10 +1664,12 @@ experts();apply();
   document.getElementById('sunPageTitle').textContent=pages[p][0];
   document.getElementById('sunPageDescription').textContent=pages[p][1];
   document.title=pages[p][0]+' | SUNARP 2026';
+  window.dispatchEvent(new CustomEvent('sunarp:pagechange',{detail:{page:p}}));
   buttons.forEach(b=>{const yes=b.dataset.sunRoute===p;b.classList.toggle('is-active',yes);if(yes)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(updateUrl){
     const u=new URL(location.href);
     if(p==='inicio')u.searchParams.delete('pagina');else u.searchParams.set('pagina',p);
+    if(p!=='convocatorias')u.searchParams.delete('registro');
     if(u.href!==location.href)history.pushState({pagina:p},'',u.pathname+u.search+u.hash);
   }
   window.scrollTo(0,0);
