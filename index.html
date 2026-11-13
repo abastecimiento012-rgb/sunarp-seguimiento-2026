@@ -853,7 +853,49 @@ function reportHTML(z){let stateRows=Object.entries(z.states).sort((a,b)=>b[1]-a
 .sun-area-row{grid-template-columns:85px 1fr 30px auto!important}
 .sun-area-eye{padding:4px 8px}
 </style>
-</head><body><header><h1>Seguimiento de procedimientos de selección – SUNARP 2026</h1><div>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</div></header><button class="noprint" onclick="window.print()">Guardar como PDF / Imprimir</button><p>Reporte generado: ${escR(z.stamp)}. ${escR(z.filterNote)}</p><div class="kpis"><div class="kpi">Procedimientos<b>${z.rows.length}</b></div><div class="kpi">Contratos 2026<b>${z.contracts.length}</b></div><div class="kpi">Vencen en 90 días<b>${z.due.length}</b></div></div><h2>Distribución por estado</h2><table><tr><th>Estado</th><th>Cantidad</th><th style="width:42%">Distribución</th></tr>${stateRows.map(([k,v])=>`<tr><td>${escR(k)}</td><td>${v}</td><td><div class="bar"><i style="width:${100*v/mx}%"></i></div></td></tr>`).join('')}</table><h2>Programación y previsiones presupuestales</h2><table><tr><th>Ejercicio</th><th>Importe registrado</th><th>Con monto</th><th>Sin monto numérico</th></tr>${z.yrs.map(y=>`<tr><td>${y.year===2026?'CCP 2026':'Previsión '+y.year}</td><td>${money(y.total)}</td><td>${y.count}</td><td>${y.missing}</td></tr>`).join('')}</table><h2>Distribución por área usuaria</h2><table><tr><th>Área</th><th>Registros</th></tr>${areaRows.map(([a,n])=>`<tr><td>${escR(a)}</td><td>${n}</td></tr>`).join('')}</table><h2>Contratos suscritos en 2026</h2><table><tr><th>Contrato</th><th>Objeto</th><th>Vencimiento</th></tr>${z.contracts.slice(0,30).map(r=>`<tr><td>${escR(r.numeroContrato||'—')}</td><td>${escR((r.descripcion||'').slice(0,110))}</td><td>${escR(r.vencimiento||'—')}</td></tr>`).join('')}</table><footer>Reporte de seguimiento interno. La ausencia de un monto no equivale a S/ 0.00; las previsiones registradas no acreditan por sí solas aprobación presupuestal. Validar contra documentos oficiales.</footer><script>
+</head><body><header><h1>Seguimiento de procedimientos de selección – SUNARP 2026</h1><div>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</div></header><button class="noprint" onclick="window.print()">Guardar como PDF / Imprimir</button><p>Reporte generado: ${escR(z.stamp)}. ${escR(z.filterNote)}</p><div class="kpis"><div class="kpi">Procedimientos<b>${z.rows.length}</b></div><div class="kpi">Contratos 2026<b>${z.contracts.length}</b></div><div class="kpi">Vencen en 90 días<b>${z.due.length}</b></div></div><h2>Distribución por estado</h2><table><tr><th>Estado</th><th>Cantidad</th><th style="width:42%">Distribución</th></tr>${stateRows.map(([k,v])=>`<tr><td>${escR(k)}</td><td>${v}</td><td><div class="bar"><i style="width:${100*v/mx}%"></i></div></td></tr>`).join('')}</table><h2>Programación y previsiones presupuestales</h2><table><tr><th>Ejercicio</th><th>Importe registrado</th><th>Con monto</th><th>Sin monto numérico</th></tr>${z.yrs.map(y=>`<tr><td>${y.year===2026?'CCP 2026':'Previsión '+y.year}</td><td>${money(y.total)}</td><td>${y.count}</td><td>${y.missing}</td></tr>`).join('')}</table><h2>Distribución por área usuaria</h2><table><tr><th>Área</th><th>Registros</th></tr>${areaRows.map(([a,n])=>`<tr><td>${escR(a)}</td><td>${n}</td></tr>`).join('')}</table><h2>Contratos suscritos en 2026</h2><table><tr><th>Contrato</th><th>Objeto</th><th>Vencimiento</th></tr>${z.contracts.slice(0,30).map(r=>`<tr><td>${escR(r.numeroContrato||'—')}</td><td>${escR((r.descripcion||'').slice(0,110))}</td><td>${escR(r.vencimiento||'—')}</td></tr>`).join('')}</table><footer>Reporte de seguimiento interno. La ausencia de un monto no equivale a S/ 0.00; las previsiones registradas no acreditan por sí solas aprobación presupuestal. Validar contra documentos oficiales.</footer></body></html>`}
+$r('reportPdf').addEventListener('click',()=>{let w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para abrir el reporte PDF.');return}w.document.open();w.document.write(reportHTML(snapshot()));w.document.close()});
+async function downloadPowerPoint(ppt){
+ const generated=await ppt.write({outputType:'blob',compression:true});
+ const blob=generated instanceof Blob?generated:new Blob([generated],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
+ if(!blob.size||blob.size<800)throw Error('El archivo generado está vacío o incompleto.');
+ const name='PRESENTACION_GERENCIAL_SEGUIMIENTO_SUNARP_2026.pptx';
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement('a');
+ link.href=url;link.download=name;link.rel='noopener';link.style.display='none';
+ link.dataset.interception='off';
+ document.body.appendChild(link);
+ try{link.click();}finally{
+   setTimeout(()=>{URL.revokeObjectURL(url);link.remove()},60000);
+ }
+ return name;
+}
+function txt(sl,t,x,y,w,h,size=15,bold=false,color='243248'){sl.addText(String(t),{x,y,w,h,fontFace:'Aptos',fontSize:size,bold,color,margin:0.04,breakLine:false,fit:'shrink'})}
+function base(ppt,title,sub){let sl=ppt.addSlide();sl.background={color:'F4F7FB'};sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:13.333,h:1.15,line:{color:'17365D'},fill:{color:'17365D'}});txt(sl,title,.55,.25,12,.4,23,true,'FFFFFF');txt(sl,sub,.55,.77,12,.23,10,false,'DCE6F1');return sl}
+$r('reportPpt').addEventListener('click',async()=>{
+ const button=$r('reportPpt'),status=$r('pptDownloadStatus');
+ if(button.disabled)return;
+ const original=button.textContent;
+ button.disabled=true;button.textContent='Generando presentación…';
+ if(status){status.style.display='inline-block';status.style.color='#e9f2ff';status.textContent='Preparando archivo .pptx';}
+ try{
+ if(typeof PptxGenJS!=='function')throw Error('El generador PowerPoint no está disponible.');let z=snapshot(),p=new PptxGenJS();p.layout='LAYOUT_WIDE';p.author='Seguimiento SUNARP';p.subject='Procedimientos de selección y PAC 2026';p.title='Reporte de seguimiento SUNARP 2026';p.lang='es-PE';let sl=base(p,'Seguimiento de procedimientos de selección','SUNARP 2026 · Unidad de Abastecimiento y Patrimonio');txt(sl,'REPORTE EJECUTIVO',.65,1.6,11,.5,26,true,'17365D');txt(sl,'Corte de información: '+z.stamp,.65,2.3,11,.3,15);txt(sl,'Fuente: registros de la aplicación y filtros activos',.65,2.75,11,.3,14);txt(sl,'Seguimiento de procedimientos · PAC complementario · Previsiones 2026–2030',.65,3.5,11,.8,18);
+sl=base(p,'Resumen ejecutivo','Indicadores de los registros filtrados');let k=[['Procedimientos',z.rows.length],['Contratos 2026',z.contracts.length],['Vencimientos ≤ 90 días',z.due.length]];k.forEach(([t,v],i)=>{let x=.65+i*4.2;sl.addShape(p.ShapeType.roundRect,{x,y:1.65,w:3.8,h:1.55,rectRadius:.15,line:{color:'DAE3EE'},fill:{color:'FFFFFF'}});txt(sl,t,x+.2,1.9,3.4,.3,14);txt(sl,v,x+.2,2.3,3.3,.6,31,true,'17365D')});txt(sl,'Los estados representan la situación registrada, no el cumplimiento oficial del PAC.',.65,4.15,12,.6,15);
+sl=base(p,'Situación de los procedimientos','Distribución por estado');let states=Object.entries(z.states).sort((a,b)=>b[1]-a[1]).slice(0,9),max=Math.max(1,...states.map(x=>x[1]));states.forEach(([a,v],i)=>{let y=1.45+i*.56;txt(sl,a,.6,y,4.1,.35,12);sl.addShape(p.ShapeType.rect,{x:4.85,y:y+.07,w:6.3*v/max,h:.24,line:{color:'3677A5'},fill:{color:'3677A5'}});txt(sl,v,11.4,y,1,.3,12,true)});
+sl=base(p,'Programación PAC 2026','Registros programados y no programados · no equivale a ítems PAC únicos');let pacProg=z.rows.filter(r=>{let v=String(r.pac||'').trim().toUpperCase();return v&&v!=='NO PROGRAMADO'&&v!=='NO CORRESPONDE'&&v!=='-'}).length;let pacNo=z.rows.length-pacProg;[['Programados',pacProg,'2563EB'],['No programados',pacNo,'F59E0B']].forEach(([t,v,c],i)=>{let yy=1.75+i*1.6;txt(sl,t,.75,yy,3.5,.4,19,true);sl.addShape(p.ShapeType.rect,{x:4,y:yy+.1,w:Math.max(.02,6.5*v/Math.max(1,z.rows.length)),h:.6,line:{color:c},fill:{color:c}});txt(sl,String(v),10.8,yy,1,.6,22,true)});txt(sl,'La clasificación refleja registros del cuadro, no el número de procesos únicos del PAC.',.75,5.7,11.7,.5,13);
+sl=base(p,'Previsiones presupuestales','CCP 2026 y previsiones 2027–2030 · S/');let maxm=Math.max(1,...z.yrs.map(y=>y.total));z.yrs.forEach((y,i)=>{let yy=1.55+i*.92;txt(sl,y.year===2026?'CCP 2026':'Previsión '+y.year,.65,yy,2,.3,14,true);sl.addShape(p.ShapeType.rect,{x:2.7,y:yy+.05,w:5.1*y.total/maxm,h:.29,line:{color:'3D85B5'},fill:{color:'3D85B5'}});txt(sl,money(y.total),8.05,yy,4,.35,14,true);txt(sl,`${y.count} con monto · ${y.missing} sin importe numérico`,2.7,yy+.39,8,.2,10)});
+sl=base(p,'Contratos suscritos en 2026','Relación resumida · Primeros 10 registros');z.contracts.slice(0,10).forEach((r,i)=>{let yy=1.45+i*.52;txt(sl,r.numeroContrato||'—',.55,yy,2.3,.32,11,true);txt(sl,(r.descripcion||'').slice(0,95),2.9,yy,7.9,.35,10);txt(sl,r.vencimiento||'—',11,yy,1.7,.3,10)});
+sl=base(p,'Conclusiones para seguimiento','Puntos de control y validación');let notes=[`Se muestran ${z.rows.length} procedimientos según los filtros activos.`,`Se identifican ${z.contracts.length} contratos con suscripción en 2026.`,`Hay ${z.due.length} contratos con vencimiento registrado en los próximos 90 días.`,`Las previsiones son importes consignados en el cuadro; verificar documentación presupuestal.`,`Los datos sin importe no deben interpretarse como S/ 0.00.`];notes.forEach((v,i)=>txt(sl,'• '+v,.8,1.5+i*.86,11.7,.55,16));await downloadPowerPoint(p);
+ if(status){status.style.color='#c9f7d9';status.textContent='Descarga enviada al navegador. Revisa Descargas (Ctrl+J).';}
+}catch(e){
+ console.error('Error al generar PowerPoint SUNARP',e);
+ if(status){status.style.color='#ffd7d7';status.textContent='Error: '+(e?.message||'No se pudo generar el archivo');}
+ alert('No se pudo generar el PowerPoint: '+(e?.message||e)+'\n\nSi el navegador bloquea la descarga, revisa los permisos de descargas del sitio.');
+}finally{button.disabled=false;button.textContent=original;}
+});
+})();
+</script>
+<script>
 /* Event delegation: alerts are regenerated when Excel data, filters, or records change. */
 document.getElementById('alerts').addEventListener('click',function(event){
  const button=event.target.closest('[data-alert-record]');
@@ -1097,48 +1139,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
 })();
 </script>
 
-</body></html>`}
-$r('reportPdf').addEventListener('click',()=>{let w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para abrir el reporte PDF.');return}w.document.open();w.document.write(reportHTML(snapshot()));w.document.close()});
-async function downloadPowerPoint(ppt){
- const generated=await ppt.write({outputType:'blob',compression:true});
- const blob=generated instanceof Blob?generated:new Blob([generated],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
- if(!blob.size||blob.size<800)throw Error('El archivo generado está vacío o incompleto.');
- const name='PRESENTACION_GERENCIAL_SEGUIMIENTO_SUNARP_2026.pptx';
- const url=URL.createObjectURL(blob);
- const link=document.createElement('a');
- link.href=url;link.download=name;link.rel='noopener';link.style.display='none';
- link.dataset.interception='off';
- document.body.appendChild(link);
- try{link.click();}finally{
-   setTimeout(()=>{URL.revokeObjectURL(url);link.remove()},60000);
- }
- return name;
-}
-function txt(sl,t,x,y,w,h,size=15,bold=false,color='243248'){sl.addText(String(t),{x,y,w,h,fontFace:'Aptos',fontSize:size,bold,color,margin:0.04,breakLine:false,fit:'shrink'})}
-function base(ppt,title,sub){let sl=ppt.addSlide();sl.background={color:'F4F7FB'};sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:13.333,h:1.15,line:{color:'17365D'},fill:{color:'17365D'}});txt(sl,title,.55,.25,12,.4,23,true,'FFFFFF');txt(sl,sub,.55,.77,12,.23,10,false,'DCE6F1');return sl}
-$r('reportPpt').addEventListener('click',async()=>{
- const button=$r('reportPpt'),status=$r('pptDownloadStatus');
- if(button.disabled)return;
- const original=button.textContent;
- button.disabled=true;button.textContent='Generando presentación…';
- if(status){status.style.display='inline-block';status.style.color='#e9f2ff';status.textContent='Preparando archivo .pptx';}
- try{
- if(typeof PptxGenJS!=='function')throw Error('El generador PowerPoint no está disponible.');let z=snapshot(),p=new PptxGenJS();p.layout='LAYOUT_WIDE';p.author='Seguimiento SUNARP';p.subject='Procedimientos de selección y PAC 2026';p.title='Reporte de seguimiento SUNARP 2026';p.lang='es-PE';let sl=base(p,'Seguimiento de procedimientos de selección','SUNARP 2026 · Unidad de Abastecimiento y Patrimonio');txt(sl,'REPORTE EJECUTIVO',.65,1.6,11,.5,26,true,'17365D');txt(sl,'Corte de información: '+z.stamp,.65,2.3,11,.3,15);txt(sl,'Fuente: registros de la aplicación y filtros activos',.65,2.75,11,.3,14);txt(sl,'Seguimiento de procedimientos · PAC complementario · Previsiones 2026–2030',.65,3.5,11,.8,18);
-sl=base(p,'Resumen ejecutivo','Indicadores de los registros filtrados');let k=[['Procedimientos',z.rows.length],['Contratos 2026',z.contracts.length],['Vencimientos ≤ 90 días',z.due.length]];k.forEach(([t,v],i)=>{let x=.65+i*4.2;sl.addShape(p.ShapeType.roundRect,{x,y:1.65,w:3.8,h:1.55,rectRadius:.15,line:{color:'DAE3EE'},fill:{color:'FFFFFF'}});txt(sl,t,x+.2,1.9,3.4,.3,14);txt(sl,v,x+.2,2.3,3.3,.6,31,true,'17365D')});txt(sl,'Los estados representan la situación registrada, no el cumplimiento oficial del PAC.',.65,4.15,12,.6,15);
-sl=base(p,'Situación de los procedimientos','Distribución por estado');let states=Object.entries(z.states).sort((a,b)=>b[1]-a[1]).slice(0,9),max=Math.max(1,...states.map(x=>x[1]));states.forEach(([a,v],i)=>{let y=1.45+i*.56;txt(sl,a,.6,y,4.1,.35,12);sl.addShape(p.ShapeType.rect,{x:4.85,y:y+.07,w:6.3*v/max,h:.24,line:{color:'3677A5'},fill:{color:'3677A5'}});txt(sl,v,11.4,y,1,.3,12,true)});
-sl=base(p,'Programación PAC 2026','Registros programados y no programados · no equivale a ítems PAC únicos');let pacProg=z.rows.filter(r=>{let v=String(r.pac||'').trim().toUpperCase();return v&&v!=='NO PROGRAMADO'&&v!=='NO CORRESPONDE'&&v!=='-'}).length;let pacNo=z.rows.length-pacProg;[['Programados',pacProg,'2563EB'],['No programados',pacNo,'F59E0B']].forEach(([t,v,c],i)=>{let yy=1.75+i*1.6;txt(sl,t,.75,yy,3.5,.4,19,true);sl.addShape(p.ShapeType.rect,{x:4,y:yy+.1,w:Math.max(.02,6.5*v/Math.max(1,z.rows.length)),h:.6,line:{color:c},fill:{color:c}});txt(sl,String(v),10.8,yy,1,.6,22,true)});txt(sl,'La clasificación refleja registros del cuadro, no el número de procesos únicos del PAC.',.75,5.7,11.7,.5,13);
-sl=base(p,'Previsiones presupuestales','CCP 2026 y previsiones 2027–2030 · S/');let maxm=Math.max(1,...z.yrs.map(y=>y.total));z.yrs.forEach((y,i)=>{let yy=1.55+i*.92;txt(sl,y.year===2026?'CCP 2026':'Previsión '+y.year,.65,yy,2,.3,14,true);sl.addShape(p.ShapeType.rect,{x:2.7,y:yy+.05,w:5.1*y.total/maxm,h:.29,line:{color:'3D85B5'},fill:{color:'3D85B5'}});txt(sl,money(y.total),8.05,yy,4,.35,14,true);txt(sl,`${y.count} con monto · ${y.missing} sin importe numérico`,2.7,yy+.39,8,.2,10)});
-sl=base(p,'Contratos suscritos en 2026','Relación resumida · Primeros 10 registros');z.contracts.slice(0,10).forEach((r,i)=>{let yy=1.45+i*.52;txt(sl,r.numeroContrato||'—',.55,yy,2.3,.32,11,true);txt(sl,(r.descripcion||'').slice(0,95),2.9,yy,7.9,.35,10);txt(sl,r.vencimiento||'—',11,yy,1.7,.3,10)});
-sl=base(p,'Conclusiones para seguimiento','Puntos de control y validación');let notes=[`Se muestran ${z.rows.length} procedimientos según los filtros activos.`,`Se identifican ${z.contracts.length} contratos con suscripción en 2026.`,`Hay ${z.due.length} contratos con vencimiento registrado en los próximos 90 días.`,`Las previsiones son importes consignados en el cuadro; verificar documentación presupuestal.`,`Los datos sin importe no deben interpretarse como S/ 0.00.`];notes.forEach((v,i)=>txt(sl,'• '+v,.8,1.5+i*.86,11.7,.55,16));await downloadPowerPoint(p);
- if(status){status.style.color='#c9f7d9';status.textContent='Descarga enviada al navegador. Revisa Descargas (Ctrl+J).';}
-}catch(e){
- console.error('Error al generar PowerPoint SUNARP',e);
- if(status){status.style.color='#ffd7d7';status.textContent='Error: '+(e?.message||'No se pudo generar el archivo');}
- alert('No se pudo generar el PowerPoint: '+(e?.message||e)+'\n\nSi el navegador bloquea la descarga, revisa los permisos de descargas del sitio.');
-}finally{button.disabled=false;button.textContent=original;}
-});
-})();
-</script><style>
+<style>
 /* Modo consulta: se conservan fichas, ayudas y reportes */
 #add,#importJson,#fileInput{display:none!important}
 #editor .modalfoot button[type="submit"]{display:none!important}
