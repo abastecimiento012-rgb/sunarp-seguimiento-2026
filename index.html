@@ -226,11 +226,6 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .today-showall{border:1px solid #b4cce8;background:#eff6ff;color:#174f86;margin-top:11px;font-size:12px;padding:9px 12px}
 .today-empty{font-size:12px;color:#54718a;background:#f3f7fc;border-radius:9px;padding:16px}.today-foot{color:#74859b;font-size:11px;line-height:1.5;margin:13px 0 0}
 @media(max-width:800px){.today-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.today-entry{grid-template-columns:5px minmax(0,1fr)}.today-entry button{grid-column:2;justify-self:start}}
-</style><style id="timeline2026Style">
-#schedulePanel{min-width:0}.timeline-title{display:flex;justify-content:space-between;gap:9px;align-items:flex-start;margin-bottom:13px}.timeline-title h2{margin:0 0 5px;font-size:15px}.timeline-title p,.timeline-foot{font-size:11px;color:#63778e;margin:0;line-height:1.5}.timeline-count{display:inline-block;font-weight:750;background:#e8f1fc;color:#174e81;padding:6px 9px;border-radius:12px;white-space:nowrap;font-size:11px}
-.timeline-controls{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:0 0 12px}.timeline-controls label{font-size:11px;color:#556b83;font-weight:700}.timeline-controls select{min-width:0;flex:1 1 110px;padding:7px 9px;font-size:12px;border-radius:8px;max-width:190px}
-.timeline-entries{max-height:440px;overflow:auto;display:grid;gap:12px;padding-right:3px}.timeline-month{border:1px solid #dce6f1;border-radius:12px;overflow:hidden}.timeline-month-head{display:flex;justify-content:space-between;gap:8px;align-items:center;background:#f0f5fb;padding:9px 11px}.timeline-month-head strong{font-size:12px;color:#244667;text-transform:capitalize}.timeline-month-head span{font-size:11px;color:#687e95}.timeline-contract{display:grid;grid-template-columns:6px minmax(0,1fr) auto;gap:9px;padding:10px;border-top:1px solid #e7edf4;align-items:center}.timeline-edge{height:100%;border-radius:7px;background:#7ba6cc}.timeline-contract.overdue .timeline-edge{background:#c95353}.timeline-contract.urgent .timeline-edge{background:#e6a13a}.timeline-contract.medium .timeline-edge{background:#d4a94f}.timeline-contract h3{font-size:11px;color:#253d59;line-height:1.4;margin:0 0 4px}.timeline-contract p{font-size:10px;color:#61758b;line-height:1.4;margin:2px 0}.timeline-contract .timeline-state{font-weight:700;color:#2e587f}.timeline-contract.overdue .timeline-state{color:#a63838}.timeline-contract button{font-size:11px;padding:7px 9px;border:1px solid #a9c6e8;background:#eff6ff;color:#174f86;white-space:nowrap}.timeline-empty{background:#f3f7fc;border-radius:9px;padding:16px;font-size:12px;color:#5a7187}.timeline-foot{margin-top:12px}.timeline-contract button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
-@media(max-width:650px){.timeline-contract{grid-template-columns:5px minmax(0,1fr)}.timeline-contract button{grid-column:2;justify-self:start}}
 </style><style id="naturePanelStyle">
 .nature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
 .nature-card{--nature-accent:#2563eb;display:grid;grid-template-columns:35px 1fr auto;grid-template-rows:auto auto auto;gap:3px 8px;align-items:center;text-align:left;background:#f8fafc;border:1px solid #dbe5f2;border-left:4px solid var(--nature-accent);border-radius:12px;padding:13px;color:#28415f;min-width:0;cursor:pointer}
@@ -398,9 +393,9 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 @media print{#sunPacQuick{display:none!important}}
 </style><style id="sunPages2026">
 body[data-sun-page] #dashboardHome,body[data-sun-page] main.shell>.update-line,body[data-sun-page] main.shell>.hint,body[data-sun-page] #cards,body[data-sun-page] main.shell>.layout,body[data-sun-page] #visualSummary,body[data-sun-page] main.shell>.section-title,body[data-sun-page] #sunPacQuick,body[data-sun-page] #pacVisualNuevo,body[data-sun-page] main.shell>.tabbar,body[data-sun-page] #proceduresPanel,body[data-sun-page] #sunReportsPage{display:none!important}
-body[data-sun-page="especialistas"] main.shell>.layout,body[data-sun-page="vencimientos"] main.shell>.layout{display:block!important}
+body[data-sun-page="especialistas"] main.shell>.layout{display:block!important}
 body[data-sun-page] #specialistsPanel,body[data-sun-page] #schedulePanel{display:none!important}
-body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencimientos"] #schedulePanel{display:block!important;width:100%;min-width:0}
+body[data-sun-page="especialistas"] #specialistsPanel{display:block!important;width:100%;min-width:0}
 body[data-sun-page] #sunCalendarPage{display:none!important}
 body[data-sun-page="calendario"] #sunCalendarPage{display:block!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
@@ -799,7 +794,6 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
     <div class="sun-nav-links" role="group" aria-label="Secciones del aplicativo">
       <button type="button" class="sun-nav-link is-active" data-sun-route="especialistas" aria-current="page">♙ Especialistas</button>
-      <button type="button" class="sun-nav-link" data-sun-route="vencimientos">◷ Vencimientos</button>
       <button type="button" class="sun-nav-link" data-sun-route="calendario">📅 Calendario</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
@@ -833,7 +827,7 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
 <div class="ux-section-label">Atención rápida</div><div class="ux-chips" id="uxChips" role="group" aria-label="Consultas de atención rápida"></div>
 <div class="ux-section-label">Vista por responsable</div><div class="ux-experts" id="uxExperts"></div>
 <div class="ux-footer"><div class="ux-status" id="uxStatus" aria-live="polite"></div><span class="ux-note">Indicadores sobre registros del aplicativo, no sobre el número oficial de procedimientos únicos.</span></div>
-</div></section><main class="shell"><header id="sunPageHeader" class="sun-page-head" hidden aria-live="polite"><div class="sun-page-head-inner"><div><span class="sun-page-overline">SUNARP 2026 · Unidad de Abastecimiento y Patrimonio</span><h2 id="sunPageTitle"></h2><p id="sunPageDescription"></p></div></div></header><div class="update-line"><span>◷ Datos de origen: Excel (8) · 10/11/2026</span><span>Modo local · los cambios se guardan en este navegador</span></div><p class="hint" style="background:#eaf2fb;padding:12px;border-radius:9px;margin:0 0 16px">Base actualizada desde PROCEDIMIENTO_DE_SELECCION_2026(8).xlsx. Se conservan las funciones existentes. Esta versión utiliza una base nueva del Excel actualizado. Los cambios locales de versiones anteriores permanecen en el navegador anterior y no se mezclan automáticamente; conserva tus respaldos JSON. Exporta un respaldo antes de trabajar en otro equipo. Los importes y referencias presupuestales se muestran tal como figuran en el Excel y requieren verificación documental.</p><section class="cards" id="cards"></section><div class="layout"><section class="panel" id="specialistsPanel"><h2>Especialistas</h2><div id="bars" aria-label="Panel interactivo por especialista"></div></section><section class="panel" id="schedulePanel"><div class="timeline-title"><div><h2>Cronograma de vencimientos de contratos</h2><p>Fechas agrupadas por mes, con consulta inmediata de cada contrato.</p></div><span class="timeline-count" id="timelineTotal"></span></div><div class="timeline-controls"><label for="timelineYear">Año</label><select id="timelineYear" aria-label="Seleccionar año de vencimiento"><option value="all">Todos los años</option></select><label for="timelineWindow">Periodo</label><select id="timelineWindow" aria-label="Filtrar periodo"><option value="all">Todos los vencimientos</option><option value="90">Próximos 90 días</option><option value="365">Próximos 12 meses</option><option value="expired">Ya vencidos</option></select></div><div id="timelineEntries" class="timeline-entries" aria-live="polite"></div><p class="timeline-foot">Solo se incluyen registros con evidencia de contrato y fecha de vencimiento válida. Las fechas son las consignadas en el archivo y deben verificarse.</p></section></div><div id="alerts" hidden aria-hidden="true"></div><section id="visualSummary" aria-label="Gráficos y análisis de procedimientos" class="visual-grid"><div class="visual-card"><h3>Distribución de procedimientos</h3><p class="sub">Gráfico por situación registrada en el Excel · No equivale a cumplimiento oficial del PAC</p><div id="chartDonut"></div><div class="legend" id="chartLegend"></div></div><div class="visual-card" id="natureSection"><h3>Contrataciones por naturaleza de la prestación</h3><p class="sub">Clasificación del Excel para planificar servicios y consultar sus contratos. Selecciona una categoría para ver las fichas.</p><div id="chartYears" aria-live="polite"></div></div><div class="visual-card fin-overview-card"><h3>Montos y previsiones registradas</h3><p class="sub">Resumen gerencial por concepto y ejercicio</p><div id="chartFinance"></div></div></section><div class="section-title"><h2>Seguimiento de procedimientos de selección</h2><p>Vista principal: etapas, responsables, estados y contratos. El PAC 2026 se consulta como información complementaria mediante el filtro de programación.</p></div><div id="sunPacQuick" class="sun-pac-quick" role="group" aria-label="Filtros de programación PAC 2026">
+</div></section><main class="shell"><header id="sunPageHeader" class="sun-page-head" hidden aria-live="polite"><div class="sun-page-head-inner"><div><span class="sun-page-overline">SUNARP 2026 · Unidad de Abastecimiento y Patrimonio</span><h2 id="sunPageTitle"></h2><p id="sunPageDescription"></p></div></div></header><div class="update-line"><span>◷ Datos de origen: Excel (8) · 10/11/2026</span><span>Modo local · los cambios se guardan en este navegador</span></div><p class="hint" style="background:#eaf2fb;padding:12px;border-radius:9px;margin:0 0 16px">Base actualizada desde PROCEDIMIENTO_DE_SELECCION_2026(8).xlsx. Se conservan las funciones existentes. Esta versión utiliza una base nueva del Excel actualizado. Los cambios locales de versiones anteriores permanecen en el navegador anterior y no se mezclan automáticamente; conserva tus respaldos JSON. Exporta un respaldo antes de trabajar en otro equipo. Los importes y referencias presupuestales se muestran tal como figuran en el Excel y requieren verificación documental.</p><section class="cards" id="cards"></section><div class="layout"><section class="panel" id="specialistsPanel"><h2>Especialistas</h2><div id="bars" aria-label="Panel interactivo por especialista"></div></section></div><div id="alerts" hidden aria-hidden="true"></div><section id="visualSummary" aria-label="Gráficos y análisis de procedimientos" class="visual-grid"><div class="visual-card"><h3>Distribución de procedimientos</h3><p class="sub">Gráfico por situación registrada en el Excel · No equivale a cumplimiento oficial del PAC</p><div id="chartDonut"></div><div class="legend" id="chartLegend"></div></div><div class="visual-card" id="natureSection"><h3>Contrataciones por naturaleza de la prestación</h3><p class="sub">Clasificación del Excel para planificar servicios y consultar sus contratos. Selecciona una categoría para ver las fichas.</p><div id="chartYears" aria-live="polite"></div></div><div class="visual-card fin-overview-card"><h3>Montos y previsiones registradas</h3><p class="sub">Resumen gerencial por concepto y ejercicio</p><div id="chartFinance"></div></div></section><div class="section-title"><h2>Seguimiento de procedimientos de selección</h2><p>Vista principal: etapas, responsables, estados y contratos. El PAC 2026 se consulta como información complementaria mediante el filtro de programación.</p></div><div id="sunPacQuick" class="sun-pac-quick" role="group" aria-label="Filtros de programación PAC 2026">
  <div class="sun-pac-quick-intro"><strong>Filtrar por programación PAC</strong><small>Selecciona una categoría para consultar los procedimientos en la tabla.</small></div>
  <button type="button" data-pac-quick="programado" aria-pressed="false">▦ Programados PAC <strong data-pac-count="programado">—</strong></button>
  <button type="button" data-pac-quick="no" aria-pressed="false">◫ No programados <strong data-pac-count="no">—</strong></button>
@@ -1501,42 +1495,6 @@ document.getElementById('alerts').addEventListener('click',function(event){
    if(!d.open)d.showModal();
  });
 })();
-</script><script id="timeline2026Script">
-(function(){
-'use strict';
-const panel=document.getElementById('schedulePanel');if(!panel)return;
-const el=id=>document.getElementById(id);
-const escT=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const normT=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();
-const validT=v=>!!String(v??'').trim()&&!['-','—','NO APLICA','NO CORRESPONDE','NINGUNO','SIN CONTRATO','SIN INFORMACION','CONTRATO VIGENTE'].includes(normT(v));
-const parseT=v=>{const m=String(v??'').trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})$/);if(!m)return null;const y=+m[3],mo=+m[2]-1,d=+m[1],x=new Date(y,mo,d);return x.getFullYear()===y&&x.getMonth()===mo&&x.getDate()===d?x:null};
-const fmtDate=d=>d.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'});
-const todayT=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
-function entries(){return data.map((r,index)=>({r,index,dt:parseT(r.vencimiento)})).filter(x=>x.dt&&(validT(x.r.numeroContrato)||validT(x.r.contratoVigente)||validT(x.r.fechaSuscripcion)||validT(x.r.fechaFirma))).sort((a,b)=>a.dt-b.dt||a.index-b.index)}
-function updateTimeline(){
- const all=entries(),ys=[...new Set(all.map(x=>x.dt.getFullYear()))].sort((a,b)=>a-b);
- const yearSel=el('timelineYear'),chosen=yearSel.value;
- yearSel.innerHTML='<option value="all">Todos los años</option>'+ys.map(y=>'<option value="'+y+'">'+y+'</option>').join('');
- yearSel.value=ys.map(String).includes(chosen)?chosen:'all';
- const windowValue=el('timelineWindow').value,now=todayT();
- const selected=all.filter(x=>{const days=Math.round((x.dt-now)/86400000);return (yearSel.value==='all'||String(x.dt.getFullYear())===yearSel.value)&&(windowValue==='all'||(windowValue==='expired'?days<0:days>=0&&days<=Number(windowValue)))});
- el('timelineTotal').textContent=selected.length+' contratos';
- const buckets=new Map();selected.forEach(x=>{const key=x.dt.getFullYear()+'-'+String(x.dt.getMonth()+1).padStart(2,'0');if(!buckets.has(key))buckets.set(key,[]);buckets.get(key).push(x)});
- el('timelineEntries').innerHTML=buckets.size?[...buckets.entries()].map(([key,items])=>{
-  const first=items[0].dt,label=first.toLocaleDateString('es-PE',{month:'long',year:'numeric'});
-  return '<section class="timeline-month"><div class="timeline-month-head"><strong>'+escT(label)+'</strong><span>'+items.length+' contrato'+(items.length===1?'':'s')+'</span></div>'+items.map(({r,index,dt})=>{
-   const days=Math.round((dt-now)/86400000),status=days<0?'Vencido hace '+Math.abs(days)+' días':days===0?'Vence hoy':'Faltan '+days+' días',cls=days<0?'overdue':days<=30?'urgent':days<=90?'medium':'';
-   return '<article class="timeline-contract '+cls+'"><span class="timeline-edge"></span><div><h3>'+escT(r.descripcion||'Servicio sin descripción')+'</h3><p><strong>'+escT(r.numeroContrato||r.contratoVigente||'Contrato registrado')+'</strong> · '+escT(fmtDate(dt))+'</p><p>'+escT(r.especialista&&validT(r.especialista)?r.especialista:'Sin especialista registrado')+' · '+escT(r.area||'Área por verificar')+'</p><p class="timeline-state">'+escT(status)+'</p></div><button type="button" data-timeline-open="'+index+'" aria-label="Abrir ficha del contrato">👁 Ver ficha</button></article>';
-  }).join('')+'</section>'
- }).join(''):'<p class="timeline-empty">No hay contratos con vencimiento registrado para el periodo seleccionado. Esto no confirma ausencia de contratos sin fecha.</p>';
-}
-el('timelineYear').addEventListener('change',updateTimeline);
-el('timelineWindow').addEventListener('change',updateTimeline);
-panel.addEventListener('click',event=>{const b=event.target.closest('[data-timeline-open]');if(!b)return;const i=Number(b.dataset.timelineOpen);if(Number.isInteger(i)&&data[i])edit(i)});
-const cards=document.getElementById('cards');if(cards)new MutationObserver(()=>updateTimeline()).observe(cards,{childList:true});
-window.refreshTimeline2026=updateTimeline;
-updateTimeline();
-})();
 </script><script id="naturePanelDetailScript">
 (function(){
  const host=document.getElementById('chartYears');
@@ -1761,15 +1719,9 @@ function activateTab(which){const b=$u(which==='contracts'?'tabContracts':'tabAl
 
 /* Navegación contextual de botones rápidos: mostrar datos filtrados y desplazar al panel pertinente. */
 function jumpPanel(targetId){
- const route=targetId==='schedulePanel'?'vencimientos':targetId==='pacVisualNuevo'?'pac':'especialistas';
+ const route=targetId==='sunCalendarPage'?'calendario':targetId==='pacVisualNuevo'?'pac':'especialistas';
  if(typeof window.sunarpNavigate==='function'){window.sunarpNavigate(route);return;}
  $u(targetId)?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function activatePeriod(period){
- const year=$u('timelineYear'),periodInput=$u('timelineWindow');
- if(year)year.value='all';
- if(periodInput)periodInput.value=period;
- if(typeof window.refreshTimeline2026==='function')window.refreshTimeline2026();
 }
 function resetQuickInputs(){
  for(const id of ['search','pacFilter','stateFilter','areaFilter','specFilter','yearFilter']){
@@ -1778,8 +1730,7 @@ function resetQuickInputs(){
 }
 function quickDestination(kind){
  if(kind==='soon'||kind==='expired'){
-  activatePeriod(kind==='soon'?'90':'expired');
-  jumpPanel('schedulePanel');
+  jumpPanel('sunCalendarPage');
  }else if(kind==='pac'||kind==='unprogrammed'){
   jumpPanel('pacVisualNuevo');
  }else{
@@ -2017,7 +1968,6 @@ experts();apply();
  const nav=document.getElementById('sunPrimaryNav');if(!nav)return;
  const pages={
   especialistas:['Seguimiento por especialista','Selecciona un especialista o estado para abrir los registros correspondientes.'],
-  vencimientos:['Cronograma de vencimientos','Consulta los contratos por periodo de vencimiento y abre sus fichas.'],
   calendario:['Calendario de vencimientos contractuales','Selecciona un día para identificar los contratos que vencen, su responsable y su ficha de consulta.'],
   pac:['PAC 2026','Seguimiento de la programación PAC: procedimientos programados, no programados y distribución por área usuaria.'],
   procedimientos:['Procedimientos y contratos','Consulta el contrato, el tipo y número de procedimiento, vencimiento y las nuevas convocatorias.'],
@@ -2026,7 +1976,7 @@ experts();apply();
  const tabs={pac:'tabAll'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const normalizeRoute=requested=>['previsiones','indicadores'].includes(requested)?'reportes':requested==='contratos'?'vencimientos':requested==='convocatorias'?'procedimientos':requested==='inicio'?'especialistas':pages[requested]?requested:'especialistas';
+ const normalizeRoute=requested=>['previsiones','indicadores'].includes(requested)?'reportes':requested==='contratos'?'procedimientos':requested==='vencimientos'?'calendario':requested==='convocatorias'?'procedimientos':requested==='inicio'?'especialistas':pages[requested]?requested:'especialistas';
  const current=()=>normalizeRoute(new URLSearchParams(location.search).get('pagina')||'especialistas');
  function go(requested,updateUrl=true){
   const p=normalizeRoute(requested),tab=document.getElementById(tabs[p]);
@@ -2064,7 +2014,7 @@ experts();apply();
  window.addEventListener('popstate',()=>go(current(),false));
  go(current(),false);
  // Mantener operativos los enlaces antiguos hacia páginas que ya no existen.
- if(['inicio','convocatorias','contratos','previsiones','indicadores'].includes(new URLSearchParams(location.search).get('pagina'))){
+ if(['inicio','convocatorias','contratos','previsiones','indicadores','vencimientos'].includes(new URLSearchParams(location.search).get('pagina'))){
   const oldPage=new URLSearchParams(location.search).get('pagina');
   const fallback=normalizeRoute(oldPage);
   const u=new URL(location.href);u.searchParams.set('pagina',fallback);u.searchParams.delete('registro');
