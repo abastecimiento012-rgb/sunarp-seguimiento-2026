@@ -401,7 +401,6 @@ body[data-sun-page] #dashboardHome,body[data-sun-page] main.shell>.update-line,b
 body[data-sun-page="especialistas"] main.shell>.layout,body[data-sun-page="vencimientos"] main.shell>.layout{display:block!important}
 body[data-sun-page] #specialistsPanel,body[data-sun-page] #schedulePanel{display:none!important}
 body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencimientos"] #schedulePanel{display:block!important;width:100%;min-width:0}
-body[data-sun-page="indicadores"] #visualSummary{display:grid!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
 body[data-sun-page="pac"] #pacVisualNuevo{display:block!important}
 body[data-sun-page] #sunProcedures2026Panel{display:none!important}
@@ -434,7 +433,7 @@ body[data-sun-page] main.shell{min-height:55vh}
 .sun-report-icon{display:grid;place-items:center;background:#e8f2ff;color:#1c5892;border-radius:10px;width:40px;height:40px;font-size:22px}
 .sun-report-note{font-size:12px;color:#677a90}
 #sunReportsStatus:not(:empty){padding:10px 13px;background:#edf6ff;border-radius:8px;color:#174c78;font-size:12px}
-@media(max-width:760px){.sun-reports-grid{grid-template-columns:1fr}.sun-page-head{padding:16px}.sun-page-head h2{font-size:19px}body[data-sun-page="indicadores"] #visualSummary{grid-template-columns:1fr}}
+@media(max-width:760px){.sun-reports-grid{grid-template-columns:1fr}.sun-page-head{padding:16px}.sun-page-head h2{font-size:19px}}
 @media print{.sun-page-head{background:white;color:#17365d;border:1px solid #dce5ef}.sun-page-head h2{color:#17365d}}
 </style><style id="sunContractAlertsPages2026">
 .sun-contract-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -700,7 +699,6 @@ html[data-sun-theme="dark"] .sun-proc2026-datestatus.soon{color:#ffdb9c!importan
     <div class="sun-nav-links" role="group" aria-label="Secciones del aplicativo">
       <button type="button" class="sun-nav-link is-active" data-sun-route="especialistas" aria-current="page">♙ Especialistas</button>
       <button type="button" class="sun-nav-link" data-sun-route="vencimientos">◷ Vencimientos</button>
-      <button type="button" class="sun-nav-link" data-sun-route="indicadores">▤ Indicadores</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
     </div>
@@ -1888,7 +1886,6 @@ experts();apply();
  const pages={
   especialistas:['Seguimiento por especialista','Selecciona un especialista o estado para abrir los registros correspondientes.'],
   vencimientos:['Cronograma de vencimientos','Consulta los contratos por periodo de vencimiento y abre sus fichas.'],
-  indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
   pac:['PAC 2026','Seguimiento de la programación PAC: procedimientos programados, no programados y distribución por área usuaria.'],
   procedimientos:['Procedimientos y contratos','Consulta el contrato, el tipo y número de procedimiento, vencimiento y las nuevas convocatorias.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
@@ -1896,7 +1893,7 @@ experts();apply();
  const tabs={pac:'tabAll'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const normalizeRoute=requested=>requested==='previsiones'?'indicadores':requested==='contratos'?'vencimientos':requested==='convocatorias'?'procedimientos':requested==='inicio'?'especialistas':pages[requested]?requested:'especialistas';
+ const normalizeRoute=requested=>['previsiones','indicadores'].includes(requested)?'reportes':requested==='contratos'?'vencimientos':requested==='convocatorias'?'procedimientos':requested==='inicio'?'especialistas':pages[requested]?requested:'especialistas';
  const current=()=>normalizeRoute(new URLSearchParams(location.search).get('pagina')||'especialistas');
  function go(requested,updateUrl=true){
   const p=normalizeRoute(requested),tab=document.getElementById(tabs[p]);
@@ -1920,7 +1917,6 @@ experts();apply();
     const top=Math.max(0,window.scrollY+header.getBoundingClientRect().top-nav.getBoundingClientRect().height-12);
     window.scrollTo({top,behavior:'instant'});
    }
-   if(p==='indicadores')window.dispatchEvent(new Event('resize'));
   });
  }
  window.sunarpNavigate=go;
@@ -1935,7 +1931,7 @@ experts();apply();
  window.addEventListener('popstate',()=>go(current(),false));
  go(current(),false);
  // Mantener operativos los enlaces antiguos hacia páginas que ya no existen.
- if(['inicio','convocatorias','contratos','previsiones'].includes(new URLSearchParams(location.search).get('pagina'))){
+ if(['inicio','convocatorias','contratos','previsiones','indicadores'].includes(new URLSearchParams(location.search).get('pagina'))){
   const oldPage=new URLSearchParams(location.search).get('pagina');
   const fallback=normalizeRoute(oldPage);
   const u=new URL(location.href);u.searchParams.set('pagina',fallback);u.searchParams.delete('registro');
