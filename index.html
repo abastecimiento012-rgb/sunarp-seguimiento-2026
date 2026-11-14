@@ -411,7 +411,7 @@ body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencim
 body[data-sun-page="indicadores"] #visualSummary{display:grid!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
 body[data-sun-page="pac"] #pacVisualNuevo{display:block!important}
-body[data-sun-page="procedimientos"] #proceduresPanel,body[data-sun-page="previsiones"] #proceduresPanel{display:block!important}
+body[data-sun-page="procedimientos"] #proceduresPanel{display:block!important}
 body[data-sun-page="reportes"] #sunReportsPage{display:block!important}
 body[data-sun-page] main.shell{min-height:55vh}
 .sun-page-head{background:linear-gradient(110deg,#17365d,#245c8b);color:white;border-radius:15px;padding:21px 24px;margin:0 0 19px}
@@ -535,7 +535,6 @@ body[data-sun-page="previsiones"] #proceduresPanel{padding-bottom:18px}
       <button type="button" class="sun-nav-link" data-sun-route="indicadores">▤ Indicadores</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
-      <button type="button" class="sun-nav-link" data-sun-route="previsiones">▥ Previsiones</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
   </div>
@@ -1780,15 +1779,14 @@ experts();apply();
   indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
   pac:['PAC 2026','Consulta los procedimientos programados y no programados con acceso a sus detalles.'],
   procedimientos:['Procedimientos de selección','Consulta estados, responsables, actuaciones y documentos.'],
-  previsiones:['CCP y previsiones 2026–2030','Revisa los documentos presupuestarios y montos consignados por ejercicio.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
  };
- const tabs={pac:'tabAll',procedimientos:'tabAll',previsiones:'tabPrevisiones'};
+ const tabs={pac:'tabAll',procedimientos:'tabAll'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return ['convocatorias','contratos'].includes(p)?'procedimientos':pages[p]?p:'especialistas'};
+ const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return p==='previsiones'?'indicadores':['convocatorias','contratos'].includes(p)?'procedimientos':pages[p]?p:'especialistas'};
  function go(requested,updateUrl=true){
-  const p=['convocatorias','contratos'].includes(requested)?'procedimientos':pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
+  const p=requested==='previsiones'?'indicadores':['convocatorias','contratos'].includes(requested)?'procedimientos':pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
   if(tab&&!tab.classList.contains('active'))tab.click();
   document.body.dataset.sunPage=p;
   header.hidden=false;
@@ -1824,8 +1822,9 @@ experts();apply();
  window.addEventListener('popstate',()=>go(current(),false));
  go(current(),false);
  // Mantener operativos los enlaces antiguos hacia páginas que ya no existen.
- if(['inicio','convocatorias','contratos'].includes(new URLSearchParams(location.search).get('pagina'))){
-  const fallback=new URLSearchParams(location.search).get('pagina')==='inicio'?'especialistas':'procedimientos';
+ if(['inicio','convocatorias','contratos','previsiones'].includes(new URLSearchParams(location.search).get('pagina'))){
+  const oldPage=new URLSearchParams(location.search).get('pagina');
+  const fallback=oldPage==='inicio'?'especialistas':oldPage==='previsiones'?'indicadores':'procedimientos';
   const u=new URL(location.href);u.searchParams.set('pagina',fallback);u.searchParams.delete('registro');
   history.replaceState({pagina:fallback},'',u.pathname+u.search+u.hash);
  }
