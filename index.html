@@ -1937,6 +1937,27 @@ html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-alert:hover{
  }
 }
 </style>
+<style id="sunProcedureCompactNewContract2026">
+/* Un solo acceso a la contratación, sin alertas ni textos repetidos en la tabla. */
+#sunProcedures2026Panel .sun-proc2026-newbtn{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:auto;max-width:100%;min-height:38px;padding:8px 13px!important;
+ background:#e8f3fd!important;border:1px solid #98bfdc!important;color:#194c71!important;
+ border-radius:9px!important;font-size:13px!important;font-weight:750!important;
+ line-height:1.3;white-space:normal;text-align:center;cursor:pointer;
+}
+#sunProcedures2026Panel .sun-proc2026-newbtn:hover,
+#sunProcedures2026Panel .sun-proc2026-newbtn:focus-visible{
+ background:#d4eafc!important;border-color:#4d94c4!important;outline:2px solid #70b4e5;outline-offset:2px;
+}
+html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-newbtn{
+ background:#2e4d59!important;color:#e1f8ff!important;border-color:#75acbb!important;
+}
+html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-newbtn:hover,
+html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-newbtn:focus-visible{
+ background:#3b6574!important;border-color:#9bd1de!important;outline-color:#9bd1de;
+}
+</style>
 <style id="sunContractEmptySectionsHide2026">
 /* Three meaningful executive metrics fill available width without a blank box. */
 #gerDetail .gd-metrics{grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr))}
@@ -2058,13 +2079,12 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Control de procedimientos</h3><p>Etapa, responsable y alertas en una sola vista. Abre 👁 para consultar los detalles.</p></div>
+  <div><h3>Control de procedimientos</h3><p>Etapa y responsable en una sola vista. Consulta la nueva contratación desde su botón; usa 👁 para ver la ficha completa.</p></div>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
  <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
- <p class="sun-proc2026-foot">Alerta preventiva automática: se propone evaluar el inicio de una nueva contratación cuando falten 90 días o menos para el vencimiento y no consten actuaciones iniciadas. No equivale a una obligación legal automática ni confirma la publicación de una convocatoria. Valida la necesidad con el área usuaria y revisa el expediente.</p>
 </section><section id="sunAlertsDaily2026" class="sun-daily sun-dues-page" aria-label="Pendientes y plazos por especialista">
  <div class="sun-daily-head">
   <div><h3>🔔 Alertas y plazos por especialista</h3><p>Pendientes de Hermes, Sheyla y Sonia, según las fechas de entrega y los hitos previstos. Abre cada tarjeta para revisar sus servicios.</p></div>
@@ -3695,21 +3715,27 @@ refresh();
   const visible=items.map((r,i)=>({r,i})).filter(({r})=>matches(r,q));
   counter.textContent='Mostrando '+visible.length+' de '+items.length+' registros';
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
-   const end=expiry(r),alert=alertFor(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
+   const end=expiry(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=norm(r.nuevaConvocatoria)==='SI'&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
    const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+'" title="Consultar ficha">👁 Ver ficha</button>';
-   const alertButton='<button type="button" class="sun-proc2026-alert '+alert.kind+'" data-sun-proc-integral="'+i+'" aria-label="Alerta: '+esc(alert.label)+'. Abrir ficha de '+esc(field(r.descripcion))+'">'+
-    '<strong>'+esc(alert.label)+'</strong>'+(alert.detail?'<small>'+esc(alert.detail)+'</small>':'')+'</button>';
+   const newButton='<button type="button" class="sun-proc2026-newbtn" data-sun-proc-new="'+i+'" aria-label="Consultar nueva contratación de '+esc(field(r.descripcion))+'" title="Abrir actuaciones preparatorias y nueva contratación">↗ Nueva contratación</button>';
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
     '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
 
-    '<td data-label="Seguimiento">'+(end.date!=='—'?'<span class="sun-proc2026-expiry-label">Vence contrato: <b>'+esc(end.date)+'</b></span>':'')+alertButton+'</td>'+
+    '<td data-label="Seguimiento">'+newButton+'</td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
  panel.addEventListener('click',e=>{
+  const newLink=e.target.closest('[data-sun-proc-new]');
+  if(newLink){
+   e.preventDefault();e.stopPropagation();
+   const i=Number(newLink.dataset.sunProcNew);
+   if(Number.isInteger(i)&&data[i])window.sunarpOpenNuevaConvocatoria?.(i);
+   return;
+  }
   const b=e.target.closest('[data-sun-proc-integral]');
   if(!b)return;
   e.preventDefault();e.stopPropagation();
