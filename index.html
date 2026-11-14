@@ -3698,7 +3698,7 @@ refresh();
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
    const end=expiry(r),alert=alertFor(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=norm(r.nuevaConvocatoria)==='SI'&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
-   const summary=follow.next||(follow.active?'Por precisar':'Sin actuación pendiente identificada');
+   const summary=follow.next||(follow.active?'Por precisar':'—');
    const validity=follow.commitmentStatus;
    const nextDate=follow.dateLabel?'<span class="sun-proc2026-nextdate '+validity+'">Compromiso interno: '+esc(follow.dateLabel)+'</span>':
     (follow.commitmentRaw?'<span class="sun-proc2026-nextdate warn">Verificar fecha de compromiso</span>':'');
@@ -3818,8 +3818,9 @@ refresh();
    .filter(({r})=>isSelected(r)&&!finished(r))
    .map(({r,index})=>{
     const due=plannedWork(r);
-    const actionable=due.list.filter(x=>x.kind==='compromiso'||x.kind==='entrega');
-    const primary=(actionable.length?actionable:due.list)[0]||null;
+    const commitment=due.list.find(x=>x.kind==='compromiso');
+    const actionable=due.list.filter(x=>x.kind==='entrega');
+    const primary=commitment||actionable[0]||due.list[0]||null;
     return {
      id:String(r.id??index)+'|pendiente',
      index,r,owner:norm(r.especialista),
