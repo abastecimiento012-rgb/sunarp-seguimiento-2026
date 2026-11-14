@@ -404,7 +404,6 @@ body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencim
 body[data-sun-page="indicadores"] #visualSummary{display:grid!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
 body[data-sun-page="pac"] #pacVisualNuevo{display:block!important}
-body[data-sun-page="procedimientos"] #proceduresPanel{display:block!important}
 body[data-sun-page="reportes"] #sunReportsPage{display:block!important}
 body[data-sun-page] main.shell{min-height:55vh}
 .sun-page-head{background:linear-gradient(110deg,#17365d,#245c8b);color:white;border-radius:15px;padding:21px 24px;margin:0 0 19px}
@@ -609,7 +608,6 @@ html[data-sun-theme="dark"] :is(.sun-nav-reports summary,.sun-report-options){ba
       <button type="button" class="sun-nav-link" data-sun-route="vencimientos">◷ Vencimientos</button>
       <button type="button" class="sun-nav-link" data-sun-route="indicadores">▤ Indicadores</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
-      <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
     <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
@@ -1528,7 +1526,7 @@ function activateTab(which){const b=$u(which==='contracts'?'tabContracts':'tabAl
 
 /* Navegación contextual de botones rápidos: mostrar datos filtrados y desplazar al panel pertinente. */
 function jumpPanel(targetId){
- const route=targetId==='schedulePanel'?'vencimientos':targetId==='pacVisualNuevo'?'pac':'procedimientos';
+ const route=targetId==='schedulePanel'?'vencimientos':targetId==='pacVisualNuevo'?'pac':'especialistas';
  if(typeof window.sunarpNavigate==='function'){window.sunarpNavigate(route);return;}
  $u(targetId)?.scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -1602,7 +1600,7 @@ $u('sunPacQuick')?.addEventListener('click',e=>{
  $u('pacFilter').value=btn.dataset.pacQuick;
  activateTab('all');
  render();experts();apply();
- jumpPanel('proceduresPanel');
+ jumpPanel('pacVisualNuevo');
 });
 $u('pacFilter')?.addEventListener('change',syncPacQuick);
 $u('uxChips').addEventListener('click',e=>{
@@ -1639,7 +1637,7 @@ $u('search').addEventListener('input',updateSoon);
 $u('uxSort').onchange=e=>{sort=e.target.value;if(sort==='original')render();apply()};
 $u('tbody').addEventListener('click',e=>{const b=e.target.closest('[data-favorite]');if(!b)return;e.stopPropagation();const id=b.dataset.favorite;if(favorites.has(id))favorites.delete(id);else favorites.add(id);try{localStorage.setItem(k,JSON.stringify([...favorites]))}catch(e){}apply()},{capture:true});
 $u('uxExport').onclick=()=>{const ids=currentRowIds(),rows=baseRows().filter(r=>ids.has(String(r.id))&&checks[quick](r)&&(!activeExpert||r.especialista===activeExpert));const keys=Object.keys(data[0]||{});const line=arr=>arr.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';');const content='\ufeff'+[line(keys),...rows.map(r=>line(keys.map(k=>r[k])))].join('\r\n');const a=document.createElement('a'),url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));a.href=url;a.download='SUNARP_2026_SELECCION_'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-document.addEventListener('keydown',e=>{const search=$u('search');if(!search)return;if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement?.tagName)){e.preventDefault();window.sunarpNavigate?.('procedimientos');requestAnimationFrame(()=>{search.scrollIntoView({behavior:'smooth',block:'center'});search.focus()})}if(e.key==='Escape'&&document.activeElement===search)search.blur()});
+document.addEventListener('keydown',e=>{const search=$u('spSearch2026');if(!search)return;if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement?.tagName)){e.preventDefault();window.sunarpNavigate?.('especialistas');requestAnimationFrame(()=>{search.scrollIntoView({behavior:'smooth',block:'center'});search.focus()})}if(e.key==='Escape'&&document.activeElement===search)search.blur()});
 for(const t of ['tabAll','tabContracts'])$u(t)?.addEventListener('click',()=>setTimeout(apply,0));
 const oldImport=$u('updateExcelFile');oldImport?.addEventListener('change',()=>setTimeout(()=>{experts();apply()},1200));
 experts();apply();
@@ -1787,15 +1785,15 @@ experts();apply();
   vencimientos:['Cronograma de vencimientos','Consulta los contratos por periodo de vencimiento y abre sus fichas.'],
   indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
   pac:['PAC 2026','Consulta los procedimientos programados y no programados con acceso a sus detalles.'],
-  procedimientos:['Procedimientos de selección','Consulta estados, responsables, actuaciones y documentos.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
  };
- const tabs={pac:'tabAll',procedimientos:'tabAll'};
+ const tabs={pac:'tabAll'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return p==='previsiones'?'indicadores':['convocatorias','contratos'].includes(p)?'procedimientos':pages[p]?p:'especialistas'};
+ const normalizeRoute=requested=>requested==='previsiones'?'indicadores':requested==='contratos'?'vencimientos':['inicio','convocatorias','procedimientos'].includes(requested)?'especialistas':pages[requested]?requested:'especialistas';
+ const current=()=>normalizeRoute(new URLSearchParams(location.search).get('pagina')||'especialistas');
  function go(requested,updateUrl=true){
-  const p=requested==='previsiones'?'indicadores':['convocatorias','contratos'].includes(requested)?'procedimientos':pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
+  const p=normalizeRoute(requested),tab=document.getElementById(tabs[p]);
   if(tab&&!tab.classList.contains('active'))tab.click();
   document.body.dataset.sunPage=p;
   header.hidden=false;
@@ -1831,9 +1829,9 @@ experts();apply();
  window.addEventListener('popstate',()=>go(current(),false));
  go(current(),false);
  // Mantener operativos los enlaces antiguos hacia páginas que ya no existen.
- if(['inicio','convocatorias','contratos','previsiones'].includes(new URLSearchParams(location.search).get('pagina'))){
+ if(['inicio','convocatorias','contratos','previsiones','procedimientos'].includes(new URLSearchParams(location.search).get('pagina'))){
   const oldPage=new URLSearchParams(location.search).get('pagina');
-  const fallback=oldPage==='inicio'?'especialistas':oldPage==='previsiones'?'indicadores':'procedimientos';
+  const fallback=normalizeRoute(oldPage);
   const u=new URL(location.href);u.searchParams.set('pagina',fallback);u.searchParams.delete('registro');
   history.replaceState({pagina:fallback},'',u.pathname+u.search+u.hash);
  }
@@ -1981,8 +1979,8 @@ document.addEventListener('click',e=>{
  const f=e.target.closest('[data-sun-view-original]');
  if(f){edit(Number(f.dataset.sunViewOriginal));return}
  const c=e.target.closest('[data-sun-back-contract]');
- if(c){window.sunarpNavigate?.('procedimientos');return}
- if(e.target.closest('[data-sun-procedures]'))window.sunarpNavigate?.('procedimientos');
+ if(c){window.sunarpNavigate?.('especialistas');return}
+ if(e.target.closest('[data-sun-procedures]'))window.sunarpNavigate?.('especialistas');
 });
 el('sunNewConvSearch')?.addEventListener('input',listNew);
 el('sunLinkedClose')?.addEventListener('click',()=>el('sunLinkedDetails')?.close());
