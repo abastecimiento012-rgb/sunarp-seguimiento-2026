@@ -1014,12 +1014,12 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
-    <div class="sun-nav-links" role="group" aria-label="Secciones del aplicativo">
-      <button type="button" class="sun-nav-link is-active" data-sun-route="especialistas" aria-current="page">♙ Especialistas</button>
-      <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
-      <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
+    <div class="sun-nav-links" role="group" aria-label="Secciones del aplicativo, ordenadas por la secuencia de gestión de contrataciones">
+      <button type="button" class="sun-nav-link is-active" data-sun-route="pac" aria-current="page" title="1. Programación y seguimiento del PAC">① PAC 2026</button>
+      <button type="button" class="sun-nav-link" data-sun-route="procedimientos" title="2. Actuaciones preparatorias, selección y seguimiento contractual">② Procedimientos</button>
+      <button type="button" class="sun-nav-link" data-sun-route="especialistas" title="3. Asignaciones, responsables y carga de trabajo">③ Especialistas</button>
     </div>
-    <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
+    <button type="button" class="sun-nav-link" data-sun-route="reportes" title="4. Reportes para control gerencial">④ Reportes</button>
     <div class="sun-nav-tools" aria-label="Apariencia y calendario">
       <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
         <button type="button" class="sun-theme-option" data-sun-theme-option="light" aria-pressed="true" title="Modo claro">☀ Claro</button>
@@ -2303,17 +2303,17 @@ experts();apply();
  'use strict';
  const nav=document.getElementById('sunPrimaryNav');if(!nav)return;
  const pages={
-  especialistas:['Seguimiento por especialista','Selecciona un especialista o estado para abrir los registros correspondientes.'],
-  calendario:['Calendario de vencimientos contractuales','Selecciona un día para identificar los contratos que vencen, su responsable y su ficha de consulta.'],
-  pac:['PAC 2026','Seguimiento de la programación PAC: procedimientos programados, no programados y distribución por área usuaria.'],
-  procedimientos:['Procedimientos y contratos','Consulta el contrato, el tipo y número de procedimiento, vencimiento y las nuevas convocatorias.'],
-  reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
+  pac:['1. PAC 2026 · Programación','Punto de partida: contrataciones programadas en el PAC del CMN, no programadas y distribución por área usuaria.'],
+  procedimientos:['2. Procedimientos · Seguimiento','Actuaciones preparatorias, procedimiento de selección y seguimiento contractual: consulta cada registro y sus alertas automáticas.'],
+  especialistas:['3. Especialistas · Responsables','Consulta la asignación de procedimientos y la carga de trabajo por especialista. Este es un control de gestión transversal.'],
+  reportes:['4. Reportes · Control gerencial','Consulta resultados y genera reportes PowerPoint, PDF y CSV para el seguimiento gerencial.'],
+  calendario:['Calendario de vencimientos contractuales','Acceso rápido a las fechas de vencimiento, responsables y fichas contractuales.']
  };
  const tabs={pac:'tabAll'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const normalizeRoute=requested=>['previsiones','indicadores'].includes(requested)?'reportes':requested==='contratos'?'procedimientos':requested==='vencimientos'?'calendario':requested==='convocatorias'?'procedimientos':requested==='inicio'?'especialistas':pages[requested]?requested:'especialistas';
- const current=()=>normalizeRoute(new URLSearchParams(location.search).get('pagina')||'especialistas');
+ const normalizeRoute=requested=>['previsiones','indicadores'].includes(requested)?'reportes':requested==='contratos'?'procedimientos':requested==='vencimientos'?'calendario':requested==='convocatorias'?'procedimientos':requested==='inicio'?'pac':pages[requested]?requested:'pac';
+ const current=()=>normalizeRoute(new URLSearchParams(location.search).get('pagina')||'pac');
  function go(requested,updateUrl=true){
   const p=normalizeRoute(requested),tab=document.getElementById(tabs[p]);
   if(tab&&!tab.classList.contains('active'))tab.click();
