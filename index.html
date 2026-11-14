@@ -199,6 +199,33 @@ th:nth-child(7),td:nth-child(7){min-width:175px}</style><style>
 .sp-record-field b{display:block;color:#57748e;font-size:11px;margin-bottom:4px}
 .sp-record-field span{display:block;color:#294b68;font-size:13px;white-space:pre-wrap}
 @media(max-width:580px){.sp-dash{padding:12px}.sp-head h3{font-size:16px}.sp-head-count b{font-size:18px}.sp-chart-row{grid-template-columns:82px minmax(30px,1fr) 27px 18px;gap:7px;padding:10px 8px}.sp-chart-person{font-size:10px;gap:4px}.sp-chart-avatar{font-size:16px}.sp-chart-track{height:14px}.sp-chart-number{font-size:15px}.sp-chart-go{font-size:16px}.sp-board-head{align-items:stretch}.sp-board-head h3{width:100%}.sp-board-search{width:100%;flex-basis:100%}.sp-task{grid-template-columns:minmax(0,1fr) auto;padding:10px 8px}.sp-task-title{font-size:11px}.sp-task-meta,.sp-task-next{font-size:10px}.sp-task-eye{padding:8px;font-size:10px}}
+</style><style id="sunSpecialistVerticalBars2026">
+/* Comparación vertical por especialista: columnas calculadas de los registros asignados */
+.sp-vchart{background:#f7fbff;border:1px solid #dce8f5;border-radius:12px;padding:16px 15px 10px}
+.sp-vcolumns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(9px,4vw,44px);align-items:end}
+.sp-vcol{appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;height:260px;width:100%;min-width:0;background:transparent;border:1px solid transparent;border-radius:10px;padding:6px 6px 7px;cursor:pointer;color:#26496b}
+.sp-vcol:hover{background:#eaf3fc;border-color:#cbdff3}
+.sp-vcol:focus-visible{outline:3px solid #3984d2;outline-offset:2px}
+.sp-vcount{font-size:23px;font-weight:850;color:#173f6d;font-variant-numeric:tabular-nums;line-height:1}
+.sp-vtower{height:175px;width:min(72%,110px);min-width:34px;display:flex;align-items:flex-end;justify-content:center;border-bottom:2px solid #b7cce0;background:repeating-linear-gradient(to top,transparent 0,transparent 42px,#d6e4f140 43px,#d6e4f140 44px)}
+.sp-vbar{display:block;width:100%;border-radius:9px 9px 2px 2px;background:linear-gradient(180deg,#77b7e9,#2473b0);box-shadow:inset 0 1px 0 #ffffff65;min-height:0;transition:height .2s ease}
+.sp-vcol:nth-child(2) .sp-vbar{background:linear-gradient(180deg,#69c7c0,#19857b)}
+.sp-vcol:nth-child(3) .sp-vbar{background:linear-gradient(180deg,#ad9bf0,#7053b5)}
+.sp-vperson{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:850;letter-spacing:.01em;text-align:center}
+.sp-vavatar{font-size:20px;line-height:1}
+.sp-vpending{font-size:11px;color:#5f7b94;text-align:center}
+.sp-vfoot{margin:10px 1px 0;font-size:11px;color:#637b91;line-height:1.5}
+.sp-vfeedback{margin:5px 1px 0;font-size:12px;color:#336995;line-height:1.4}
+.sp-vfeedback:empty{display:none}
+html[data-sun-theme="dark"] .sp-vchart{background:#1d3046;border-color:#405b77}
+html[data-sun-theme="dark"] .sp-vcol{background:transparent;color:#e7f3ff}
+html[data-sun-theme="dark"] .sp-vcol:hover{background:#304963;border-color:#587694}
+html[data-sun-theme="dark"] .sp-vcount,html[data-sun-theme="dark"] .sp-vperson{color:#edf6ff}
+html[data-sun-theme="dark"] .sp-vtower{border-color:#637e97;background:repeating-linear-gradient(to top,transparent 0,transparent 42px,#324d65 43px,#324d65 44px)}
+html[data-sun-theme="dark"] .sp-vpending,html[data-sun-theme="dark"] .sp-vfoot{color:#bbd2e6}
+html[data-sun-theme="dark"] .sp-vfeedback{color:#aed4ff}
+@media(max-width:580px){.sp-vchart{padding:12px 7px 7px}.sp-vcolumns{gap:5px}.sp-vcol{height:240px;gap:5px;padding:4px 2px 6px}.sp-vtower{height:157px;min-width:26px;width:64%}.sp-vcount{font-size:21px}.sp-vperson{font-size:11px;gap:3px}.sp-vavatar{font-size:15px}.sp-vpending{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.sp-vbar{transition:none}}
 </style><style id="finDetalleStyle">
 .fin-detail-btn{cursor:pointer;text-align:left;width:100%;font-family:inherit;border:1px solid #dbe5f1;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .fin-detail-btn:hover{border-color:#4f8ac4;transform:translateY(-2px);box-shadow:0 5px 15px #153c6220;background:#eef6ff}
@@ -1390,19 +1417,28 @@ document.getElementById('alerts').addEventListener('click',function(event){
  const allAssigned=()=>data.filter(r=>names.includes(person(r)));
  const pendingAll=()=>allAssigned().filter(esPendiente);
  function summary(){
-  const assigned=allAssigned();
-  const counts=names.map(name=>({name,count:assigned.filter(r=>person(r)===name).length}));
+  const assigned=allAssigned(),pending=pendingAll();
+  const counts=names.map(name=>({
+   name,
+   count:assigned.filter(r=>person(r)===name).length,
+   pending:pending.filter(r=>person(r)===name).length
+  }));
   const max=Math.max(1,...counts.map(x=>x.count));
-  const bars=counts.map(x=>{
+  const unassigned=data.filter(r=>person(r)==='SIN ESPECIALISTA ASIGNADO').length;
+  const columns=counts.map(x=>{
    const avatar=x.name==='HERMES'?'👨':'👩';
-   return '<button class="sp-chart-row" type="button" data-sp-jump="'+x.name+'" aria-label="Ir a los pendientes de '+x.name+'">'+
-    '<span class="sp-chart-person"><span class="sp-chart-avatar" aria-hidden="true">'+avatar+'</span>'+x.name+'</span>'+
-    '<span class="sp-chart-track" aria-hidden="true"><span class="sp-chart-bar" style="width:'+(x.count/max*100).toFixed(1)+'%"></span></span>'+
-    '<span class="sp-chart-number">'+x.count+'</span><span class="sp-chart-go" aria-hidden="true">↓</span></button>';
+   const height=x.count?(x.count/max*100).toFixed(1):'0';
+   return '<button class="sp-vcol" type="button" data-sp-jump="'+x.name+'" aria-label="'+x.name+': '+x.count+' procedimientos asignados, '+x.pending+' pendientes. Ver pendientes de '+x.name+'" title="Ver pendientes de '+x.name+'">'+
+    '<span class="sp-vcount">'+x.count+'</span>'+
+    '<span class="sp-vtower" aria-hidden="true"><span class="sp-vbar" style="height:'+height+'%"></span></span>'+
+    '<span class="sp-vperson"><span class="sp-vavatar" aria-hidden="true">'+avatar+'</span>'+x.name+'</span>'+
+    '<span class="sp-vpending">'+x.pending+' pendiente'+(x.pending===1?'':'s')+'</span></button>';
   }).join('');
-  return '<div class="sp-head"><div><h3>Carga por especialista</h3><p>Toca una barra para ir directamente a sus pendientes.</p></div>'+
+  return '<div class="sp-head"><div><h3>Procedimientos asignados por especialista</h3><p>Comparación de registros asignados. Selecciona una columna para consultar los pendientes de cada responsable.</p></div>'+
    '<span class="sp-head-count"><b>'+assigned.length+'</b> registros asignados</span></div>'+
-   '<div class="sp-bars">'+bars+'</div>';
+   '<div class="sp-vchart" role="group" aria-label="Gráfico de barras verticales de los procedimientos asignados por especialista"><div class="sp-vcolumns">'+columns+'</div></div>'+
+   '<p class="sp-vfoot">'+(unassigned?unassigned+' registros sin especialista asignado no están incluidos en las columnas. ':'')+'Los recuentos reflejan registros del Excel, no necesariamente procedimientos únicos.</p>'+
+   '<p id="spChartFeedback2026" class="sp-vfeedback" role="status" aria-live="polite"></p>';
  }
  function matches(r,q){
   if(!q)return true;
@@ -1491,7 +1527,13 @@ document.getElementById('alerts').addEventListener('click',function(event){
     renderPending();
    }
    const groupNode=[...root.querySelectorAll('[data-sp-group]')].find(el=>el.dataset.spGroup===name);
-   if(groupNode){groupNode.scrollIntoView({behavior:'smooth',block:'start'});}
+   const feedback=root.querySelector('#spChartFeedback2026');
+   if(groupNode){
+    if(feedback)feedback.textContent='Mostrando los pendientes de '+name+'.';
+    groupNode.scrollIntoView({behavior:'smooth',block:'start'});
+   }else if(feedback){
+    feedback.textContent='No hay procedimientos pendientes registrados para '+name+'.';
+   }
    return;
   }
  });
