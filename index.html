@@ -432,7 +432,7 @@ body[data-sun-page] main.shell{min-height:55vh}
 @media(max-width:760px){.sun-reports-grid{grid-template-columns:1fr}.sun-page-head{padding:16px}.sun-page-head h2{font-size:19px}body[data-sun-page="indicadores"] #visualSummary{grid-template-columns:1fr}}
 @media print{.sun-page-head{background:white;color:#17365d;border:1px solid #dce5ef}.sun-page-head h2{color:#17365d}}
 </style><style id="sunContractAlertsPages2026">
-body[data-sun-page] #sunContractsPanel,body[data-sun-page] #sunNewConvocationsPage{display:none!important}
+body[data-sun-page] #sunContractsPanel{display:none!important}
 body[data-sun-page="contratos"] #sunContractsPanel{display:block!important}
 body[data-sun-page="contratos"][data-sun-contract-tab="vigentes"] #proceduresPanel{display:none!important}
 body[data-sun-page="contratos"][data-sun-contract-tab="suscritos"] #sunContractsList{display:none!important}
@@ -562,16 +562,7 @@ body[data-sun-page="procedimientos"] .sun-proc-links{display:flex}
   <button type="button" data-table-scroll="down" aria-label="Ver filas siguientes" title="Desplazar filas hacia abajo">↓</button>
  </div>
 </div>
-<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><section id="sunNewConvocationsPage" class="sun-newconv-page" aria-label="Seguimiento de nuevas convocatorias">
- <div id="sunNewConvStats" class="sun-newconv-stats"></div>
- <div class="sun-newconv-layout">
-  <div class="sun-newconv-list-col">
-   <div class="sun-newconv-toolbar"><label for="sunNewConvSearch">Buscar nueva contratación</label><input type="search" id="sunNewConvSearch" placeholder="Servicio, especialista, estado, PAC..." autocomplete="off"/></div>
-   <div id="sunNewConvList" class="sun-newconv-list"></div>
-  </div>
-  <div id="sunNewConvDetail" class="sun-newconv-detail" aria-live="polite"><p>Selecciona una nueva contratación para consultar su estado, responsable y actuaciones.</p></div>
- </div>
-</section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
+<div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
 <article class="sun-report-card"><span class="sun-report-icon">▣</span><h3>Presentación PowerPoint</h3><p>Diapositivas para una reunión gerencial con indicadores, procedimientos, PAC, contratos y previsiones.</p><button type="button" class="primary" data-sun-report="reportPpt">Descargar PowerPoint (.pptx)</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Resumen de seguimiento listo para imprimir o guardar como PDF.</p><button type="button" data-sun-report="reportPdf">Abrir reporte PDF</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
@@ -635,23 +626,9 @@ function observacionesVisibles(r){
  const blocks=[];
  if(valid(r.observaciones))blocks.push(['Observaciones',r.observaciones,'obs-observacion']);
  if(valid(r.seguimientoExcel)&&String(r.seguimientoExcel).trim()!==String(r.observaciones||'').trim())blocks.push(['Seguimiento registrado',r.seguimientoExcel,'obs-seguimiento']);
- if(valid(r.estadoNueva)&&!['EN CURSO'].includes(String(r.estadoNueva).trim().toUpperCase()))blocks.push(['Nueva convocatoria',r.estadoNueva,'obs-estado']);
- // El botón de alerta aparece en Observaciones solo cuando el Excel marca nueva convocatoria.
- // "Convocatoria iniciada" se reserva a estados expresos de publicación; los actos preparatorios se distinguen.
- const requiresNew=norm(r.nuevaConvocatoria)==='SI';
- let alert='';
- if(requiresNew){
-  const phase=norm(r.estadoNueva),general=norm(r.estado);
-  const published=phase.includes('CONVOCATORIA PUBLICADA')||general.includes('CONVOCATORIA PUBLICADA');
-  const preparing=phase.includes('ACTUACIONES PREPARATORIAS')||phase.includes('PENDIENTE DEL SIGA')||phase.includes('EN EVALUACION');
-  const pending=phase.includes('PENDIENTE DE REQUERIMIENTO')||phase==='NO INICIADA'||phase.includes('PROGRAMADO PARA')||phase==='CONTRATO VIGENTE';
-  const alertLabel=published?'Nueva convocatoria iniciada':preparing?'Nueva contratación en trámite':pending?'Nueva convocatoria pendiente':'Nueva convocatoria en seguimiento';
-  const assigned=valid(r.especialista)?r.especialista:'Por asignar';
-  const idx=data.indexOf(r);
-  if(idx>=0)alert='<div class="obs-next-alert"><button type="button" class="obs-next-alert-btn" data-sun-open-new="'+idx+'" title="Abrir el seguimiento completo de la nueva convocatoria del registro '+esc(r.id)+'" aria-label="Alerta: '+esc(alertLabel)+'. Ver nueva convocatoria del registro '+esc(r.id)+'"><span class="obs-next-alert-icon" aria-hidden="true">⚠</span><span class="obs-next-alert-body"><b>'+esc(alertLabel)+'</b><span>Especialista: '+esc(assigned)+' · '+esc(valid(r.estadoNueva)?r.estadoNueva:'Estado por verificar')+'</span><span class="obs-next-alert-hint">Ver toda la información y actuaciones de la nueva convocatoria ›</span></span></button></div>';
- }
- if(!blocks.length&&!alert)return '<div class="obs-empty">Sin observaciones o actuaciones registradas en el Excel</div>';
- return '<div class="obs-stack">'+alert+blocks.map(([label,value,cls])=>'<div class="obs-box '+cls+'"><strong>'+esc(label)+'</strong><div class="obs-text">'+esc(value)+'</div></div>').join('')+'</div>';
+ if(valid(r.estadoNueva)&&!['EN CURSO'].includes(String(r.estadoNueva).trim().toUpperCase()))blocks.push(['Nueva contratación',r.estadoNueva,'obs-estado']);
+ if(!blocks.length)return '<div class="obs-empty">Sin observaciones o actuaciones registradas en el Excel</div>';
+ return '<div class="obs-stack">'+blocks.map(([label,value,cls])=>'<div class="obs-box '+cls+'"><strong>'+esc(label)+'</strong><div class="obs-text">'+esc(value)+'</div></div>').join('')+'</div>';
 }
 function eyeButton(idx){
  const r=data[idx]||{};
@@ -1789,7 +1766,7 @@ experts();apply();
  const tabs={pac:'tabAll',procedimientos:'tabAll',contratos:'tabContracts',previsiones:'tabPrevisiones'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return pages[p]?p:'especialistas'};
+ const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return p==='convocatorias'?'procedimientos':pages[p]?p:'especialistas'};
  function go(requested,updateUrl=true){
   const p=pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
   if(tab&&!tab.classList.contains('active'))tab.click();
@@ -1871,18 +1848,20 @@ function contracts(){
  '</tbody></table></div>';
 }
 function statNew(){
+ if(!el('sunNewConvStats'))return;
  const entries=flagged();
  el('sunNewConvStats').innerHTML=card(entries.length,'Requieren nueva convocatoria','sun-newconv-stat')+card(entries.filter(({r})=>spec(r)!=='Por asignar').length,'Con especialista registrado','sun-newconv-stat')+
  card(entries.filter(({r})=>spec(r)==='Por asignar').length,'Por asignar','sun-newconv-stat');
 }
 function listNew(){
+ if(!el('sunNewConvList'))return;
  const search=norm(el('sunNewConvSearch')?.value);
  const result=flagged().filter(({r})=>!search||norm([r.descripcion,r.especialista,r.estadoNueva,r.estado,r.pac].join(' ')).includes(search));
  el('sunNewConvList').innerHTML=result.map(({r,i})=>'<button type="button" class="sun-newconv-item" data-sun-focus-new="'+i+'" aria-current="'+(String(r.id)===focused)+'"><b>'+esc(txt(r.descripcion))+'</b><small>Registro '+esc(r.id)+' · '+esc(spec(r))+' · '+esc(status(r))+'</small></button>').join('')||'<p class="sun-ct-note">Sin resultados para la búsqueda.</p>';
 }
 const field=(label,v)=>'<div class="sun-newconv-field"><small>'+esc(label)+'</small><strong>'+esc(txt(v))+'</strong></div>';
 function details(id){
- const i=data.findIndex(r=>String(r.id)===String(id)),host=el('sunNewConvDetail');
+ const i=data.findIndex(r=>String(r.id)===String(id)),host=el('sunLinkedContent');
  if(i<0){focused=null;host.innerHTML='<p>Selecciona un registro para consultar su nueva convocatoria.</p>';listNew();return}
  const r=data[i];focused=String(r.id);
  host.innerHTML='<span class="sun-newconv-status '+(pending(r)?'warn':'')+'">'+esc(status(r))+'</span><h3>'+esc(txt(r.descripcion))+'</h3>'+
@@ -1911,8 +1890,7 @@ function openRecord(i){
  if(!dlg||!content)return;
  const gd=el('gerDetail');if(gd?.open)gd.close();
  el('sunLinkedTitle').textContent='Nueva contratación · seguimiento';
- const source=el('sunNewConvDetail');
- content.innerHTML='<p class="sun-linked-notice">La Ley 32069 distingue actuaciones preparatorias de convocatoria. Los datos del Excel no acreditan por sí solos que se haya publicado la convocatoria.</p><div class="sun-newconv-detail">'+(source?.innerHTML||'<p>Sin información registrada.</p>')+'</div>';
+ content.innerHTML='<p class="sun-linked-notice">La Ley 32069 distingue actuaciones preparatorias de convocatoria. Los datos del Excel no acreditan por sí solos que se haya publicado la convocatoria.</p><div class="sun-newconv-detail">'+(content.innerHTML||'<p>Sin información registrada.</p>')+'</div>';
  content.querySelectorAll('.sun-newconv-actions').forEach(node=>node.remove());
  if(dlg.open)dlg.close();
  dlg.showModal();
