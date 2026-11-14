@@ -738,7 +738,7 @@ html[data-sun-theme="dark"] .sun-proc2026-datestatus.soon{color:#ffdb9c!importan
  <button type="button" data-pac-quick="programado" aria-pressed="false">▦ Programados PAC <strong data-pac-count="programado">—</strong></button>
  <button type="button" data-pac-quick="no" aria-pressed="false">◫ No programados <strong data-pac-count="no">—</strong></button>
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
-</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos" hidden>
+</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
   <div><h3>Seguimiento de procedimientos y contratos</h3><p>Consulta cada registro y accede al contrato o al seguimiento de una nueva convocatoria sin salir de esta página.</p></div>
   <div class="sun-proc2026-pulses" id="sunProc2026Stats" aria-live="polite"></div>
@@ -2168,7 +2168,7 @@ refresh();
    return '<tr>'+
     '<td data-label="Servicio / contrato"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div><span class="sun-proc2026-sub">Registro '+esc(field(r.id))+' · '+esc(field(r.especialista))+'</span></td>'+
     '<td data-label="Tipo y N.º procedimiento"><span class="sun-proc2026-type">'+esc(field(r.procedimiento))+'</span></td>'+
-    '<td data-label="Contrato / prestación"><span class="sun-proc2026-no">'+esc(contractNum(r))+'</span><span class="sun-proc2026-sub">'+esc(field(r.naturaleza))+'</span></td>'+
+    '<td data-label="Contrato / prestación"><span class="sun-proc2026-no">'+esc(contractNum(r))+'</span><span class="sun-proc2026-sub">'+(field(r.naturaleza)==='—'?'':'Naturaleza: '+esc(field(r.naturaleza)))+'</span></td>'+
     '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span><span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span></td>'+
     '<td data-label="Contrato">'+cbtn+'</td>'+
     '<td data-label="Nueva convocatoria">'+alert+'</td>'+
