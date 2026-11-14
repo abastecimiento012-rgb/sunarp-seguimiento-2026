@@ -1133,18 +1133,9 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Control de procesos</h3><p>Una fila por procedimiento registrado. Consulta los datos principales en la tabla y pulsa 👁 para ver su ficha completa con contrato vigente y actuaciones preparatorias. Las alertas se calculan con las fechas del Excel.</p></div>
-  <div class="sun-proc2026-pulses" id="sunProc2026Stats" aria-live="polite"></div>
+  <div><h3>Control de procesos</h3><p>Busca el contrato o servicio y consulta su ficha con 👁. Las alertas de vencimiento se muestran automáticamente en la tabla.</p></div>
  </div>
- <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar servicio o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Escribe el servicio, número de contrato, área o especialista..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
- <div class="sun-proc2026-controls" aria-label="Filtros de la tabla de procedimientos">
-  <label for="sunProc2026Specialist">Especialista<select id="sunProc2026Specialist"><option value="">Todos los especialistas</option></select></label>
-  <label for="sunProc2026State">Estado del procedimiento<select id="sunProc2026State"><option value="">Todos los estados</option></select></label>
-  <label for="sunProc2026Pac">Programación PAC<select id="sunProc2026Pac"><option value="">Todos</option><option value="programado">Programados en PAC</option><option value="no">No programados</option></select></label>
-  <label for="sunProc2026Sort">Ordenar por<select id="sunProc2026Sort"><option value="original">Orden original del Excel</option><option value="vencimiento">Próximo vencimiento</option><option value="alerta">Alerta de nueva contratación</option><option value="especialista">Especialista (A–Z)</option><option value="servicio">Servicio (A–Z)</option></select></label>
-  <button type="button" id="sunProc2026Clear" class="sun-proc2026-clear" title="Quitar búsqueda y filtros">↺ Limpiar filtros</button>
- </div>
- <div id="sunProc2026FilterSummary" class="sun-proc2026-filter-summary" role="status" aria-live="polite">Selecciona un indicador o utiliza los filtros para explorar los procedimientos.</div>
+ <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
  <table class="sun-proc2026-table"><thead><tr><th scope="col">Contrato / servicio y ficha</th><th scope="col">Proveedor / contratista</th><th scope="col">Tipo y N.º de proceso</th><th scope="col">Vencimiento</th><th scope="col">Alerta automática</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
@@ -2682,8 +2673,7 @@ refresh();
  const panel=document.getElementById('sunProcedures2026Panel');
  if(!panel)return;
  const el=id=>panel.querySelector('#'+id);
- const tbody=el('sunProc2026Rows'),search=el('sunProc2026Search'),counter=el('sunProc2026Count'),stats=el('sunProc2026Stats');
- const spec=el('sunProc2026Specialist'),state=el('sunProc2026State'),pac=el('sunProc2026Pac'),sort=el('sunProc2026Sort'),clear=el('sunProc2026Clear'),summary=el('sunProc2026FilterSummary');
+ const tbody=el('sunProc2026Rows'),search=el('sunProc2026Search'),counter=el('sunProc2026Count');
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toUpperCase();
  const missing=v=>!String(v??'').trim()||['-','—','NO APLICA','NO CORRESPONDE','PENDIENTE','SIN INFORMACION','CONTRATO VIGENTE','EN ACTUACIONES PREPARATORIAS','NINGUNO'].includes(norm(v))||norm(v).startsWith('NO HAY ')||norm(v).startsWith('SIN CONTRATO');
@@ -2692,10 +2682,6 @@ refresh();
  const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
  const leadDays=90; // Umbral preventivo de gestión, no plazo normativo.
  const hasContract=r=>field(r.contratoVigente)!=='—'||field(r.numeroContrato)!=='—'&&field(r.contratista)!=='—';
- function inForce(r){
-  const end=dateOf(r.vencimiento),start=dateOf(r.fechaInicio),now=today();
-  return !!(hasContract(r)&&end&&end>=now&&(!start||start<=now));
- }
  function expiry(r){
   const end=dateOf(r.vencimiento);
   if(!end||!hasContract(r))return {date:'—',message:'Sin vencimiento contractual confirmado',kind:'none',days:null};
@@ -2737,65 +2723,20 @@ refresh();
   return {kind:'ok',label:'✓ Sin alerta por vencimiento',detail:'Faltan '+due+' días · alerta desde '+leadDays+' días',priority:5};
  }
  const provider=r=>{
-  const val=field(r.contratista);
-  if(val!=='—')return {name:val,kind:'Contratista registrado'};
+  const name=field(r.contratista);
+  if(name!=='—')return {name,clarification:''};
   const postor=field(r.postor);
-  return postor!=='—'?{name:postor,kind:'Postor registrado (no acredita contrato)'}:{name:'—',kind:'Proveedor no identificado'};
+  if(postor!=='—')return {name:postor,clarification:'Postor; contrato no confirmado'};
+  return {name:'—',clarification:''};
  };
- function programmed(r){return /^\d+$/.test(norm(r.pac))}
  function matches(r,q){
   return !q||norm([r.id,r.descripcion,r.procedimiento,r.numeroContrato,r.contratoVigente,r.especialista,r.estado,r.estadoNueva,r.vencimiento,r.pac,r.area,r.contratista,r.postor].join(' ')).includes(q);
  }
- let focus='todos';
- const filters=[
-  {id:'todos',label:'Todos los registros',emoji:'▦',test:r=>true},
-  {id:'vigentes',label:'Contratos vigentes',emoji:'✓',test:r=>inForce(r)},
-  {id:'nuevas',label:'Nueva contratación registrada',emoji:'⚑',test:r=>newState(r).kind!=='none'},
-  {id:'proximos',label:'Alertas por vencimiento',emoji:'⚠',test:r=>['urgent','attention'].includes(alertFor(r).kind)},
-  {id:'vencidos',label:'Contratos vencidos',emoji:'!',test:r=>expiry(r).kind==='expired'}
- ];
- function selectOptions(control,values,caption){
-  const old=control.value;
-  const options=[...new Set(values.map(norm).filter(x=>x&&x!=='-'&&x!=='NO APLICA'&&x!=='NO CORRESPONDE'))].sort((a,b)=>a.localeCompare(b,'es'));
-  control.innerHTML='<option value="">'+esc(caption)+'</option>'+options.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
-  if(options.includes(old))control.value=old;
- }
- function refreshOptions(items){
-  selectOptions(spec,items.map(r=>r.especialista),'Todos los especialistas');
-  selectOptions(state,items.map(r=>r.estado),'Todos los estados');
- }
- const alpha=(a,b)=>norm(a).localeCompare(norm(b),'es');
- function ordered(visible){
-  const mode=sort.value;
-  if(mode==='original')return visible;
-  return visible.slice().sort((x,y)=>{
-   let n=0;
-   if(mode==='servicio')n=alpha(x.r.descripcion,y.r.descripcion);
-   if(mode==='especialista')n=alpha(field(x.r.especialista)==='—'?'ZZZZ':x.r.especialista,field(y.r.especialista)==='—'?'ZZZZ':y.r.especialista);
-   if(mode==='vencimiento')n=(dateOf(x.r.vencimiento)?.getTime()??Infinity)-(dateOf(y.r.vencimiento)?.getTime()??Infinity);
-   if(mode==='alerta')n=alertFor(x.r).priority-alertFor(y.r).priority;
-   return n||x.i-y.i;
-  });
- }
- function resetAll(){
-  search.value='';spec.value='';state.value='';pac.value='';sort.value='original';focus='todos';paint();search.focus();
- }
  function paint(){
   const items=Array.isArray(data)?data:[];
-  refreshOptions(items);
-  const q=norm(search.value),selected=filters.find(x=>x.id===focus)||filters[0];
-  const matching=items.map((r,i)=>({r,i})).filter(({r})=>
-   selected.test(r)&&matches(r,q)&&
-   (!spec.value||norm(r.especialista)===spec.value)&&
-   (!state.value||norm(r.estado)===state.value)&&
-   (!pac.value||(pac.value==='programado'?programmed(r):norm(r.pac)==='NO PROGRAMADO'))
-  );
-  const visible=ordered(matching);
-  stats.innerHTML=filters.map(f=>'<button type="button" class="sun-proc2026-chip '+(f.id==='proximos'||f.id==='vencidos'?'warn':'')+'" data-sun-proc-focus="'+f.id+'" aria-pressed="'+String(focus===f.id)+'" title="Filtrar: '+esc(f.label)+'"><span aria-hidden="true">'+f.emoji+'</span> <b>'+items.filter(f.test).length+'</b> '+esc(f.label)+'</button>').join('');
+  const q=norm(search.value);
+  const visible=items.map((r,i)=>({r,i})).filter(({r})=>matches(r,q));
   counter.textContent='Mostrando '+visible.length+' de '+items.length+' registros';
-  const activeConditions=[focus!=='todos'?selected.label:'',search.value?'Búsqueda: '+search.value.trim():'',spec.value?'Especialista: '+spec.value:'',state.value?'Estado: '+state.value:'',pac.value?'PAC: '+(pac.value==='programado'?'programados':'no programados'):''].filter(Boolean);
-  summary.textContent=activeConditions.length?'Filtros activos · '+activeConditions.join(' · '):'Selecciona los indicadores superiores o utiliza los filtros para explorar los procedimientos.';
-  clear.disabled=!activeConditions.length&&sort.value==='original';
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
    const end=expiry(r),prov=provider(r),alert=alertFor(r),number=field(r.procedimiento);
    const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+': contrato vigente y actuaciones preparatorias" title="Ver información del proceso">👁 Ver ficha</button>';
@@ -2803,13 +2744,12 @@ refresh();
     '<strong>'+esc(alert.label)+'</strong>'+(alert.detail?'<small>'+esc(alert.detail)+'</small>':'')+'</button>';
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
     '<td data-label="Contrato / servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+(field(r.especialista)!=='—'?'<span class="sun-proc2026-sub">Especialista: '+esc(field(r.especialista))+'</span>':'')+eye+'</td>'+
-    '<td data-label="Proveedor"><div class="sun-proc2026-provider">'+esc(prov.name)+'</div><span class="sun-proc2026-sub">'+esc(prov.kind)+'</span></td>'+
+    '<td data-label="Proveedor"><div class="sun-proc2026-provider">'+esc(prov.name)+'</div>'+(prov.clarification?'<span class="sun-proc2026-sub">'+esc(prov.clarification)+'</span>':'')+'</td>'+
     '<td data-label="Tipo y N.º de proceso"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
-    '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span>'+(end.message?'<span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span>':'')+'</td>'+ 
-
+    '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span>'+(end.message?'<span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span>':'')+'</td>'+
     '<td data-label="Alerta automática">'+alertButton+'</td>'+
     '</tr>';
-  }).join(''):'<tr><td colspan="5" class="sun-proc2026-empty">No hay resultados con los filtros seleccionados. Usa «Limpiar filtros» para ver todos los registros.</td></tr>';
+  }).join(''):'<tr><td colspan="5" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
  panel.addEventListener('click',e=>{
   const b=e.target.closest('[data-sun-proc-integral]');
@@ -2819,14 +2759,6 @@ refresh();
   if(Number.isInteger(i)&&data[i])window.sunarpOpenFichaIntegral2026?.(i);
  });
  search.addEventListener('input',paint);
- for(const control of [spec,state,pac,sort])control.addEventListener('change',paint);
- clear.addEventListener('click',resetAll);
- stats.addEventListener('click',e=>{
-  const button=e.target.closest('[data-sun-proc-focus]');
-  if(!button)return;
-  focus=focus===button.dataset.sunProcFocus?'todos':button.dataset.sunProcFocus;
-  paint();
- });
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&document.body.dataset.sunPage==='procedimientos')paint()});
  window.addEventListener('focus',()=>{if(document.body.dataset.sunPage==='procedimientos')paint()});
  setInterval(()=>{if(document.body.dataset.sunPage==='procedimientos')paint()},3600000);
