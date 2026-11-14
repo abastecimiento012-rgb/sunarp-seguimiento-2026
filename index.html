@@ -836,6 +836,48 @@ html[data-sun-theme="dark"] .sun-proc2026-clear{background:#30465b!important;col
 @media(max-width:1050px){.sun-proc2026-pulses{grid-template-columns:repeat(3,minmax(0,1fr))}.sun-proc2026-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.sun-proc2026-clear{width:100%}}
 @media(max-width:650px){.sun-proc2026-pulses{grid-template-columns:repeat(2,minmax(0,1fr))}.sun-proc2026-pulses .sun-proc2026-chip{min-height:55px}.sun-proc2026-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.sun-proc2026-controls label{font-size:11px}.sun-proc2026-controls select{font-size:12px;min-height:41px}.sun-proc2026-clear{grid-column:1/-1}}
 @media(max-width:410px){.sun-proc2026-controls{grid-template-columns:minmax(0,1fr)}.sun-proc2026-clear{grid-column:auto}}
+</style><style id="sunProcedimientosTablaAlertas2026">
+/* Calendario en la barra de herramientas, debajo de Claro/Oscuro */
+.sun-nav-tools{display:flex;flex-direction:column;align-items:stretch;gap:4px;flex:none;min-width:153px}
+.sun-nav-tools .sun-theme-control{justify-content:center}
+.sun-calendar-shortcut{width:100%;min-height:31px;padding:6px 12px!important;text-align:center!important;background:#edf5fe!important;border:1px solid #cfdfef!important;font-size:12px!important;font-weight:800!important}
+.sun-calendar-shortcut.is-active{background:#d3e9ff!important;border-color:#6fb0e5!important;color:#13538a!important}
+.sun-proc2026-table{min-width:1070px;table-layout:fixed}
+.sun-proc2026-table th:nth-child(1){width:29%}
+.sun-proc2026-table th:nth-child(2){width:21%}
+.sun-proc2026-table th:nth-child(3){width:21%}
+.sun-proc2026-table th:nth-child(4){width:13%}
+.sun-proc2026-table th:nth-child(5){width:16%}
+.sun-proc2026-provider{font-weight:750;font-size:12px;line-height:1.55;color:#28526e;white-space:pre-wrap;overflow-wrap:anywhere}
+.sun-proc2026-eye{margin-top:9px!important;display:inline-flex!important;align-items:center;justify-content:center;background:#eaf2ff!important;color:#205c92!important;border:1px solid #a6c8e7!important;border-radius:8px!important;font-weight:800!important;font-size:12px!important;padding:7px 11px!important;cursor:pointer}
+.sun-proc2026-eye:hover,.sun-proc2026-eye:focus-visible{background:#dcecff!important;outline:2px solid #75abe0;outline-offset:2px}
+.sun-proc2026-alert{width:100%;min-height:57px;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:10px 9px!important;text-align:left;border-radius:10px!important;white-space:normal;overflow-wrap:anywhere;cursor:pointer;border:1px solid #dae5ef!important;background:#f5f8fc!important;color:#586f82!important}
+.sun-proc2026-alert strong{display:block;font-size:12px;line-height:1.35;font-weight:800}
+.sun-proc2026-alert small{display:block;font-size:11px;line-height:1.5;opacity:.95;font-weight:500}
+.sun-proc2026-alert.started{background:#e8f6ed!important;border-color:#97cdae!important;color:#216741!important}
+.sun-proc2026-alert.ok{background:#eef6fc!important;border-color:#c5dfef!important;color:#3e6c88!important}
+.sun-proc2026-alert.pending{background:#fff5e2!important;border-color:#efd2a0!important;color:#885f1c!important}
+.sun-proc2026-alert.attention{background:#fff0d5!important;border-color:#edb85c!important;color:#905a09!important}
+.sun-proc2026-alert.urgent{background:#fce5e3!important;border-color:#df9e95!important;color:#a1332c!important}
+.sun-proc2026-alert.neutral{background:#f3f5f7!important;border-color:#dae1e7!important;color:#607080!important}
+.sun-proc2026-alert:hover,.sun-proc2026-alert:focus-visible{outline:2px solid #78a6d3;outline-offset:2px;filter:brightness(.98)}
+html[data-sun-theme="dark"] .sun-calendar-shortcut{background:#253e58!important;border-color:#50718f!important;color:#e7f3ff!important}
+html[data-sun-theme="dark"] .sun-calendar-shortcut.is-active{background:#36658c!important;border-color:#75b8f6!important;color:#fff!important}
+html[data-sun-theme="dark"] .sun-proc2026-provider{color:#e1f1ff!important}
+html[data-sun-theme="dark"] .sun-proc2026-eye{background:#294965!important;border-color:#5989b4!important;color:#eef6ff!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.started{background:#224b39!important;border-color:#559c78!important;color:#c8f4dc!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.ok{background:#284658!important;border-color:#4e7892!important;color:#dcf3ff!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.pending{background:#54432a!important;border-color:#97794b!important;color:#ffe1b7!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.attention{background:#694724!important;border-color:#c49550!important;color:#ffebbe!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.urgent{background:#673333!important;border-color:#a85e5e!important;color:#ffe1df!important}
+html[data-sun-theme="dark"] .sun-proc2026-alert.neutral{background:#2b3b4d!important;border-color:#4a6074!important;color:#cddcea!important}
+@media(max-width:800px){.sun-nav-tools{order:0;margin-left:auto;min-width:146px}.sun-nav-links{order:1}.sun-calendar-shortcut{font-size:12px!important}}
+@media(max-width:760px){
+ .sun-proc2026-table{min-width:0}
+ .sun-proc2026-table td:first-child .sun-proc2026-eye{margin-top:9px!important}
+ .sun-proc2026-alert{min-height:46px}
+}
+@media print{.sun-proc2026-eye{display:none!important}.sun-proc2026-alert{border:1px solid #999!important}}
 </style><style id="sunCalendarStyles2026">
 .sun-calendar-page{background:#fff;border:1px solid #d9e5f0;border-radius:15px;padding:20px;margin:0 0 22px;color:#274362;max-width:1600px}
 .sun-cal-top{display:flex;align-items:start;justify-content:space-between;flex-wrap:wrap;gap:15px;margin-bottom:17px}
@@ -941,14 +983,16 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
     <div class="sun-nav-links" role="group" aria-label="Secciones del aplicativo">
       <button type="button" class="sun-nav-link is-active" data-sun-route="especialistas" aria-current="page">♙ Especialistas</button>
-      <button type="button" class="sun-nav-link" data-sun-route="calendario">📅 Calendario</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
-    <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
-      <button type="button" class="sun-theme-option" data-sun-theme-option="light" aria-pressed="true" title="Modo claro">☀ Claro</button>
-      <button type="button" class="sun-theme-option" data-sun-theme-option="dark" aria-pressed="false" title="Modo oscuro">☾ Oscuro</button>
+    <div class="sun-nav-tools" aria-label="Apariencia y calendario">
+      <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
+        <button type="button" class="sun-theme-option" data-sun-theme-option="light" aria-pressed="true" title="Modo claro">☀ Claro</button>
+        <button type="button" class="sun-theme-option" data-sun-theme-option="dark" aria-pressed="false" title="Modo oscuro">☾ Oscuro</button>
+      </div>
+      <button type="button" class="sun-nav-link sun-calendar-shortcut" data-sun-route="calendario" title="Abrir calendario de vencimientos">📅 Calendario</button>
     </div>
   </div>
 </nav><script id="sunAppearanceControl2026">
@@ -981,7 +1025,7 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Seguimiento de procedimientos y contratos</h3><p>Consulta cada registro y accede al contrato o al seguimiento de una nueva convocatoria sin salir de esta página.</p></div>
+  <div><h3>Control de contratos y procedimientos</h3><p>Consulta el proveedor, el procedimiento y el vencimiento de cada contrato. El ojo abre una ficha con contrato y actuaciones preparatorias; la última columna calcula alertas automáticamente.</p></div>
   <div class="sun-proc2026-pulses" id="sunProc2026Stats" aria-live="polite"></div>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar servicio o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Escribe el servicio, número de contrato, área o especialista..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
@@ -994,9 +1038,9 @@ html[data-sun-theme="dark"] .sun-cal-agenda{border-color:#3a5068!important}
  </div>
  <div id="sunProc2026FilterSummary" class="sun-proc2026-filter-summary" role="status" aria-live="polite">Selecciona un indicador o utiliza los filtros para explorar los procedimientos.</div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de procedimientos; desliza horizontalmente si es necesario">
- <table class="sun-proc2026-table"><thead><tr><th>Nombre del servicio o contrato</th><th>Tipo y N.º del procedimiento</th><th>N.º de contrato / prestación</th><th>Fecha de vencimiento</th><th>Contrato</th><th>Alerta: nueva convocatoria</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
+ <table class="sun-proc2026-table"><thead><tr><th>Nombre del contrato / servicio y ficha</th><th>Proveedor / contratista</th><th>Tipo y N.º del procedimiento</th><th>Fecha de vencimiento</th><th>Alerta automática de nueva contratación</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
- <p class="sun-proc2026-foot">«Nueva contratación en seguimiento» no significa que la convocatoria esté publicada. La vigencia se estima con las fechas registradas en el Excel; verifica siempre el expediente.</p>
+ <p class="sun-proc2026-foot">Alerta preventiva automática: se propone evaluar el inicio de una nueva contratación cuando falten 90 días o menos para el vencimiento y no consten actuaciones iniciadas. No equivale a una obligación legal automática ni confirma la publicación de una convocatoria. Valida la necesidad con el área usuaria y revisa el expediente.</p>
 </section><div class="tabbar"><button class="active" id="tabAll"><span class="tab-icon">▦</span> Seguimiento de procedimientos de selección</button><button id="tabContracts"><span class="tab-icon">▤</span> Contratos suscritos en 2026</button></div><section class="panel" id="proceduresPanel"><div id="uxTableRoute" class="ux-table-route" role="status" hidden></div><div class="filters"><input id="search" aria-label="Buscar procedimientos por descripción, PAC, contrato, estado, proveedor o especialista" placeholder="Buscar procedimientos: servicio, PAC, contrato, estado, proveedor..." type="search" autocomplete="off"/><select id="pacFilter"><option value="">Todos los PAC</option><option value="programado">Programados</option><option value="no">No programados</option></select><select id="stateFilter"><option value="">Todos los estados</option></select><select id="areaFilter"><option value="">Todas las áreas</option></select><select id="specFilter"><option value="">Todos los especialistas</option></select><select id="yearFilter"><option value="">Todos los vencimientos</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option value="none">Sin fecha</option></select></div><div class="table-scroll-tools" aria-label="Controles de desplazamiento de la tabla">
  <span class="table-scroll-title">Mover tabla</span>
  <div class="table-scroll-actions">
@@ -1625,7 +1669,21 @@ document.getElementById('alerts').addEventListener('click',function(event){
  }
  function newContractView(r){
   const yes=['SI','SÍ'].includes(norm(r.nuevaConvocatoria));
-  if(!yes)return '<div class="sp-integral-empty">No hay una nueva contratación registrada para este servicio. Los datos del contrato vigente se muestran únicamente en el apartado anterior.</div>';
+  if(!yes){
+   const prep=norm(r.estado).includes('ACTUACIONES PREPARATORIAS')||norm(r.estadoNueva).includes('ACTUACIONES PREPARATORIAS');
+   if(!prep)return '<div class="sp-integral-empty">No hay actuaciones preparatorias de una nueva contratación registradas para este servicio. Si corresponde continuar el servicio, debe verificarse con el área usuaria.</div>';
+   const fields=[
+    showField('Especialista encargado',r.especialista),
+    showField('Área usuaria',r.area),
+    showField('Etapa del procedimiento registrado',r.estado),
+    showField('Estado de actuaciones preparatorias',r.estadoNueva),
+    showField('Fecha de requerimiento registrada',r.fechaRequerimiento),
+    showField('Documentos de requerimiento',r.documentosRequerimiento)
+   ].filter(Boolean);
+   return '<p class="sp-integral-status pending">Se registran actuaciones preparatorias, pero el Excel no identifica expresamente una nueva convocatoria. Verificar a qué procedimiento corresponden.</p>'+
+    '<div class="sp-integral-fields">'+fields.join('')+'</div>'+
+    (!invalidValue(r.observaciones)?'<div class="sp-integral-note"><b>Observaciones</b><p>'+safe(r.observaciones)+'</p></div>':'');
+  }
   const stage=norm(r.estadoNueva),general=norm(r.estado);
   const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
   const pending=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA/.test(stage);
@@ -1670,7 +1728,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
       contractView(r)+
     '</section>'+
     '<section class="sp-integral-section process" aria-label="Información de la nueva convocatoria">'+
-      '<div class="sp-integral-section-title"><span class="sp-integral-step">02</span><div><h3>Nueva contratación / convocatoria</h3><p>Seguimiento exclusivo del nuevo procedimiento de contratación</p></div></div>'+
+      '<div class="sp-integral-section-title"><span class="sp-integral-step">02</span><div><h3>Actuaciones preparatorias y nueva contratación</h3><p>Seguimiento de las actuaciones y, cuando corresponda, la nueva convocatoria</p></div></div>'+
       newContractView(r)+
     '</section>'+
    '</div>';
@@ -1704,6 +1762,7 @@ document.getElementById('alerts').addEventListener('click',function(event){
    });
   }
  });
+ window.sunarpOpenFichaIntegral2026=openRecord;
  window.renderEspecialistas2026=render;
  render();
 })();
@@ -2495,53 +2554,72 @@ refresh();
  const spec=el('sunProc2026Specialist'),state=el('sunProc2026State'),pac=el('sunProc2026Pac'),sort=el('sunProc2026Sort'),clear=el('sunProc2026Clear'),summary=el('sunProc2026FilterSummary');
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toUpperCase();
- const missing=v=>!String(v??'').trim()||['-','—','NO APLICA','NO CORRESPONDE','PENDIENTE','SIN INFORMACION','NINGUNO'].includes(norm(v));
+ const missing=v=>!String(v??'').trim()||['-','—','NO APLICA','NO CORRESPONDE','PENDIENTE','SIN INFORMACION','CONTRATO VIGENTE','EN ACTUACIONES PREPARATORIAS','NINGUNO'].includes(norm(v))||norm(v).startsWith('NO HAY ')||norm(v).startsWith('SIN CONTRATO');
  const field=v=>missing(v)?'—':String(v).trim();
  const dateOf=v=>typeof date==='function'?date(v):null;
  const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
- const hasContract=r=>{
-  const c=norm(r.contratoVigente);
-  return !!c&&!['-','NO CORRESPONDE','NO APLICA','CONTRATO VIGENTE'].includes(c)&&!c.startsWith('NO HAY ')&&!c.startsWith('SIN CONTRATO ');
- };
+ const leadDays=90; // Umbral preventivo de gestión, no plazo normativo.
+ const hasContract=r=>field(r.contratoVigente)!=='—'||field(r.numeroContrato)!=='—'&&field(r.contratista)!=='—';
  function inForce(r){
   const end=dateOf(r.vencimiento),start=dateOf(r.fechaInicio),now=today();
   return !!(hasContract(r)&&end&&end>=now&&(!start||start<=now));
  }
- function newState(r){
-  const announced=norm(r.nuevaConvocatoria)==='SI';
-  if(!announced)return {kind:'none',label:'Sin nueva contratación registrada',subtitle:''};
-  const stage=norm(r.estadoNueva),general=norm(r.estado);
-  const published=stage.includes('CONVOCATORIA PUBLICADA')||general.includes('CONVOCATORIA PUBLICADA')||
-   (general.includes('CONVOCATORIA')&&/(FORMULACION|OBSERVACION|PUBLICACION|PRESENTACION|OFERTAS|EVALUACION)/.test(general));
-  if(published)return {kind:'published',label:'⚠ Convocatoria publicada',subtitle:field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado)};
-  if(/NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA|SEGUNDA CONVOCATORIA|CONTRATO VIGENTE/.test(stage))
-   return {kind:'pending',label:'◷ Nueva contratación pendiente',subtitle:field(r.estadoNueva)};
-  return {kind:'ongoing',label:'⚑ Nueva contratación en trámite',subtitle:field(r.estadoNueva)};
- }
- function contractNum(r){
-  const number=norm(r.numeroContrato);
-  if(number&&!['-','CONTRATO VIGENTE','PENDIENTE','EN ACTUACIONES PREPARATORIAS','NO APLICA','NO CORRESPONDE'].includes(number)&&!number.startsWith('NO HAY'))return field(r.numeroContrato);
-  return hasContract(r)?field(r.contratoVigente):'—';
- }
  function expiry(r){
   const end=dateOf(r.vencimiento);
-  if(!end||!hasContract(r))return {date:'—',message:'Sin contrato vigente confirmado',kind:'none',days:null};
+  if(!end||!hasContract(r))return {date:'—',message:'Sin vencimiento contractual confirmado',kind:'none',days:null};
   const days=Math.round((end-today())/86400000);
   if(days<0)return {date:field(r.vencimiento),message:'Vencido hace '+Math.abs(days)+' días',kind:'expired',days};
-  if(days<=30)return {date:field(r.vencimiento),message:days===0?'Vence hoy':'Vence en '+days+' días',kind:'soon',days};
-  if(days<=90)return {date:field(r.vencimiento),message:'Vence en '+days+' días',kind:'soon',days};
+  if(days===0)return {date:field(r.vencimiento),message:'Vence hoy',kind:'soon',days};
+  if(days<=leadDays)return {date:field(r.vencimiento),message:'Vence en '+days+' días',kind:'soon',days};
   return {date:field(r.vencimiento),message:'Vigencia según Excel',kind:'normal',days};
  }
+ function newState(r){
+  const announced=norm(r.nuevaConvocatoria)==='SI';
+  if(!announced)return {kind:'none',label:'No registrada',subtitle:''};
+  const stage=norm(r.estadoNueva),general=norm(r.estado),text=stage+' '+general;
+  if(/SEGUNDA CONVOCATORIA|SEGUNDO PROCEDIMIENTO|RECONVOCATORIA/.test(stage))return {kind:'relaunch',label:'Nueva convocatoria por gestionar',subtitle:field(r.estadoNueva)};
+  if(/NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA|CONTRATO VIGENTE|SIN ACTUACIONES/.test(stage))return {kind:'pending',label:'Nueva contratación pendiente',subtitle:field(r.estadoNueva)};
+  if(/CONVOCATORIA PUBLICADA/.test(text)||(general.includes('CONVOCATORIA')&&/FORMULACION|OBSERVACION|PUBLICACION|PRESENTACION DE OFERTAS|EVALUACION/.test(general)))
+   return {kind:'published',label:'Convocatoria publicada',subtitle:field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado)};
+  if(/ACTUACIONES PREPARATORIAS|INTERACCION CON EL MERCADO|EN CURSO|EN TRAMITE|EN EVALUACION|PROCEDIMIENTO EN SEGUIMIENTO/.test(stage))
+   return {kind:'ongoing',label:'Actuaciones iniciadas',subtitle:field(r.estadoNueva)};
+  return {kind:'unknown',label:'Nueva contratación por confirmar',subtitle:field(r.estadoNueva)};
+ }
+ function alertFor(r){
+  const n=newState(r),e=expiry(r),due=e.days;
+  const subtitle=n.subtitle&&n.subtitle!=='—'?n.subtitle:'';
+  if(n.kind==='published')return {kind:'started',label:'✓ Nueva convocatoria publicada',detail:subtitle,priority:4};
+  if(n.kind==='ongoing')return {kind:'started',label:'✓ Nueva contratación iniciada',detail:'En seguimiento: '+(subtitle||'actuaciones preparatorias'),priority:4};
+  if(n.kind==='relaunch'){
+   return {kind:'attention',label:'⚠ Gestionar nueva convocatoria',detail:subtitle||'Segunda convocatoria pendiente',priority:1};
+  }
+  if(due!==null&&due<0){
+   return {kind:'urgent',label:n.kind==='none'?'✕ Vencido: evaluar nueva contratación':'✕ Vencido: gestionar inicio',detail:'Vencimiento hace '+Math.abs(due)+' días'+(subtitle?' · '+subtitle:''),priority:0};
+  }
+  if(due!==null&&due<=leadDays){
+   return {kind:'attention',label:n.kind==='none'?'⚠ Evaluar inicio de nueva contratación':n.kind==='pending'?'⚠ Iniciar nueva contratación':'⚠ Verificar inicio de contratación',detail:due===0?'Vence hoy':due+' días para el vencimiento'+(subtitle?' · '+subtitle:''),priority:1};
+  }
+  if(n.kind==='pending')return {kind:'pending',label:'◷ Nueva contratación por iniciar',detail:subtitle,priority:2};
+  if(n.kind==='unknown')return {kind:'pending',label:'◷ Estado de nueva contratación por verificar',detail:subtitle,priority:2};
+  if(due===null)return {kind:'neutral',label:'— Sin fecha contractual confirmada',detail:'Revisar vigencia y necesidad del servicio',priority:5};
+  return {kind:'ok',label:'✓ Sin alerta por vencimiento',detail:'Faltan '+due+' días · alerta desde '+leadDays+' días',priority:5};
+ }
+ const provider=r=>{
+  const val=field(r.contratista);
+  if(val!=='—')return {name:val,kind:'Contratista registrado'};
+  const postor=field(r.postor);
+  return postor!=='—'?{name:postor,kind:'Postor registrado (no acredita contrato)'}:{name:'—',kind:'Proveedor no identificado'};
+ };
  function programmed(r){return /^\d+$/.test(norm(r.pac))}
  function matches(r,q){
-  return !q||norm([r.id,r.descripcion,r.procedimiento,r.numeroContrato,r.contratoVigente,r.naturaleza,r.modalidadContratacion,r.especialista,r.estado,r.estadoNueva,r.vencimiento,r.pac,r.area,r.contratista].join(' ')).includes(q);
+  return !q||norm([r.id,r.descripcion,r.procedimiento,r.numeroContrato,r.contratoVigente,r.especialista,r.estado,r.estadoNueva,r.vencimiento,r.pac,r.area,r.contratista,r.postor].join(' ')).includes(q);
  }
  let focus='todos';
  const filters=[
   {id:'todos',label:'Todos los registros',emoji:'▦',test:r=>true},
   {id:'vigentes',label:'Contratos vigentes',emoji:'✓',test:r=>inForce(r)},
-  {id:'nuevas',label:'Nueva contratación',emoji:'⚑',test:r=>newState(r).kind!=='none'},
-  {id:'proximos',label:'Vencen en 90 días',emoji:'◷',test:r=>expiry(r).kind==='soon'},
+  {id:'nuevas',label:'Nueva contratación registrada',emoji:'⚑',test:r=>newState(r).kind!=='none'},
+  {id:'proximos',label:'Alertas por vencimiento',emoji:'⚠',test:r=>['urgent','attention'].includes(alertFor(r).kind)},
   {id:'vencidos',label:'Contratos vencidos',emoji:'!',test:r=>expiry(r).kind==='expired'}
  ];
  function selectOptions(control,values,caption){
@@ -2558,13 +2636,12 @@ refresh();
  function ordered(visible){
   const mode=sort.value;
   if(mode==='original')return visible;
-  const pri={published:0,ongoing:1,pending:2,none:3};
   return visible.slice().sort((x,y)=>{
    let n=0;
    if(mode==='servicio')n=alpha(x.r.descripcion,y.r.descripcion);
    if(mode==='especialista')n=alpha(field(x.r.especialista)==='—'?'ZZZZ':x.r.especialista,field(y.r.especialista)==='—'?'ZZZZ':y.r.especialista);
    if(mode==='vencimiento')n=(dateOf(x.r.vencimiento)?.getTime()??Infinity)-(dateOf(y.r.vencimiento)?.getTime()??Infinity);
-   if(mode==='alerta')n=pri[newState(x.r).kind]-pri[newState(y.r).kind];
+   if(mode==='alerta')n=alertFor(x.r).priority-alertFor(y.r).priority;
    return n||x.i-y.i;
   });
  }
@@ -2582,28 +2659,32 @@ refresh();
    (!pac.value||(pac.value==='programado'?programmed(r):norm(r.pac)==='NO PROGRAMADO'))
   );
   const visible=ordered(matching);
-  stats.innerHTML=filters.map(f=>'<button type="button" class="sun-proc2026-chip '+(f.id==='nuevas'||f.id==='proximos'||f.id==='vencidos'?'warn':'')+'" data-sun-proc-focus="'+f.id+'" aria-pressed="'+String(focus===f.id)+'" title="Filtrar: '+esc(f.label)+'"><span aria-hidden="true">'+f.emoji+'</span> <b>'+items.filter(f.test).length+'</b> '+esc(f.label)+'</button>').join('');
+  stats.innerHTML=filters.map(f=>'<button type="button" class="sun-proc2026-chip '+(f.id==='proximos'||f.id==='vencidos'?'warn':'')+'" data-sun-proc-focus="'+f.id+'" aria-pressed="'+String(focus===f.id)+'" title="Filtrar: '+esc(f.label)+'"><span aria-hidden="true">'+f.emoji+'</span> <b>'+items.filter(f.test).length+'</b> '+esc(f.label)+'</button>').join('');
   counter.textContent='Mostrando '+visible.length+' de '+items.length+' registros';
   const activeConditions=[focus!=='todos'?selected.label:'',search.value?'Búsqueda: '+search.value.trim():'',spec.value?'Especialista: '+spec.value:'',state.value?'Estado: '+state.value:'',pac.value?'PAC: '+(pac.value==='programado'?'programados':'no programados'):''].filter(Boolean);
   summary.textContent=activeConditions.length?'Filtros activos · '+activeConditions.join(' · '):'Selecciona los indicadores superiores o utiliza los filtros para explorar los procedimientos.';
   clear.disabled=!activeConditions.length&&sort.value==='original';
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
-   const newInfo=newState(r),end=expiry(r),valid=inForce(r);
-   const contractText=valid?'👁 Contrato vigente':end.kind==='expired'?'◷ Contrato vencido':'▣ Consultar contrato';
-   const cbtn='<button type="button" class="sun-proc2026-action contract'+(valid?'':' other')+'" data-sun-proc-contract="'+i+'" aria-label="Abrir ficha contractual del registro '+esc(r.id)+'">'+contractText+'</button>';
-   const alert=newInfo.kind==='none'?'<span class="sun-proc2026-none">— Sin nueva contratación registrada</span>':
-    '<button type="button" class="sun-proc2026-action new'+(newInfo.kind==='published'?' published':'')+'" data-sun-open-new="'+i+'" aria-label="Ver únicamente el proceso de nueva contratación del registro '+esc(r.id)+'">'+esc(newInfo.label)+'</button>'+
-    (newInfo.subtitle&&newInfo.subtitle!=='—'?'<span class="sun-proc2026-stage">'+esc(newInfo.subtitle)+'</span>':'');
+   const end=expiry(r),prov=provider(r),alert=alertFor(r),number=field(r.procedimiento);
+   const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha integral de contrato y actuaciones preparatorias del registro '+esc(r.id)+'">👁 Ver ficha</button>';
+   const alertButton='<button type="button" class="sun-proc2026-alert '+alert.kind+'" data-sun-proc-integral="'+i+'" aria-label="Alerta del registro '+esc(r.id)+': '+esc(alert.label)+'. Abrir ficha integral">'+
+    '<strong>'+esc(alert.label)+'</strong>'+(alert.detail?'<small>'+esc(alert.detail)+'</small>':'')+'</button>';
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
-    '<td data-label="Servicio / contrato"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div><span class="sun-proc2026-sub">Registro '+esc(field(r.id))+' · '+esc(field(r.especialista))+'</span></td>'+
-    '<td data-label="Tipo y N.º procedimiento"><span class="sun-proc2026-type">'+esc(field(r.procedimiento))+'</span></td>'+
-    '<td data-label="Contrato / prestación"><span class="sun-proc2026-no">'+esc(contractNum(r))+'</span><span class="sun-proc2026-sub">'+(field(r.naturaleza)==='—'?'':'Naturaleza: '+esc(field(r.naturaleza)))+'</span></td>'+
+    '<td data-label="Contrato / servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div><span class="sun-proc2026-sub">Registro '+esc(field(r.id))+' · '+esc(field(r.especialista))+'</span>'+eye+'</td>'+
+    '<td data-label="Proveedor"><div class="sun-proc2026-provider">'+esc(prov.name)+'</div><span class="sun-proc2026-sub">'+esc(prov.kind)+'</span></td>'+
+    '<td data-label="Tipo y N.º de proceso"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span><span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span></td>'+
-    '<td data-label="Contrato">'+cbtn+'</td>'+
-    '<td data-label="Nueva contratación">'+alert+'</td>'+
+    '<td data-label="Alerta automática">'+alertButton+'</td>'+
     '</tr>';
-  }).join(''):'<tr><td colspan="6" class="sun-proc2026-empty">No hay resultados con los filtros seleccionados. Usa «Limpiar filtros» para ver todos los registros.</td></tr>';
+  }).join(''):'<tr><td colspan="5" class="sun-proc2026-empty">No hay resultados con los filtros seleccionados. Usa «Limpiar filtros» para ver todos los registros.</td></tr>';
  }
+ panel.addEventListener('click',e=>{
+  const b=e.target.closest('[data-sun-proc-integral]');
+  if(!b)return;
+  e.preventDefault();e.stopPropagation();
+  const i=Number(b.dataset.sunProcIntegral);
+  if(Number.isInteger(i)&&data[i])window.sunarpOpenFichaIntegral2026?.(i);
+ });
  search.addEventListener('input',paint);
  for(const control of [spec,state,pac,sort])control.addEventListener('change',paint);
  clear.addEventListener('click',resetAll);
@@ -2613,6 +2694,9 @@ refresh();
   focus=focus===button.dataset.sunProcFocus?'todos':button.dataset.sunProcFocus;
   paint();
  });
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&document.body.dataset.sunPage==='procedimientos')paint()});
+ window.addEventListener('focus',()=>{if(document.body.dataset.sunPage==='procedimientos')paint()});
+ setInterval(()=>{if(document.body.dataset.sunPage==='procedimientos')paint()},3600000);
  window.addEventListener('sunarp:pagechange',e=>{if(e.detail?.page==='procedimientos')paint()});
  const previousRender=render;
  render=function(){previousRender();paint()};
