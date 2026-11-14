@@ -1982,6 +1982,23 @@ html[data-sun-theme="dark"] #sunProcedures2026Panel :is(.sun-proc2026-next.is-mi
 html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-nextdate.overdue,html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-stale{color:#ffaca3!important}
 html[data-sun-theme="dark"] #sunProcedures2026Panel :is(.sun-proc2026-nextdate.soon,.sun-proc2026-nextdate.warn){color:#ffe0a0!important}
 @media(max-width:760px){#sunProcedures2026Panel .sun-proc2026-table{min-width:0}}
+</style><style id="sunSpecialistOperationalFollowup2026">
+#insightDetail .sp-flow{border:1px solid #cbd9d6;border-left:4px solid #49876b;border-radius:12px;background:#f6faf8;padding:13px 15px}
+#insightDetail .sp-flow h3{font-size:15px!important;color:#265443;margin:0 0 10px}
+#insightDetail .sp-flow-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#insightDetail .sp-flow-item{background:#fff;border:1px solid #d9e5df;border-radius:8px;padding:10px;min-width:0}
+#insightDetail .sp-flow-item.is-main{grid-column:1/-1}
+#insightDetail .sp-flow-item small{color:#526e60;display:block;font-size:11px;margin-bottom:5px;font-weight:700}
+#insightDetail .sp-flow-item strong{display:block;color:#243e33;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+#insightDetail .sp-flow-item strong.sp-flow-missing{font-weight:500;color:#677d73}
+#insightDetail .sp-flow-notice{font-size:12px;color:#925713;margin:9px 0 0}
+html[data-sun-theme="dark"] #insightDetail .sp-flow{background:#293a34!important;border-color:#719884!important;border-left-color:#99dbb5!important}
+html[data-sun-theme="dark"] #insightDetail .sp-flow h3{color:#e8fff1!important}
+html[data-sun-theme="dark"] #insightDetail .sp-flow-item{background:#363c43!important;border-color:#798782!important}
+html[data-sun-theme="dark"] #insightDetail .sp-flow-item small{color:#cde5d5!important}
+html[data-sun-theme="dark"] #insightDetail .sp-flow-item strong{color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .sp-flow-notice{color:#f4cd95!important}
+@media(max-width:620px){#insightDetail .sp-flow-fields{grid-template-columns:1fr}#insightDetail .sp-flow{padding:12px}}
 </style></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
@@ -2745,6 +2762,16 @@ window.sunMonitoring2026=(function(){
   description.textContent=plain(r.descripcion)||'Servicio sin descripción registrada';
   const hasContract=hasContractInfo(r);
   const contractNumber=invalidValue(r.numeroContrato)?r.contratoVigente:r.numeroContrato;
+  const flow=window.sunMonitoring2026.read(r);
+  const trackingFields=[];
+  if(flow.next)trackingFields.push('<div class="sp-flow-item is-main"><small>Próxima actuación</small><strong>'+safe(flow.next)+'</strong></div>');
+  else if(flow.active)trackingFields.push('<div class="sp-flow-item is-main"><small>Próxima actuación</small><strong class="sp-flow-missing">Por precisar con el responsable</strong></div>');
+  if(flow.owner)trackingFields.push('<div class="sp-flow-item"><small>Responsable</small><strong>'+safe(flow.owner)+'</strong></div>');
+  if(flow.dateLabel)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso interno</small><strong>'+safe(flow.dateLabel)+'</strong></div>');
+  else if(flow.commitmentRaw)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso</small><strong>Fecha por verificar</strong></div>');
+  if(flow.last||flow.lastLabel)trackingFields.push('<div class="sp-flow-item"><small>Última actuación documentada'+(flow.lastLabel?' · '+safe(flow.lastLabel):'')+'</small><strong>'+safe(flow.last||'Actuación por precisar')+'</strong></div>');
+  const staleNote=flow.since!==null&&flow.since>7?'<p class="sp-flow-notice">Última actuación fechada hace '+flow.since+' días. Revisar si existen novedades.</p>':'';
+  const trackingSection=(flow.active||flow.next||flow.commitmentRaw||flow.last||flow.lastDate)?'<section class="sp-flow" aria-label="Seguimiento operativo del procedimiento"><h3>Seguimiento operativo</h3><div class="sp-flow-fields">'+trackingFields.join('')+'</div>'+staleNote+'</section>':'';
   const keyFields=[
     showField('Tipo y número de procedimiento',r.procedimiento,'sp-ref-procedure'),
     hasContract?showField('N.º de contrato',contractNumber,'sp-ref-contract'):''
@@ -2753,7 +2780,7 @@ window.sunMonitoring2026=(function(){
   const contractSection=hasContract?'<section class="sp-integral-section contract" aria-label="Información del contrato registrado">'+
       '<div class="sp-integral-section-title"><span class="sp-integral-step">01</span><div><h3>Contrato registrado</h3><p>Información del contrato identificado y su vigencia</p></div></div>'+
       contractView(r)+'</section>':'';
-  content.innerHTML='<div class="sp-integral-detail">'+keySection+contractSection+
+  content.innerHTML='<div class="sp-integral-detail">'+keySection+trackingSection+contractSection+
     '<section class="sp-integral-section process" aria-label="Información de la nueva convocatoria">'+
       '<div class="sp-integral-section-title"><span class="sp-integral-step">'+(hasContract?'02':'01')+'</span><div><h3>Actuaciones preparatorias y nueva contratación</h3><p>Seguimiento de las actuaciones y, cuando corresponda, la nueva convocatoria</p></div></div>'+
       newContractView(r)+'</section></div>';
