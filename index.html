@@ -1106,9 +1106,6 @@ document.getElementById('alerts').addEventListener('click',function(event){
       '<span class="sp-simple-eye" aria-hidden="true">👁</span>'+
       '</button>';
   }).join('');
-  root.innerHTML='<section class="sp-simple" aria-label="Carga de procesos por especialista">'+
-    '<div class="sp-simple-head"><div><h3>Carga por especialista</h3><p>Selecciona a un especialista para ver sus procedimientos.</p></div>'+
-    '<div class="sp-simple-total"><b>'+total+'</b><span>registros asignados</span></div></div>'+
   const pendingNotes=names.map(name=>{
     const pending=getRows(name,'pending');
     const titles=pending.slice(0,2).map(r=>{
@@ -1123,7 +1120,10 @@ document.getElementById('alerts').addEventListener('click',function(event){
       '<span class="sp-pending-desc">'+details+'</span>'+
       '<span class="sp-pending-eye" aria-hidden="true">👁</span></button>';
   }).join('');
-
+  root.innerHTML='<section class="sp-simple" aria-label="Carga de procesos por especialista">'+
+    '<div class="sp-simple-head"><div><h3>Carga por especialista</h3><p>Selecciona a un especialista para ver sus procedimientos.</p></div>'+
+    '<div class="sp-simple-total"><b>'+total+'</b><span>registros asignados</span></div></div>'+
+    '<div class="sp-simple-rows">'+rows+'</div>'+
     '<div class="sp-pending-note" aria-label="Nota de pendientes por especialista">'+
       '<div class="sp-pending-title">📝 Pendientes por especialista</div>'+
       '<div class="sp-pending-lines">'+pendingNotes+'</div>'+
