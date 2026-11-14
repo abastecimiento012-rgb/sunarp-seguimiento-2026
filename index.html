@@ -1691,6 +1691,114 @@ html[data-sun-theme="dark"] :is(.modalhead,.sun-linked-head){background:#254968!
 html[data-sun-theme="dark"] :is(.sun-fin-disclaimer,.pv-note,.pv-stat small,.sun-fin-row small,.sun-area-row small,.sun-pac-key p,.sp-vfoot,.sp-board-help){color:#c7d8e7!important}
 @media print{html,body{background:#fff!important;color:#20344b!important}html[data-sun-theme="dark"]{color-scheme:light}}
 </style>
+
+<style id="sunPacHighContrast2026">
+/* PAC: cifras y graficos con contraste alto en claro y oscuro.
+   Paleta turquesa para programados, ambar para no programados. */
+#pacVisualNuevo{
+  --pac-programmed:#0b8a81;
+  --pac-not-programmed:#d47a12;
+  --sun-chart-0:#0b8a81;
+  --sun-chart-1:#2467b2;
+  --sun-chart-2:#a55bc3;
+  --sun-chart-3:#c96b20;
+  --sun-chart-4:#317f95;
+}
+#pacVisualNuevo .sun-pac-donut{
+  background:conic-gradient(var(--pac-programmed) 0 var(--pct),var(--pac-not-programmed) var(--pct) 100%)!important;
+  box-shadow:0 6px 20px #1a495326;
+}
+#pacVisualNuevo .sun-pac-donut>div{background:#fff!important;border:3px solid #d5e7e6!important;}
+#pacVisualNuevo .sun-pac-donut strong{color:#075b56!important;font-size:34px!important;line-height:1.16;font-variant-numeric:tabular-nums;}
+#pacVisualNuevo .sun-pac-donut small{color:#345b62!important;font-weight:750;}
+#pacVisualNuevo .sun-visual-head h3,
+#pacVisualNuevo .sun-area-bars h4{color:#153e4c!important;}
+#pacVisualNuevo .sun-visual-head p,
+#pacVisualNuevo .sun-pac-key p{color:#385a66!important;}
+#pacVisualNuevo .sun-visual-tag{background:#e0f3ed!important;color:#12685c!important;border:1px solid #a4d4ca;}
+#pacVisualNuevo .sun-pac-key>div{gap:10px;color:#163d4b!important;font-weight:700;}
+#pacVisualNuevo .sun-pac-key>div strong{font-size:27px!important;font-weight:850;color:#0b5e65!important;min-width:38px;text-align:right;font-variant-numeric:tabular-nums;}
+#pacVisualNuevo .sun-pac-key>div:nth-child(2) strong{color:#91520b!important;}
+#pacVisualNuevo .sun-dot.blue{background:#0b8a81!important;}
+#pacVisualNuevo .sun-dot.orange{background:#d47a12!important;}
+#pacVisualNuevo .sun-area-row{grid-template-columns:minmax(95px,1.1fr) minmax(50px,2fr) minmax(35px,auto);gap:10px;color:#234457!important;}
+#pacVisualNuevo .sun-area-row>span{color:#234457!important;}
+#pacVisualNuevo .sun-area-row b{font-size:19px!important;color:#155d63!important;font-weight:850;font-variant-numeric:tabular-nums;}
+#pacVisualNuevo .sun-area-track{background:#e0eaf0!important;}
+#sunPacQuick .sun-pac-quick-intro,
+#sunPacQuick .sun-pac-quick-intro small{color:#284d5b!important;}
+#sunPacQuick button strong{
+ background:#d9f1eb!important;color:#08675d!important;border:1px solid #91caba!important;
+ font-size:20px!important;font-weight:850!important;line-height:1.3;
+}
+#sunPacQuick button[data-pac-quick="no"] strong{background:#fff0d6!important;color:#8c510b!important;border-color:#dbb77b!important;}
+#sunPacQuick button[aria-pressed="true"]{border-color:#0b8a81!important;box-shadow:inset 0 -3px #0b8a81!important;}
+
+/* Modo oscuro: NO dejar letras azules oscuras sobre superficies azules oscuras. */
+html[data-sun-theme="dark"] #pacVisualNuevo{
+ --pac-programmed:#20cbbb;
+ --pac-not-programmed:#ffc35c;
+ --sun-chart-0:#20cbbb;
+ --sun-chart-1:#7ab8ff;
+ --sun-chart-2:#c8a3ff;
+ --sun-chart-3:#ffc35c;
+ --sun-chart-4:#71d6e0;
+ color:#f3faff!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-visual-head h3,
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-area-bars h4{color:#f5fbff!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-visual-head p,
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-key p{color:#d0e2f1!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-visual-tag{
+ background:#245d56!important;color:#e1fff5!important;border-color:#75c9b9!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-donut>div{
+ background:#142b3b!important;border:3px solid #7bd5c9!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-donut strong{
+ color:#86ffea!important;text-shadow:none!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-donut small{color:#e7f7f7!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-key>div{
+ background:#21394c!important;border:1px solid #52758a!important;
+ border-radius:10px;padding:11px 12px;color:#f4f9ff!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-key>div strong{
+ color:#87f4e2!important;font-size:28px!important;text-shadow:none!important;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-pac-key>div:nth-child(2) strong{color:#ffe0a1!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-dot.blue{background:#20cbbb!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-dot.orange{background:#ffc35c!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-area-row{
+ color:#edf7ff!important;background:#21394c!important;border:1px solid #52758a!important;
+ border-radius:9px;padding:8px 10px;
+}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-area-row>span{color:#f0f8ff!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-area-row b{color:#b9f5ee!important;font-size:20px!important;text-shadow:none!important;}
+html[data-sun-theme="dark"] #pacVisualNuevo .sun-area-track{background:#142b3e!important;}
+html[data-sun-theme="dark"] #sunPacQuick{
+ background:#1b3044!important;border-color:#607f99!important;
+}
+html[data-sun-theme="dark"] #sunPacQuick .sun-pac-quick-intro,
+html[data-sun-theme="dark"] #sunPacQuick .sun-pac-quick-intro small{color:#e5f5ff!important;}
+html[data-sun-theme="dark"] #sunPacQuick button{
+ background:#28445b!important;color:#f2faff!important;border-color:#6a91aa!important;
+}
+html[data-sun-theme="dark"] #sunPacQuick button:hover{background:#355973!important;}
+html[data-sun-theme="dark"] #sunPacQuick button strong{
+ background:#17574f!important;color:#afffe9!important;border:1px solid #66cbbb!important;
+}
+html[data-sun-theme="dark"] #sunPacQuick button[data-pac-quick="no"] strong{
+ background:#5b4528!important;color:#ffe4a9!important;border-color:#caa165!important;
+}
+html[data-sun-theme="dark"] #sunPacQuick button[aria-pressed="true"]{
+ background:#185750!important;border-color:#72d9c7!important;box-shadow:inset 0 -3px #72d9c7!important;
+}
+@media(max-width:600px){
+ #pacVisualNuevo .sun-area-row{grid-template-columns:minmax(85px,1.1fr) minmax(32px,2fr) minmax(34px,auto);}
+ #pacVisualNuevo .sun-pac-key>div strong{font-size:24px!important;}
+}
+</style>
 </head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
