@@ -3929,4 +3929,107 @@ refresh();
  el('updateExcelFile')?.addEventListener('change',()=>setTimeout(paint,1200));
  paint();
 })();
-</script></body></html>
+</script>
+<style id="sunFichaGraphiteTheme2026">
+/* Fichas SUNARP 2026: gris grafito + verde contractual + ambar para actuaciones. */
+html[data-sun-theme="dark"] :is(#gerDetail,#insightDetail,#sunLinkedDetails,#editor){
+ color-scheme:dark;background:#1b1f24!important;color:#f4f5f6!important;
+ border:1px solid #77818b!important;box-shadow:0 24px 70px #000b!important;
+}
+html[data-sun-theme="dark"] :is(#gerDetail,#insightDetail,#sunLinkedDetails,#editor)::backdrop{background:#07090dd9!important}
+html[data-sun-theme="dark"] :is(#gerDetail .gd-head,#insightDetail .modalhead,#sunLinkedDetails .sun-linked-head,#editor .modalhead){
+ background:linear-gradient(110deg,#3b4148,#252a30)!important;color:#fff!important;
+ border-bottom:2px solid #89949d!important;
+}
+html[data-sun-theme="dark"] :is(#gerDetail .gd-head h2,#insightDetail .modalhead h2,#sunLinkedDetails .sun-linked-head h2,#editor .modalhead h2){color:#fff!important}
+html[data-sun-theme="dark"] #gerDetail .gd-head :is(p,small){color:#e5e9ed!important}
+html[data-sun-theme="dark"] :is(#gerDetail .gd-body,#insightDetail .insight-dialog-content,#sunLinkedDetails .sun-linked-content,#editor .formgrid){background:#1b1f24!important;color:#f3f5f6!important}
+html[data-sun-theme="dark"] :is(#gerDetail .gd-head button,#insightDetail .modalhead button,#sunLinkedDetails .sun-linked-head button,#editor .modalhead button,#gerDetail .gd-foot button){
+ background:#434b53!important;color:#fff!important;border:1px solid #a0aab4!important;
+}
+html[data-sun-theme="dark"] :is(#gerDetail .gd-head button,#insightDetail .modalhead button,#sunLinkedDetails .sun-linked-head button,#editor .modalhead button,#gerDetail .gd-foot button):hover{background:#56616a!important}
+
+/* Ficha ejecutiva: métricas diferenciadas y campos neutros. */
+html[data-sun-theme="dark"] #gerDetail .gd-metric{
+ background:#343840!important;border:1px solid #7c858f!important;border-left:5px solid #caa9f1!important;color:#fff!important;
+}
+html[data-sun-theme="dark"] #gerDetail .gd-metric:nth-child(2){background:#273b32!important;border-left-color:#88d4ac!important}
+html[data-sun-theme="dark"] #gerDetail .gd-metric:nth-child(3){background:#493a25!important;border-left-color:#f3c776!important}
+html[data-sun-theme="dark"] #gerDetail .gd-metric:nth-child(4){background:#492f38!important;border-left-color:#f1a3af!important}
+html[data-sun-theme="dark"] #gerDetail .gd-metric :is(small,strong){color:#fff!important}
+html[data-sun-theme="dark"] #gerDetail .gd-section{background:#252a30!important;color:#f2f5f7!important;border:1px solid #6c7680!important;box-shadow:none!important}
+html[data-sun-theme="dark"] #gerDetail .gd-section h3{
+ background:#41474e!important;color:#fff!important;border-bottom:1px solid #949da6!important;border-left:5px solid #d3aafa!important;
+}
+html[data-sun-theme="dark"] #gerDetail .gd-section:nth-of-type(2) h3{border-left-color:#91d8b0!important}
+html[data-sun-theme="dark"] #gerDetail .gd-section:nth-of-type(3) h3{border-left-color:#f1ce82!important}
+html[data-sun-theme="dark"] #gerDetail .gd-section:nth-of-type(4) h3{border-left-color:#9fc0d2!important}
+html[data-sun-theme="dark"] #gerDetail .gd-section:nth-of-type(5) h3{border-left-color:#e5a8c1!important}
+html[data-sun-theme="dark"] #gerDetail .gd-content{background:#252a30!important;color:#f3f5f7!important}
+html[data-sun-theme="dark"] #gerDetail :is(.gd-cell,.gd-year,.gd-step){
+ background:#353b42!important;border:1px solid #77828b!important;color:#f4f6f8!important;
+}
+html[data-sun-theme="dark"] #gerDetail .gd-step{border-top:5px solid #86cdb4!important}
+html[data-sun-theme="dark"] #gerDetail :is(.gd-cell small,.gd-step small){color:#d4dce1!important}
+html[data-sun-theme="dark"] #gerDetail :is(.gd-cell strong,.gd-step strong,.gd-year span){color:#fff!important}
+html[data-sun-theme="dark"] #gerDetail .gd-year b{color:#f3dca9!important}
+html[data-sun-theme="dark"] #gerDetail .gd-year strong{color:#b3f4cd!important}
+html[data-sun-theme="dark"] #gerDetail .gd-observation{
+ background:#55442a!important;border:1px solid #c4a16c!important;border-left:5px solid #ffda8f!important;color:#fff1d4!important;
+}
+html[data-sun-theme="dark"] #gerDetail .gd-newalert{background:#544127!important;border-color:#d2ad6f!important;color:#fff0d3!important}
+html[data-sun-theme="dark"] #gerDetail .gd-newalert :is(strong,p){color:#fff0d3!important}
+html[data-sun-theme="dark"] #gerDetail .gd-newalert button{background:#69512d!important;color:#fff4dc!important;border-color:#d8b778!important}
+html[data-sun-theme="dark"] #gerDetail .gd-foot{background:#292f35!important;border-color:#737d87!important}
+html[data-sun-theme="dark"] #gerDetail :is(.gd-note,.gd-foot small){color:#d8e0e6!important}
+
+/* Ficha del especialista: contrato verde, actuaciones ámbar. */
+html[data-sun-theme="dark"] #insightDetail :is(.insight-summary,.hint){color:#e2e7ea!important}
+html[data-sun-theme="dark"] #insightDetail .insight-list-table{background:#292f35!important;border-color:#78838c!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section{background:#292e34!important;border:1px solid #78818a!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section.contract{background:#29392f!important;border-left:5px solid #91d5ad!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section.process{background:#403528!important;border-left:5px solid #f2c47d!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section-title h3{color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section-title p{color:#e2e7e4!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-step{background:#3f6651!important;color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-section.process .sp-integral-step{background:#785b31!important;color:#fff5db!important}
+html[data-sun-theme="dark"] #insightDetail :is(.sp-integral-field,.sp-integral-note,.sp-integral-empty,.sp-record-field){
+ background:#363c43!important;border:1px solid #75808a!important;color:#fff!important;
+}
+html[data-sun-theme="dark"] #insightDetail :is(.sp-integral-field small,.sp-integral-caveat){color:#d1d9df!important}
+html[data-sun-theme="dark"] #insightDetail :is(.sp-integral-field strong,.sp-integral-note b,.sp-integral-note p){color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-status.active{background:#285840!important;color:#e3ffec!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-status.pending{background:#624c2b!important;color:#fff0c9!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-status.expired{background:#69393b!important;color:#ffe4e2!important}
+html[data-sun-theme="dark"] #insightDetail .insight-list-table th{background:#414850!important;color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .insight-list-table tbody tr:nth-child(odd) td{background:#292e34!important;color:#f3f6f8!important}
+html[data-sun-theme="dark"] #insightDetail .insight-list-table tbody tr:nth-child(even) td{background:#353b42!important;color:#f3f6f8!important}
+
+/* Ficha relacionada: contrato y nuevas convocatorias. */
+html[data-sun-theme="dark"] #sunLinkedDetails :is(.sun-linked-notice,.sun-ct-note){color:#d8e0e6!important}
+html[data-sun-theme="dark"] #sunLinkedDetails :is(.sun-linked-title,.sun-newconv-detail h3,.sun-newconv-detail h4){color:#fff!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-detail{background:transparent!important;color:#fff!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-field{background:#353b42!important;border:1px solid #77828d!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-field small{color:#d0d9df!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-field strong{color:#fff!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-status:not(.warn){background:#2c5942!important;color:#e2ffef!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-status.warn{background:#674e2d!important;color:#fff0ce!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-notes{background:#493c2b!important;border-left:5px solid #f0c17e!important;color:#fff0de!important}
+html[data-sun-theme="dark"] #sunLinkedDetails .sun-newconv-detail p{color:#dce3e8!important}
+
+/* Ficha de consulta general: campos y etiquetas. */
+html[data-sun-theme="dark"] #editor .field{background:#333940!important;border:1px solid #77818c!important}
+html[data-sun-theme="dark"] #editor .field label{color:#e4e9ec!important}
+html[data-sun-theme="dark"] #editor .field :is(input,textarea,select){background:#252b31!important;color:#fff!important;border-color:#7a8690!important}
+html[data-sun-theme="dark"] #editor :is(.modalfoot,.hint){background:#2c3137!important;color:#dae1e6!important}
+
+/* Impresión legible, independiente del tema visual. */
+@media print{
+ html[data-sun-theme="dark"] #gerDetail,
+ html[data-sun-theme="dark"] #gerDetail :is(.gd-section,.gd-content,.gd-cell,.gd-year,.gd-step){
+  background:#fff!important;color:#182431!important;border-color:#bac4cb!important;
+ }
+ html[data-sun-theme="dark"] #gerDetail :is(.gd-cell strong,.gd-year span,.gd-step strong){color:#182431!important}
+}
+</style>
+</body></html>
