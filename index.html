@@ -2703,7 +2703,7 @@ refresh();
   if(days<0)return {date:field(r.vencimiento),message:'Vencido hace '+Math.abs(days)+' días',kind:'expired',days};
   if(days===0)return {date:field(r.vencimiento),message:'Vence hoy',kind:'soon',days};
   if(days<=leadDays)return {date:field(r.vencimiento),message:'Vence en '+days+' días',kind:'soon',days};
-  return {date:field(r.vencimiento),message:'Vigencia según Excel',kind:'normal',days};
+  return {date:field(r.vencimiento),message:'',kind:'normal',days};
  }
  function newState(r){
   const announced=norm(r.nuevaConvocatoria)==='SI';
@@ -2805,7 +2805,7 @@ refresh();
     '<td data-label="Contrato / servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+(field(r.especialista)!=='—'?'<span class="sun-proc2026-sub">Especialista: '+esc(field(r.especialista))+'</span>':'')+eye+'</td>'+
     '<td data-label="Proveedor"><div class="sun-proc2026-provider">'+esc(prov.name)+'</div><span class="sun-proc2026-sub">'+esc(prov.kind)+'</span></td>'+
     '<td data-label="Tipo y N.º de proceso"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
-    '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span><span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span></td>'+ 
+    '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span>'+(end.message?'<span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span>':'')+'</td>'+ 
 
     '<td data-label="Alerta automática">'+alertButton+'</td>'+
     '</tr>';
