@@ -989,6 +989,15 @@ html[data-sun-theme="dark"] .sun-daily-review{color:#e3effc!important}
 /* Tres tarjetas autónomas de revisión diaria por responsable */
 .sun-dues-page .sun-due-overview{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 14px}
 .sun-due-overview span{font-size:12px;background:#eef5fc;color:#355e7e;border:1px solid #d4e4f1;border-radius:9px;padding:7px 10px}
+.sun-due-overview span b{font-size:20px;font-weight:850;font-variant-numeric:tabular-nums;display:block;line-height:1.35;margin-bottom:2px}
+.sun-due-overview .sun-due-overview-total{background:#e7f1fc;border-color:#9fc7e8;color:#174e7c}
+.sun-due-overview .sun-due-overview-owner.hermes{background:#f4eefd;border-color:#d4bff4;color:#674398}
+.sun-due-overview .sun-due-overview-owner.sheyla{background:#eaf9f3;border-color:#b4decf;color:#176c57}
+.sun-due-overview .sun-due-overview-owner.sonia{background:#e9f3ff;border-color:#b8d6f3;color:#245d92}
+html[data-sun-theme="dark"] .sun-due-overview .sun-due-overview-total{background:#294d70!important;border-color:#5c8db4!important;color:#eaf5ff!important}
+html[data-sun-theme="dark"] .sun-due-overview .sun-due-overview-owner.hermes{background:#49365b!important;border-color:#9672b8!important;color:#f4e6ff!important}
+html[data-sun-theme="dark"] .sun-due-overview .sun-due-overview-owner.sheyla{background:#275343!important;border-color:#5f9d85!important;color:#d7fae8!important}
+html[data-sun-theme="dark"] .sun-due-overview .sun-due-overview-owner.sonia{background:#264b71!important;border-color:#638fbc!important;color:#e3f1ff!important}
 .sun-due-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:13px}
 .sun-due-tools p{flex:1 1 280px;font-size:12px;line-height:1.55;color:#60778d;margin:0}
 .sun-due-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;align-items:start}
@@ -2953,13 +2962,11 @@ refresh();
   if(now!==savedFor){savedFor=now;checked=loadChecks()}
   tasks=createTasks();
   $('sunDailyDate').textContent='Revisión: '+displayDate(today());
-  const withDeadline=tasks.filter(t=>t.deadlines.some(x=>x.kind==='entrega')).length;
-  const overdue=tasks.filter(t=>t.primary&&t.primary.kind==='entrega'&&t.when<0).length;
-  const reviewed=tasks.filter(t=>checked.has(t.id)).length;
-  $('sunDueOverview2026').innerHTML='<span><b>'+tasks.length+'</b> procesos en seguimiento</span>'+
-   '<span><b>'+withDeadline+'</b> con fecha de entrega registrada</span>'+
-   '<span><b>'+overdue+'</b> fechas transcurridas por verificar</span>'+
-   '<span><b>'+reviewed+'</b> revisados hoy</span>';
+  // En el resumen inicial solo se muestran cantidades pendientes de revisión.
+  // Los registros marcados "Revisado hoy" se restan automáticamente.
+  const toReview=tasks.filter(t=>!checked.has(t.id));
+  $('sunDueOverview2026').innerHTML='<span class="sun-due-overview-total"><b>'+toReview.length+'</b> pendientes por revisar</span>'+
+   people.map(p=>'<span class="sun-due-overview-owner '+p.color+'"><b>'+toReview.filter(t=>t.owner===p.name).length+'</b> pendientes de '+p.name[0]+p.name.slice(1).toLowerCase()+'</span>').join('');
   $('sunDueCards2026').innerHTML=people.map(p=>{
    const subset=tasks.filter(t=>t.owner===p.name),count=subset.length;
    const past=subset.filter(t=>t.primary&&t.primary.kind==='entrega'&&t.when<0).length;
