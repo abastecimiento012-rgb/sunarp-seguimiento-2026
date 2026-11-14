@@ -1962,7 +1962,27 @@ html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-ref-contract{
 }
 html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-ref-contract strong{color:#ddffe9!important}
 </style>
-</head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
+<style id="sunCompactOperationalTracking2026">
+#sunProcedures2026Panel .sun-proc2026-table{min-width:990px}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(1){width:27%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(2){width:19%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(3){width:17%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(4){width:19%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(5){width:18%}
+#sunProcedures2026Panel .sun-proc2026-current{display:block;color:#354c63;font-weight:700;line-height:1.45}
+#sunProcedures2026Panel .sun-proc2026-next{display:block;color:#244d48;font-weight:700;white-space:pre-wrap;line-height:1.45}
+#sunProcedures2026Panel .sun-proc2026-next.is-missing{font-weight:500;color:#758391}
+#sunProcedures2026Panel .sun-proc2026-nextdate,#sunProcedures2026Panel .sun-proc2026-expiry-label{display:block;margin:5px 0 6px;font-size:11.5px;color:#5a7080;font-weight:600}
+#sunProcedures2026Panel .sun-proc2026-nextdate.overdue,#sunProcedures2026Panel .sun-proc2026-stale{color:#aa3f3a;font-weight:800}
+#sunProcedures2026Panel .sun-proc2026-nextdate.soon,#sunProcedures2026Panel .sun-proc2026-nextdate.warn{color:#90600f;font-weight:800}
+#sunProcedures2026Panel .sun-proc2026-stale{display:block;font-size:11px;margin-top:5px}
+#sunProcedures2026Panel .sun-proc2026-alert{display:block;width:100%;max-width:220px}
+html[data-sun-theme="dark"] #sunProcedures2026Panel :is(.sun-proc2026-current,.sun-proc2026-next){color:#f1f4f1!important}
+html[data-sun-theme="dark"] #sunProcedures2026Panel :is(.sun-proc2026-next.is-missing,.sun-proc2026-expiry-label,.sun-proc2026-nextdate.normal){color:#cfd6dc!important}
+html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-nextdate.overdue,html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-stale{color:#ffaca3!important}
+html[data-sun-theme="dark"] #sunProcedures2026Panel :is(.sun-proc2026-nextdate.soon,.sun-proc2026-nextdate.warn){color:#ffe0a0!important}
+@media(max-width:760px){#sunProcedures2026Panel .sun-proc2026-table{min-width:0}}
+</style></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
@@ -2011,11 +2031,11 @@ html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-ref-contract st
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Control de procesos</h3><p>Busca el contrato o servicio y consulta su ficha con 👁. Las alertas de vencimiento se muestran automáticamente en la tabla.</p></div>
+  <div><h3>Control de procedimientos</h3><p>Etapa, siguiente actuación y alertas en una sola vista. Abre 👁 para consultar los detalles.</p></div>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
- <table class="sun-proc2026-table"><thead><tr><th scope="col">Contrato / servicio y ficha</th><th scope="col">Proveedor / contratista</th><th scope="col">Tipo y N.º de proceso</th><th scope="col">Vencimiento</th><th scope="col">Alerta automática</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
+ <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Próxima actuación</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
  <p class="sun-proc2026-foot">Alerta preventiva automática: se propone evaluar el inicio de una nueva contratación cuando falten 90 días o menos para el vencimiento y no consten actuaciones iniciadas. No equivale a una obligación legal automática ni confirma la publicación de una convocatoria. Valida la necesidad con el área usuaria y revisa el expediente.</p>
 </section><section id="sunAlertsDaily2026" class="sun-daily sun-dues-page" aria-label="Pendientes y plazos por especialista">
@@ -2519,6 +2539,34 @@ document.getElementById('alerts').addEventListener('click',function(event){
   document.getElementById('insightDetailRows').innerHTML='<table><thead><tr><th>N.º</th><th>Servicio / procedimiento</th><th>PAC</th><th>Especialista / Área</th><th>Estado</th><th>Contrato / Fechas</th><th>Ficha</th></tr></thead><tbody>'+rows+'</tbody></table>';
   if(!modal.open)modal.showModal();
  });
+})();
+</script><script id="sunMonitoring2026Core">
+window.sunMonitoring2026=(function(){
+ 'use strict';
+ const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toUpperCase();
+ const good=v=>{const x=norm(v);return !!x&&!['-','—','NO APLICA','NO CORRESPONDE','SIN INFORMACION','NO REGISTRADO','PENDIENTE','POR DEFINIR','CONTRATO VIGENTE','PROCEDIMIENTO EN SEGUIMIENTO','SIN ACTUACIONES REGISTRADAS'].includes(x)};
+ const parseDate=v=>{
+  const x=String(v??'').trim(),iso=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:T.*)?$/);
+  let d,m,y;
+  if(iso){y=+iso[1];m=+iso[2];d=+iso[3]}
+  else{const a=x.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);if(!a)return null;d=+a[1];m=+a[2];y=+a[3]}
+  const dt=new Date(y,m-1,d);
+  return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d?dt:null;
+ };
+ const fmt=d=>d?[String(d.getDate()).padStart(2,'0'),String(d.getMonth()+1).padStart(2,'0'),d.getFullYear()].join('/'):null;
+ const daysFromToday=d=>{if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/86400000)};
+ function read(r){
+  const next=good(r.proximaActuacion)?String(r.proximaActuacion).trim():'';
+  const commitment=parseDate(r.fechaCompromiso),lastDate=parseDate(r.fechaUltimaActuacion);
+  const last=good(r.ultimaActuacion)?String(r.ultimaActuacion).trim():'';
+  const state=norm(r.estado),newFlag=['SI','SÍ'].includes(norm(r.nuevaConvocatoria));
+  const active=!!next||newFlag||/ACTUACIONES PREPARATORIAS|DESIERTO|CONVOCATORIA|PENDIENTE DEL SIGA|EN EVALUACION|REQUERIMIENTO/.test(state)&&state!=='SIN REQUERIMIENTO';
+  const when=daysFromToday(commitment),since=lastDate?-daysFromToday(lastDate):null;
+  return {next,commitment,commitmentRaw:good(r.fechaCompromiso)?String(r.fechaCompromiso).trim():'',when,last,lastDate,since,active,
+   owner:good(r.especialista)?String(r.especialista).trim():'',dateLabel:fmt(commitment),lastLabel:fmt(lastDate),
+   commitmentStatus:when===null?'none':when<0?'overdue':when<=7?'soon':'normal'};
+ }
+ return {read,parseDate,fmt,daysFromToday,good};
 })();
 </script><script id="especialistas2026Script">
 (function(){
@@ -3602,7 +3650,7 @@ refresh();
   return {name:'—',clarification:''};
  };
  function matches(r,q){
-  return !q||norm([r.id,r.descripcion,r.procedimiento,r.numeroContrato,r.contratoVigente,r.especialista,r.estado,r.estadoNueva,r.vencimiento,r.pac,r.area,r.contratista,r.postor].join(' ')).includes(q);
+  return !q||norm([r.id,r.descripcion,r.procedimiento,r.numeroContrato,r.contratoVigente,r.especialista,r.estado,r.estadoNueva,r.vencimiento,r.pac,r.area,r.contratista,r.postor,r.proximaActuacion,r.fechaCompromiso,r.ultimaActuacion].join(' ')).includes(q);
  }
  function paint(){
   const items=Array.isArray(data)?data:[];
@@ -3610,16 +3658,22 @@ refresh();
   const visible=items.map((r,i)=>({r,i})).filter(({r})=>matches(r,q));
   counter.textContent='Mostrando '+visible.length+' de '+items.length+' registros';
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
-   const end=expiry(r),prov=provider(r),alert=alertFor(r),number=field(r.procedimiento);
-   const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+': contrato vigente y actuaciones preparatorias" title="Ver información del proceso">👁 Ver ficha</button>';
+   const end=expiry(r),alert=alertFor(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
+   const current=norm(r.nuevaConvocatoria)==='SI'&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
+   const summary=follow.next||(follow.active?'Por precisar':'Sin actuación pendiente identificada');
+   const validity=follow.commitmentStatus;
+   const nextDate=follow.dateLabel?'<span class="sun-proc2026-nextdate '+validity+'">Compromiso interno: '+esc(follow.dateLabel)+'</span>':
+    (follow.commitmentRaw?'<span class="sun-proc2026-nextdate warn">Verificar fecha de compromiso</span>':'');
+   const stale=follow.since!==null&&follow.since>7?'<span class="sun-proc2026-stale">Sin actualización registrada hace '+follow.since+' días</span>':'';
+   const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+'" title="Consultar ficha">👁 Ver ficha</button>';
    const alertButton='<button type="button" class="sun-proc2026-alert '+alert.kind+'" data-sun-proc-integral="'+i+'" aria-label="Alerta: '+esc(alert.label)+'. Abrir ficha de '+esc(field(r.descripcion))+'">'+
     '<strong>'+esc(alert.label)+'</strong>'+(alert.detail?'<small>'+esc(alert.detail)+'</small>':'')+'</button>';
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
-    '<td data-label="Contrato / servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+(field(r.especialista)!=='—'?'<span class="sun-proc2026-sub">Especialista: '+esc(field(r.especialista))+'</span>':'')+eye+'</td>'+
-    '<td data-label="Proveedor"><div class="sun-proc2026-provider">'+esc(prov.name)+'</div>'+(prov.clarification?'<span class="sun-proc2026-sub">'+esc(prov.clarification)+'</span>':'')+'</td>'+
-    '<td data-label="Tipo y N.º de proceso"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
-    '<td data-label="Vencimiento"><span class="sun-proc2026-date">'+esc(end.date)+'</span>'+(end.message?'<span class="sun-proc2026-datestatus '+(end.kind==='expired'?'expired':end.kind==='soon'?'soon':'')+'">'+esc(end.message)+'</span>':'')+'</td>'+
-    '<td data-label="Alerta automática">'+alertButton+'</td>'+
+    '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+'</td>'+
+    '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
+    '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
+    '<td data-label="Próxima actuación"><span class="sun-proc2026-next'+(!follow.next?' is-missing':'')+'">'+esc(summary)+'</span>'+nextDate+stale+'</td>'+
+    '<td data-label="Seguimiento">'+(end.date!=='—'?'<span class="sun-proc2026-expiry-label">Vence contrato: <b>'+esc(end.date)+'</b></span>':'')+alertButton+'</td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="5" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
