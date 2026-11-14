@@ -411,7 +411,7 @@ body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencim
 body[data-sun-page="indicadores"] #visualSummary{display:grid!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
 body[data-sun-page="pac"] #pacVisualNuevo{display:block!important}
-body[data-sun-page="procedimientos"] #proceduresPanel,body[data-sun-page="contratos"] #proceduresPanel,body[data-sun-page="previsiones"] #proceduresPanel{display:block!important}
+body[data-sun-page="procedimientos"] #proceduresPanel,body[data-sun-page="previsiones"] #proceduresPanel{display:block!important}
 body[data-sun-page="reportes"] #sunReportsPage{display:block!important}
 body[data-sun-page] main.shell{min-height:55vh}
 .sun-page-head{background:linear-gradient(110deg,#17365d,#245c8b);color:white;border-radius:15px;padding:21px 24px;margin:0 0 19px}
@@ -432,10 +432,6 @@ body[data-sun-page] main.shell{min-height:55vh}
 @media(max-width:760px){.sun-reports-grid{grid-template-columns:1fr}.sun-page-head{padding:16px}.sun-page-head h2{font-size:19px}body[data-sun-page="indicadores"] #visualSummary{grid-template-columns:1fr}}
 @media print{.sun-page-head{background:white;color:#17365d;border:1px solid #dce5ef}.sun-page-head h2{color:#17365d}}
 </style><style id="sunContractAlertsPages2026">
-body[data-sun-page] #sunContractsPanel{display:none!important}
-body[data-sun-page="contratos"] #sunContractsPanel{display:block!important}
-body[data-sun-page="contratos"][data-sun-contract-tab="vigentes"] #proceduresPanel{display:none!important}
-body[data-sun-page="contratos"][data-sun-contract-tab="suscritos"] #sunContractsList{display:none!important}
 .sun-contract-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .sun-contract-tabs button{background:#f7fbff;border:1px solid #ccdfef;border-radius:10px;color:#24567c;font-size:12px}
 .sun-contract-tabs button[aria-pressed="true"]{background:#e0efff;border-color:#4386c9;color:#124c84;box-shadow:inset 0 -2px #367cd0}
@@ -531,7 +527,6 @@ body[data-sun-page="procedimientos"] .tablewrap .desc .sun-proc-links{display:fl
       <button type="button" class="sun-nav-link" data-sun-route="indicadores">▤ Indicadores</button>
       <button type="button" class="sun-nav-link" data-sun-route="pac">◫ PAC 2026</button>
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos">☷ Procedimientos</button>
-      <button type="button" class="sun-nav-link" data-sun-route="contratos">▣ Contratos</button>
       <button type="button" class="sun-nav-link" data-sun-route="previsiones">▥ Previsiones</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes">⇩ Reportes</button>
@@ -547,13 +542,7 @@ body[data-sun-page="procedimientos"] .tablewrap .desc .sun-proc-links{display:fl
  <button type="button" data-pac-quick="programado" aria-pressed="false">▦ Programados PAC <strong data-pac-count="programado">—</strong></button>
  <button type="button" data-pac-quick="no" aria-pressed="false">◫ No programados <strong data-pac-count="no">—</strong></button>
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
-</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunContractsPanel" class="sun-current-contracts-page" aria-label="Contratos vigentes y alertas de nueva convocatoria">
- <div class="sun-contract-tabs" role="group" aria-label="Secciones de contratos">
-  <button type="button" data-sun-contract-tab="vigentes" aria-pressed="true">◷ Contratos vigentes y alertas</button>
-  <button type="button" data-sun-contract-tab="suscritos" aria-pressed="false">▣ Suscritos en 2026</button>
- </div>
- <div id="sunContractsList" aria-live="polite"></div>
-</section><div class="tabbar"><button class="active" id="tabAll"><span class="tab-icon">▦</span> Seguimiento de procedimientos de selección</button><button id="tabContracts"><span class="tab-icon">▤</span> Contratos suscritos en 2026</button><button id="tabPrevisiones"><span class="tab-icon">▥</span> CCP y previsiones · 2026–2030</button></div><section class="panel" id="proceduresPanel"><div id="uxTableRoute" class="ux-table-route" role="status" hidden></div><div class="filters"><input id="search" aria-label="Buscar procedimientos por descripción, PAC, contrato, estado, proveedor o especialista" placeholder="Buscar procedimientos: servicio, PAC, contrato, estado, proveedor..." type="search" autocomplete="off"/><select id="pacFilter"><option value="">Todos los PAC</option><option value="programado">Programados</option><option value="no">No programados</option></select><select id="stateFilter"><option value="">Todos los estados</option></select><select id="areaFilter"><option value="">Todas las áreas</option></select><select id="specFilter"><option value="">Todos los especialistas</option></select><select id="yearFilter"><option value="">Todos los vencimientos</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option value="none">Sin fecha</option></select></div><div id="previsionSummary" style="display:none;margin:12px 0 16px"></div><div class="table-scroll-tools" aria-label="Controles de desplazamiento de la tabla">
+</div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><div class="tabbar"><button class="active" id="tabAll"><span class="tab-icon">▦</span> Seguimiento de procedimientos de selección</button><button id="tabContracts"><span class="tab-icon">▤</span> Contratos suscritos en 2026</button><button id="tabPrevisiones"><span class="tab-icon">▥</span> CCP y previsiones · 2026–2030</button></div><section class="panel" id="proceduresPanel"><div id="uxTableRoute" class="ux-table-route" role="status" hidden></div><div class="filters"><input id="search" aria-label="Buscar procedimientos por descripción, PAC, contrato, estado, proveedor o especialista" placeholder="Buscar procedimientos: servicio, PAC, contrato, estado, proveedor..." type="search" autocomplete="off"/><select id="pacFilter"><option value="">Todos los PAC</option><option value="programado">Programados</option><option value="no">No programados</option></select><select id="stateFilter"><option value="">Todos los estados</option></select><select id="areaFilter"><option value="">Todas las áreas</option></select><select id="specFilter"><option value="">Todos los especialistas</option></select><select id="yearFilter"><option value="">Todos los vencimientos</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option value="none">Sin fecha</option></select></div><div id="previsionSummary" style="display:none;margin:12px 0 16px"></div><div class="table-scroll-tools" aria-label="Controles de desplazamiento de la tabla">
  <span class="table-scroll-title">Mover tabla</span>
  <div class="table-scroll-actions">
   <button type="button" data-table-scroll="left" aria-label="Ver columnas anteriores" title="Desplazar columnas a la izquierda">←</button>
@@ -1760,16 +1749,15 @@ experts();apply();
   indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
   pac:['PAC 2026','Consulta los procedimientos programados y no programados con acceso a sus detalles.'],
   procedimientos:['Procedimientos de selección','Consulta estados, responsables, actuaciones y documentos.'],
-  contratos:['Contratos vigentes y alertas','Consulta los contratos vigentes, verifica cuáles requieren una nueva convocatoria y accede al seguimiento del especialista.'],
   previsiones:['CCP y previsiones 2026–2030','Revisa los documentos presupuestarios y montos consignados por ejercicio.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
  };
- const tabs={pac:'tabAll',procedimientos:'tabAll',contratos:'tabContracts',previsiones:'tabPrevisiones'};
+ const tabs={pac:'tabAll',procedimientos:'tabAll',previsiones:'tabPrevisiones'};
  const buttons=[...nav.querySelectorAll('[data-sun-route]')];
  const header=document.getElementById('sunPageHeader');
- const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return p==='convocatorias'?'procedimientos':pages[p]?p:'especialistas'};
+ const current=()=>{const p=new URLSearchParams(location.search).get('pagina')||'especialistas';return ['convocatorias','contratos'].includes(p)?'procedimientos':pages[p]?p:'especialistas'};
  function go(requested,updateUrl=true){
-  const p=pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
+  const p=['convocatorias','contratos'].includes(requested)?'procedimientos':pages[requested]?requested:'especialistas',tab=document.getElementById(tabs[p]);
   if(tab&&!tab.classList.contains('active'))tab.click();
   document.body.dataset.sunPage=p;
   header.hidden=false;
@@ -1804,9 +1792,9 @@ experts();apply();
  if(pptStatus&&reportsStatus)new MutationObserver(()=>{if(pptStatus.textContent.trim())reportsStatus.textContent=pptStatus.textContent}).observe(pptStatus,{childList:true,characterData:true,subtree:true});
  window.addEventListener('popstate',()=>go(current(),false));
  go(current(),false);
- // Enlaces antiguos a Inicio ahora abren Especialistas sin romper marcadores previos.
- if(['inicio','convocatorias'].includes(new URLSearchParams(location.search).get('pagina'))){
-  const fallback=new URLSearchParams(location.search).get('pagina')==='convocatorias'?'procedimientos':'especialistas';
+ // Mantener operativos los enlaces antiguos hacia páginas que ya no existen.
+ if(['inicio','convocatorias','contratos'].includes(new URLSearchParams(location.search).get('pagina'))){
+  const fallback=new URLSearchParams(location.search).get('pagina')==='inicio'?'especialistas':'procedimientos';
   const u=new URL(location.href);u.searchParams.set('pagina',fallback);u.searchParams.delete('registro');
   history.replaceState({pagina:fallback},'',u.pathname+u.search+u.hash);
  }
@@ -1954,7 +1942,7 @@ document.addEventListener('click',e=>{
  const f=e.target.closest('[data-sun-view-original]');
  if(f){edit(Number(f.dataset.sunViewOriginal));return}
  const c=e.target.closest('[data-sun-back-contract]');
- if(c){const i=Number(c.dataset.sunBackContract),key=String(data[i]?.id||'');window.sunarpNavigate?.('contratos');contractTab='vigentes';refresh();const tr=Array.from(document.querySelectorAll('[data-sun-contract-id]')).find(x=>x.dataset.sunContractId===key);requestAnimationFrame(()=>tr?.scrollIntoView({behavior:'smooth',block:'center'}));return}
+ if(c){window.sunarpNavigate?.('procedimientos');return}
  if(e.target.closest('[data-sun-procedures]'))window.sunarpNavigate?.('procedimientos');
 });
 el('sunNewConvSearch')?.addEventListener('input',listNew);
