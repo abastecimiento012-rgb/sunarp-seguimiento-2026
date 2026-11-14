@@ -42,6 +42,20 @@ COLUMNAS = {
     "BC": "estadoContrato", "BD": "diasVencimientoExcel",
     "BE": "semaforoExcel", "BF": "seguimientoExcel",
 }
+# Columnas opcionales de seguimiento operativo. Se leen solo si tienen
+# el encabezado esperado en fila 5; la plantilla antigua sigue siendo válida.
+OPCIONALES = {
+    "BG": ("proximaActuacion", "PROXIMA ACTUACION"),
+    "BH": ("fechaCompromiso", "FECHA DE COMPROMISO"),
+    "BI": ("ultimaActuacion", "ULTIMA ACTUACION"),
+    "BJ": ("fechaUltimaActuacion", "FECHA ULTIMA ACTUACION"),
+}
+
+def normalizar_encabezado(v):
+    import unicodedata
+    return " ".join("".join(c for c in unicodedata.normalize("NFD", str(v or "").upper())
+                           if unicodedata.category(c) != "Mn").split())
+
 CAMPOS_NO_PUBLICAR = {"detallePagos", "saldoContrato", "primerDevengado", "montoAdelanto"}
 
 
@@ -100,11 +114,18 @@ def convertir_excel(path):
         titulo = texto(hoja["C5"]).upper()
         if "DESCRIPCION" not in titulo and "DESCRIPCIÓN" not in titulo:
             raise ValueError("Formato no reconocido: falta DESCRIPCIÓN en C5 de la primera hoja.")
+        activos = {col: key for col, (key, title) in OPCIONALES.items()
+                   if normalizar_encabezado(texto(hoja[f"{col}5"])) == title}
+        if activos:
+            print("Campos adicionales habilitados:", ", ".join(activos.values()))
+        else:
+            print("Sin columnas adicionales de seguimiento: se conserva el formato original.")
         rows = []
         for n in range(6, hoja.max_row + 1):
             if not texto(hoja[f"C{n}"]):
                 continue
             registro = {k: texto(hoja[f"{col}{n}"]) for col, k in COLUMNAS.items() if k not in CAMPOS_NO_PUBLICAR}
+            registro.update({key: texto(hoja[f"{col}{n}"]) for col, key in activos.items()})
             registro["filaExcel"] = n
             rows.append(registro)
         if len(rows) < 10:
