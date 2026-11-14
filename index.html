@@ -2916,7 +2916,7 @@ refresh();
      id:String(r.id??index)+'|pendiente',
      index,r,owner:norm(r.especialista),
      service:fmt(r.descripcion),
-     stage:fmt(r.estadoNueva)||fmt(r.estado),
+     stage:fmt(r.estadoNueva)!=='—'?fmt(r.estadoNueva):fmt(r.estado),
      deadlines:due.list,
      unconfirmed:due.unconfirmed,
      primary,when:primary?primary.when:null
@@ -2939,7 +2939,7 @@ refresh();
   const dates=t.deadlines.map(x=>
     '<div class="sun-due-deadline"><span>'+esc(x.label)+(x.kind==='hito'?' · cronograma':'')+'</span><strong>'+esc(displayDate(x.date))+'</strong></div>'
   ).join('');
-  const noDate=t.deadlines.length?'':('<p class="sun-due-no-date">'+esc(t.unconfirmed||'No hay fecha de entrega futura confirmada para este proceso. Verificar el siguiente plazo con el responsable.')+'</p>');
+  const noDate=t.unconfirmed?'<p class="sun-due-no-date">'+esc(t.unconfirmed)+' · confirmar fecha completa con el especialista.</p>':(t.deadlines.length?'':'<p class="sun-due-no-date">No hay fecha de entrega futura confirmada para este proceso. Verificar el siguiente plazo con el responsable.</p>');
   return '<article class="sun-due-item'+(mark?' is-reviewed':'')+'">'+
    '<div class="sun-due-item-head"><span class="sun-due-status '+st.kind+'">'+esc(st.label)+'</span></div>'+
    '<h4 class="sun-due-item-name">'+esc(t.service)+'</h4>'+
@@ -2992,7 +2992,8 @@ refresh();
  $('sunDailyExport').addEventListener('click',()=>{
   const cols=['Especialista','Servicio','Etapa registrada','Plazo o hito','Fecha','Tipo','Revisado hoy'];
   const rows=tasks.flatMap(t=>{
-   const d=t.deadlines.length?t.deadlines:[{label:t.unconfirmed||'Fecha por confirmar',date:null,kind:'sin-fecha'}];
+   const d=t.deadlines.length?t.deadlines.slice():[{label:'Fecha por confirmar',date:null,kind:'sin-fecha'}];
+   if(t.unconfirmed)d.push({label:t.unconfirmed,date:null,kind:'fecha-incompleta'});
    return d.map(v=>[t.owner,t.service,t.stage,v.label,v.date?displayDate(v.date):'',v.kind,checked.has(t.id)?'Sí':'No']);
   });
   const safeCSV=x=>{let v=String(x??'');if(/^\s*[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';};
