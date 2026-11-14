@@ -517,6 +517,14 @@ body[data-sun-page="procedimientos"] .tablewrap .desc .sun-proc-links{display:fl
 .sun-linked-notice{font-size:12px;line-height:1.55;color:#55708b;margin:0 0 14px}
 .sun-linked-title{font-size:14px;font-weight:800;color:#193f67;line-height:1.5;margin:0 0 10px;overflow-wrap:anywhere}
 @media(max-width:520px){.sun-linked-content{padding:12px}.sun-linked-head{padding:11px}.sun-linked-head h2{font-size:14px}.sun-proc-linked{font-size:10px!important;padding:6px 7px!important}}
+</style><style id="sunPrevisionSinListadoDuplicado2026">
+/* Previsiones: conservar la síntesis presupuestaria, sin duplicar al final la tabla de contratos. */
+body[data-sun-page="previsiones"] #proceduresPanel .table-scroll-tools,
+body[data-sun-page="previsiones"] #proceduresPanel .tablewrap,
+body[data-sun-page="previsiones"] #proceduresPanel #counter{display:none!important}
+body[data-sun-page="previsiones"] #previsionSummary{margin-bottom:0!important}
+body[data-sun-page="previsiones"] #proceduresPanel{padding-bottom:18px}
+.pvx-kpi small{line-height:1.4}
 </style></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
@@ -825,6 +833,31 @@ function pvDocumentLabel(r,docKey){
  if(prev)return '<span class="pvx-shared" title="'+esc(raw)+'">Documento compartido con '+esc(prev[0])+'</span>';
  return '<span class="pvx-doc" title="'+esc(raw)+'">'+esc(raw)+'</span>';
 }
+function pvOpenBudgetDetail(statusKey){
+ const selected=pvFields.find(([,k])=>k===pvYear)||pvFields[0];
+ const [label,amountKey,docKey]=selected;
+ const title=label==='CCP 2026'?'CCP 2026':'Previsión '+label;
+ const labels={todos:'Todos los registros',importe:'Con importe',revisar:'Por verificar','sin-dato':'Sin dato'};
+ const rows=pvCurrentRows().filter(r=>statusKey==='todos'||pvStatusFor(r,amountKey,docKey)===statusKey);
+ const modal=document.getElementById('insightDetail');
+ const titleElement=document.getElementById('insightDetailTitle');
+ const explain=document.getElementById('insightDetailExplain');
+ const host=document.getElementById('insightDetailRows');
+ if(!modal||!titleElement||!explain||!host)return;
+ titleElement.textContent=title+' · '+(labels[statusKey]||'Registros')+' · '+rows.length;
+ explain.textContent='Consulta puntual de documentos e importes del Excel. La lista se presenta solo al seleccionar un indicador; no se duplica en la página de Previsiones.';
+ host.innerHTML=rows.length?
+  '<table><thead><tr><th>N.º</th><th>Objeto de contratación</th><th>Especialista</th><th>Documento</th><th>Importe</th><th>Ficha</th></tr></thead><tbody>'+
+  rows.map((r,i)=>{
+   const value=pvAmount(r,amountKey,docKey);
+   return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(r.descripcion||'—')+'</strong></td>'+
+   '<td>'+esc(r.especialista||'—')+'</td><td>'+pvDocumentLabel(r,docKey)+'</td>'+
+   '<td>'+(value!==null?esc(pvMoney(value)):'—')+'</td>'+
+   '<td><button type="button" class="eye-action" data-insight-record="'+data.indexOf(r)+'">👁 Ver ficha</button></td></tr>';
+  }).join('')+'</tbody></table>':
+  '<p class="pvx-empty">No hay registros en esta categoría para el ejercicio seleccionado.</p>';
+ if(!modal.open)modal.showModal();
+}
 function pvDashboard(){
  const table=$('tbody')?.closest('table');
  if(tab!=='previsiones'){table?.classList.remove('pvx-table');return}
@@ -841,11 +874,9 @@ function pvDashboard(){
  let h='<div class="pvx-head"><div><h3>CCP y previsiones por ejercicio</h3><p>Consulta un ejercicio a la vez. Los filtros superiores también se aplican a esta vista.</p></div><span class="pvx-overall">'+rows.length+' registros filtrados</span></div>';
  h+='<div class="pvx-year-tabs" role="group" aria-label="Seleccionar ejercicio presupuestario">'+info.map(x=>'<button type="button" data-pvx-year="'+esc(x.key)+'" aria-pressed="'+(x.key===amountKey)+'" class="'+(x.key===amountKey?'is-active':'')+'"><strong>'+esc(x.label)+'</strong><small>'+x.count+' con información</small></button>').join('')+'</div>';
  const cards=[['todos','Registros',statuses.todos,'file-text'],['importe','Con importe',statuses.importe,'wallet'],['revisar','Por verificar',statuses.revisar,'alert'],['sin-dato','Sin dato',statuses['sin-dato'],'empty']];
- h+='<div class="pvx-kpis" role="group" aria-label="Filtrar registros presupuestarios">'+cards.map(([key,name,num,icon])=>'<button type="button" data-pvx-status="'+key+'" aria-pressed="'+(pvStatus===key)+'" class="pvx-kpi pvx-'+icon+' '+(pvStatus===key?'is-active':'')+'"><span>'+name+'</span><strong>'+num+'</strong><small>Ver registros ↗</small></button>').join('')+'</div>';
+ h+='<div class="pvx-kpis" role="group" aria-label="Filtrar registros presupuestarios">'+cards.map(([key,name,num,icon])=>'<button type="button" data-pvx-status="'+key+'" aria-pressed="'+(pvStatus===key)+'" class="pvx-kpi pvx-'+icon+' '+(pvStatus===key?'is-active':'')+'"><span>'+name+'</span><strong>'+num+'</strong><small>👁 Consultar detalle</small></button>').join('')+'</div>';
  h+='<div class="pvx-sum"><div><span>Importe referencial registrado · '+esc(title)+'</span><strong>'+pvMoney(period.total)+'</strong></div><small>Importe referencial con duplicados idénticos depurados; verificar documentos.</small></div>';
- h+='<div class="pvx-results"><strong>'+visible.length+' de '+rows.length+' registros</strong><span>'+esc(title)+' · '+({todos:'Todos',importe:'Con importe positivo',revisar:'Documentación o importe por verificar','sin-dato':'Sin dato registrado'}[pvStatus]||'Todos')+'</span></div>';
- if(visible.length===0)h+='<p class="pvx-empty">No hay registros para este filtro. Puedes seleccionar otro ejercicio o la opción «Registros».</p>';
- h+='<p class="pvx-hint">«Por verificar» y «Sin dato» requieren revisión, pero no implican incumplimiento.</p>';
+ h+='<p class="pvx-hint">Selecciona un indicador solo cuando necesites consultar los registros que lo componen. «Por verificar» y «Sin dato» requieren revisión, pero no implican incumplimiento.</p>';
  summary.innerHTML=h;
  table?.classList.add('pvx-table');
  $('thead').innerHTML='<tr><th>N.º</th><th>PAC</th><th>Objeto / procedimiento</th><th>Especialista</th><th>Situación</th><th>Documento · '+esc(title)+'</th><th>Importe · S/</th><th>Ficha</th></tr>';
@@ -857,7 +888,7 @@ function pvDashboard(){
  }).join('');
  $('counter').textContent='Mostrando '+visible.length+' registros del ejercicio '+title+'. Importes y documentos del Excel; consulta de solo lectura.';
  summary.querySelectorAll('[data-pvx-year]').forEach(b=>b.addEventListener('click',()=>{pvYear=b.dataset.pvxYear;pvStatus='todos';render()}));
- summary.querySelectorAll('[data-pvx-status]').forEach(b=>b.addEventListener('click',()=>{pvStatus=b.dataset.pvxStatus;render()}));
+ summary.querySelectorAll('[data-pvx-status]').forEach(b=>b.addEventListener('click',()=>pvOpenBudgetDetail(b.dataset.pvxStatus)));
 }
 const pvOldRender=render;render=function(){pvOldRender();pvDashboard()};render();
 </script><script>/*!
