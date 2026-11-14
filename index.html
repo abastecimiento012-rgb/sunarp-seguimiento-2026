@@ -404,6 +404,17 @@ body[data-sun-page="especialistas"] #specialistsPanel,body[data-sun-page="vencim
 body[data-sun-page="indicadores"] #visualSummary{display:grid!important}
 body[data-sun-page="pac"] #sunPacQuick{display:flex!important}
 body[data-sun-page="pac"] #pacVisualNuevo{display:block!important}
+/* PAC: únicamente programación, cantidades y distribución por área.
+   Los cuadros de CCP y previsiones permanecen fuera de esta sección. */
+body[data-sun-page="pac"] #visualSummary,
+body[data-sun-page="pac"] .fin-overview-card,
+body[data-sun-page="pac"] #chartFinance,
+body[data-sun-page="pac"] .fin-visual,
+body[data-sun-page="pac"] .pvx-head,
+body[data-sun-page="pac"] .pvx-year-tabs,
+body[data-sun-page="pac"] .pvx-kpis,
+body[data-sun-page="pac"] .pvx-sum,
+body[data-sun-page="pac"] #previsionSummary{display:none!important}
 body[data-sun-page="reportes"] #sunReportsPage{display:block!important}
 body[data-sun-page] main.shell{min-height:55vh}
 .sun-page-head{background:linear-gradient(110deg,#17365d,#245c8b);color:white;border-radius:15px;padding:21px 24px;margin:0 0 19px}
@@ -741,7 +752,7 @@ function render(){cards();refreshFilters();const tw=document.querySelector('.tab
  const pc=n?Math.round(100*yes/n):0;
  const group={};rows.forEach(r=>{const k=(r.area||'SIN ÁREA').trim();group[k]=(group[k]||0)+1});
  const top=Object.entries(group).sort((a,b)=>b[1]-a[1]).slice(0,7);
- target.innerHTML='<div class="sun-visual-head"><div><h3>📊 PAC 2026 · Seguimiento visual</h3><p>Distribución de los registros visibles según programación PAC y área usuaria</p></div><span class="sun-visual-tag">'+n+' registros filtrados</span></div><div class="sun-pac-grid"><div class="sun-pac-donut" style="--pct:'+pc+'%"><div><strong>'+pc+'%</strong><small>Programados</small></div></div><div class="sun-pac-key"><div><i class="sun-dot blue"></i><span>Programados en PAC</span><strong>'+yes+'</strong></div><div><i class="sun-dot orange"></i><span>No programados</span><strong>'+no+'</strong></div><p>Este gráfico refleja los registros del cuadro, no el cumplimiento oficial del PAC.</p></div><div class="sun-area-bars"><h4>Distribución por área usuaria</h4>'+top.map(([k,v],i)=>'<div class="sun-area-row"><span title="'+esc(k)+'">'+esc(k)+'</span><div class="sun-area-track"><div style="width:'+(n?100*v/n:0)+'%;background:var(--sun-chart-'+(i%5)+')"></div></div><b>'+v+'</b></div>').join('')+'</div></div>';
+ target.innerHTML='<div class="sun-visual-head"><div><h3>📊 PAC 2026 · Seguimiento visual</h3><p>Procedimientos programados y no programados, y distribución por área usuaria</p></div><span class="sun-visual-tag">'+n+' registros filtrados</span></div><div class="sun-pac-grid"><div class="sun-pac-donut" style="--pct:'+pc+'%"><div><strong>'+pc+'%</strong><small>Programados</small></div></div><div class="sun-pac-key"><div><i class="sun-dot blue"></i><span>Programados en PAC</span><strong>'+yes+'</strong></div><div><i class="sun-dot orange"></i><span>No programados</span><strong>'+no+'</strong></div><p>Este gráfico refleja los registros del cuadro, no el cumplimiento oficial del PAC.</p></div><div class="sun-area-bars"><h4>Distribución por área usuaria</h4>'+top.map(([k,v],i)=>'<div class="sun-area-row"><span title="'+esc(k)+'">'+esc(k)+'</span><div class="sun-area-track"><div style="width:'+(n?100*v/n:0)+'%;background:var(--sun-chart-'+(i%5)+')"></div></div><b>'+v+'</b></div>').join('')+'</div></div>';
  }}
  if(tab!=='all'){const target=document.getElementById('pacVisualNuevo');if(target)target.innerHTML='';}
 
@@ -1784,7 +1795,7 @@ experts();apply();
   especialistas:['Seguimiento por especialista','Selecciona un especialista o estado para abrir los registros correspondientes.'],
   vencimientos:['Cronograma de vencimientos','Consulta los contratos por periodo de vencimiento y abre sus fichas.'],
   indicadores:['Indicadores y análisis','Distribución de procedimientos, naturaleza de la prestación y resumen presupuestal.'],
-  pac:['PAC 2026','Consulta los procedimientos programados y no programados con acceso a sus detalles.'],
+  pac:['PAC 2026','Seguimiento de la programación PAC: procedimientos programados, no programados y distribución por área usuaria.'],
   reportes:['Reportes gerenciales','Genera PowerPoint, PDF y CSV desde una página dedicada.']
  };
  const tabs={pac:'tabAll'};
