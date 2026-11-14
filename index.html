@@ -1942,7 +1942,27 @@ html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-alert:hover{
 /* Three meaningful executive metrics fill available width without a blank box. */
 #gerDetail .gd-metrics{grid-template-columns:repeat(auto-fit,minmax(min(100%,205px),1fr))}
 @media(max-width:520px){#gerDetail .gd-metrics{grid-template-columns:1fr}}
-</style></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
+</style>
+<style id="sunContractKeyIdentifiers2026">
+/* Tipo y número de procedimiento + contrato: identidades visibles solo una vez en las fichas. */
+.sp-integral-refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.sp-integral-refs .sp-integral-field{background:#ecf6ff;border:2px solid #92bce1;border-radius:11px;padding:14px 16px}
+.sp-integral-refs .sp-integral-field small{font-size:15px!important;color:#325b7b;font-weight:750}
+.sp-integral-refs .sp-integral-field strong{font-size:19px!important;color:#173e65;font-weight:850;overflow-wrap:anywhere}
+.sp-integral-refs .sp-ref-contract{background:#eaf8ee;border-color:#8dc7a8}
+.sp-integral-refs .sp-ref-contract small{color:#2e6348}
+.sp-integral-refs .sp-ref-contract strong{color:#1a5739}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-integral-field{
+ background:#363c43!important;border-color:#a3b4c2!important;color:#fff!important;
+}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-integral-field small{color:#d7e4f0!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-integral-field strong{color:#fff!important}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-ref-contract{
+ background:#293f34!important;border-color:#93d6b0!important;
+}
+html[data-sun-theme="dark"] #insightDetail .sp-integral-refs .sp-ref-contract strong{color:#ddffe9!important}
+</style>
+</head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
     <span class="sun-nav-title" aria-hidden="true"><span class="sun-nav-brand">▦</span> Menú principal</span>
@@ -2603,8 +2623,6 @@ document.getElementById('alerts').addEventListener('click',function(event){
  const hasContractInfo=r=>!invalidValue(r.contratoVigente)||!invalidValue(r.numeroContrato);
  const validDate=v=>typeof date==='function'?date(v):null;
  function contractView(r){
-  const reference=invalidValue(r.contratoVigente)?'':plain(r.contratoVigente);
-  const number=invalidValue(r.numeroContrato)?reference:plain(r.numeroContrato);
   const end=validDate(r.vencimiento),start=validDate(r.fechaInicio),now=new Date();now.setHours(0,0,0,0);
   const hasContract=hasContractInfo(r);
   if(!hasContract){
@@ -2613,8 +2631,6 @@ document.getElementById('alerts').addEventListener('click',function(event){
   const status=end&&end<now?'Contrato con fecha de vencimiento transcurrida':end&&(!start||start<=now)?'Vigencia estimada según fechas del Excel':'Vigencia pendiente de confirmar';
   const label=end&&end<now?'expired':end?'active':'pending';
   const fields=[
-   showField('N.º de contrato',number),
-   reference&&norm(reference)!==norm(number)?showField('Contrato / adenda de referencia',reference):'',
    showField('Contratista',r.contratista),
    showField('Estado contractual',r.estadoContrato),
    validDate(r.fechaSuscripcion)?showField('Fecha de suscripción',r.fechaSuscripcion):'',
@@ -2622,13 +2638,10 @@ document.getElementById('alerts').addEventListener('click',function(event){
    end?showField('Vencimiento contractual',r.vencimiento):'',
    showField('Plazo contractual',r.plazo),
    showField('Naturaleza de la prestación',r.naturaleza),
-   showField('Monto contratado (S/)',r.montoContratado),
-   showField('Saldo contractual (S/)',r.saldoContrato),
-   showField('Primer devengado registrado',r.primerDevengado)
+   showField('Monto contratado (S/)',r.montoContratado)
   ].filter(Boolean);
   return '<p class="sp-integral-status '+label+'">'+safe(status)+'</p>'+
-    '<div class="sp-integral-fields">'+fields.join('')+'</div>'+
-    (!invalidValue(r.detallePagos)?'<div class="sp-integral-note"><b>Pagos contractuales registrados</b><p>'+safe(r.detallePagos)+'</p></div>':'')+
+    (fields.length?'<div class="sp-integral-fields">'+fields.join('')+'</div>':'')+
     '<p class="sp-integral-caveat">La vigencia debe verificarse con el contrato, sus adendas y las fechas oficiales.</p>';
  }
  function newContractView(r){
@@ -2653,15 +2666,11 @@ document.getElementById('alerts').addEventListener('click',function(event){
   const pending=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA/.test(stage);
   const launched=!second&&!pending&&(/CONVOCATORIA PUBLICADA|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
   const stageName=invalidValue(r.estadoNueva)?'Etapa de nueva contratación por confirmar':plain(r.estadoNueva);
-  const years=[...String(r.procedimiento||'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
-  const contractYear=[...String(r.contratoVigente||'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]))[0]||0;
-  const distinctNewNumber=!second&&!invalidValue(r.procedimiento)&&years.length>0&&years.some(y=>y>=2026&&(contractYear===0||y>contractYear));
   const fields=[
    showField('Especialista responsable',r.especialista),
    showField('Área usuaria',r.area),
    showField('Estado de la nueva contratación',stageName),
    (!['CONTRATO VIGENTE','CONTRATO SUSCRITO','CULMINADO'].includes(general))?showField('Estado actual del procedimiento',r.estado):'',
-   distinctNewNumber?showField('Tipo y número del procedimiento en seguimiento',r.procedimiento):'',
    !second&&!pending?showField('Fecha de requerimiento',r.fechaRequerimiento):'',
    !second&&!pending?showField('Documentos de requerimiento',r.documentosRequerimiento):'',
    !second&&!pending?showField('Cuantía estimada del nuevo procedimiento',r.cuantia):'',
@@ -2687,10 +2696,16 @@ document.getElementById('alerts').addEventListener('click',function(event){
   title.textContent='Ficha integral del servicio · Registro '+plain(r.id||idx+1);
   description.textContent=plain(r.descripcion)||'Servicio sin descripción registrada';
   const hasContract=hasContractInfo(r);
+  const contractNumber=invalidValue(r.numeroContrato)?r.contratoVigente:r.numeroContrato;
+  const keyFields=[
+    showField('Tipo y número de procedimiento',r.procedimiento,'sp-ref-procedure'),
+    hasContract?showField('N.º de contrato',contractNumber,'sp-ref-contract'):''
+  ].filter(Boolean);
+  const keySection=keyFields.length?'<div class="sp-integral-refs" aria-label="Identificación del procedimiento y contrato">'+keyFields.join('')+'</div>':'';
   const contractSection=hasContract?'<section class="sp-integral-section contract" aria-label="Información del contrato registrado">'+
       '<div class="sp-integral-section-title"><span class="sp-integral-step">01</span><div><h3>Contrato registrado</h3><p>Información del contrato identificado en el Excel y su vigencia</p></div></div>'+
       contractView(r)+'</section>':'';
-  content.innerHTML='<div class="sp-integral-detail">'+contractSection+
+  content.innerHTML='<div class="sp-integral-detail">'+keySection+contractSection+
     '<section class="sp-integral-section process" aria-label="Información de la nueva convocatoria">'+
       '<div class="sp-integral-section-title"><span class="sp-integral-step">'+(hasContract?'02':'01')+'</span><div><h3>Actuaciones preparatorias y nueva contratación</h3><p>Seguimiento de las actuaciones y, cuando corresponda, la nueva convocatoria</p></div></div>'+
       newContractView(r)+'</section></div>';
@@ -2908,7 +2923,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const cell=(name,val,wide=false)=>'<div class="gd-cell'+(wide?' gd-wide':'')+'"><small>'+E(name)+'</small><strong>'+V(val)+'</strong></div>';
  const sec=(name,content)=>'<section class="gd-section"><h3>'+name+'</h3><div class="gd-content">'+content+'</div></section>';
  const metric=(name,val)=>'<div class="gd-metric"><small>'+E(name)+'</small><strong>'+V(val)+'</strong></div>';
- function show(i){const r=data[i];if(!r)return;document.getElementById('gdTitle').textContent='Procedimiento N.º '+(r.id||'—');document.getElementById('gdDesc').textContent=r.descripcion||'Descripción no registrada';document.getElementById('gdSubtitle').textContent=[r.procedimiento,r.area?'Área: '+r.area:'',r.especialista?'Especialista: '+r.especialista:''].filter(Boolean).join(' · ');
+ function show(i){const r=data[i];if(!r)return;document.getElementById('gdTitle').textContent='Ficha de seguimiento · Registro '+(r.id||'—');document.getElementById('gdDesc').textContent=r.descripcion||'Descripción no registrada';document.getElementById('gdSubtitle').textContent=[r.procedimiento,r.area?'Área: '+r.area:'',r.especialista?'Especialista: '+r.especialista:''].filter(Boolean).join(' · ');
  const contractValid=v=>{
   const t=String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();
   return !!t&&!['-','—','NO APLICA','NO CORRESPONDE','NO REGISTRADO','SIN INFORMACION','PENDIENTE','CONTRATO VIGENTE','CONTRATO SUSCRITO','POR DETERMINAR'].includes(t)&&!t.startsWith('NO HAY ')&&!t.startsWith('SIN CONTRATO');
@@ -2922,18 +2937,16 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const steps=[['Requerimiento',r.fechaRequerimiento],['Convocatoria',r.fechaConvocatoria],['Buena pro',r.fechaBuenaPro],['Consentimiento',r.fechaConsentimiento],['Firma',r.fechaFirma||r.fechaSuscripcion]];
  const timeline='<div class="gd-timeline">'+steps.map(([label,value])=>'<div class="gd-step"><small>'+E(label)+'</small><strong>'+V(value)+'</strong></div>').join('')+'</div>';
  const obs='<div class="gd-observation">'+V(r.observaciones)+'</div><div class="gd-grid" style="margin-top:12px">'+cell('Seguimiento preventivo',r.seguimientoExcel,true)+cell('Estado de la nueva contratación',r.estadoNueva)+cell('Requiere nueva convocatoria',r.nuevaConvocatoria)+cell('Documentos de requerimiento',r.documentosRequerimiento,true)+'</div>';
+ const contractNumber=contractValid(r.numeroContrato)?r.numeroContrato:r.contratoVigente;
  const contractFields=[
-  contractCell('Contrato vigente / último',r.contratoVigente),
+  contractCell('N.º de contrato',contractNumber),
   contractCell('Proveedor / contratista',r.contratista),
   contractCell('Vencimiento',r.vencimiento),
-  contractCell('Contrato suscrito',r.numeroContrato),
   contractCell('Postor adjudicado',r.postor),
   contractMoney('Monto contratado',r.montoContratado),
   contractCell('Fecha de suscripción',r.fechaSuscripcion),
   contractCell('Fecha de inicio',r.fechaInicio),
-  contractCell('Plazo de ejecución',r.plazo,true),
-  contractCell('Detalle de pagos',r.detallePagos,true),
-  contractMoney('Saldo contractual',r.saldoContrato)
+  contractCell('Plazo de ejecución',r.plazo,true)
  ].filter(Boolean);
  const contract=contractIdentified&&contractFields.length?'<div class="gd-grid">'+contractFields.join('')+'</div>':'';
 
@@ -2947,7 +2960,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const currentContractState=typeof group==='function'&&group(r.estado)==='Contrato vigente';
  const isVigente=!!currentContractState||!!(hasCurrentContract&&expiry&&expiry>=today);
  const omitBudget=isVigente||document.body.dataset.sunPage==='contratos';
- const extra='<div class="gd-grid">'+cell('Ítem CMN',r.itemCMN)+cell('Clasificador de gasto',r.clasificador)+cell('Meta presupuestal',r.meta)+cell('Inversión',r.inversion)+cell('CUI',r.cui)+cell('Compatibilización',r.compatibilizacion)+cell('Informe de software',r.informeSoftware)+cell('Monto adjudicado',moneySafe(r.montoAdjudicado))+cell('Primer devengado',moneySafe(r.primerDevengado))+'</div>';
+ const extra='<div class="gd-grid">'+cell('Ítem CMN',r.itemCMN)+cell('Clasificador de gasto',r.clasificador)+cell('Meta presupuestal',r.meta)+cell('Inversión',r.inversion)+cell('CUI',r.cui)+cell('Compatibilización',r.compatibilizacion)+cell('Informe de software',r.informeSoftware)+cell('Monto adjudicado',moneySafe(r.montoAdjudicado))+'</div>';
  const newRegistered=['SI','SÍ'].includes(String(r.nuevaConvocatoria||'').trim().toUpperCase());
  const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
  body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('◉ Observaciones y actuaciones pendientes',obs)+sec('▦ Información del procedimiento',info)+sec('◷ Cronología de actuaciones',timeline)+(contract?sec('▤ Contrato y seguimiento contractual',contract):'')+(omitBudget?'':sec('▥ CCP 2026 y previsiones 2027–2030',budget))+sec('▣ Información administrativa complementaria',extra);
@@ -3455,8 +3468,8 @@ function openContract(i){
   const number=contractPlaceholder(r.numeroContrato)?r.contratoVigente:r.numeroContrato;
   const state=expiry?'Vigencia estimada según la fecha de vencimiento registrada':'Vigencia pendiente de verificar: no se ha registrado una fecha válida de vencimiento';
   const fields=[
-   onlyContractField('N.º de contrato vigente registrado',number),
-   onlyContractField('Referencia del contrato o adenda',norm(number)===norm(r.contratoVigente)?'':r.contratoVigente),
+   onlyContractField('Tipo y número de procedimiento',r.procedimiento),
+   onlyContractField('N.º de contrato',number),
    onlyContractField('Contratista',r.contratista),
    onlyContractField('Estado contractual',r.estadoContrato),
    onlyContractField('Fecha de suscripción',r.fechaSuscripcion),
@@ -3464,14 +3477,11 @@ function openContract(i){
    onlyContractField('Fecha de vencimiento',r.vencimiento),
    onlyContractField('Plazo contractual',r.plazo),
    onlyContractField('Naturaleza de la prestación',r.naturaleza),
-   onlyContractField('Monto contratado (S/)',r.montoContratado),
-   onlyContractField('Saldo contractual (S/)',r.saldoContrato),
-   onlyContractField('Primer devengado registrado',r.primerDevengado)
+   onlyContractField('Monto contratado (S/)',r.montoContratado)
   ].filter(Boolean);
-  const payments=contractPlaceholder(r.detallePagos)?'':'<h4>Detalle de pagos contractuales</h4><div class="sun-newconv-notes">'+esc(r.detallePagos)+'</div>';
   content.innerHTML='<div class="sun-newconv-detail">'+description+
    '<p class="sun-linked-notice"><strong>'+esc(state)+'.</strong> Datos tomados del Excel. Verifica el contrato, las adendas y las fechas vigentes.</p>'+
-   '<div class="sun-newconv-fields">'+fields.join('')+'</div>'+payments+
+   '<div class="sun-newconv-fields">'+fields.join('')+'</div>'+
    '<p class="sun-ct-note">Esta ficha contiene únicamente información contractual. La nueva convocatoria se consulta en su botón independiente.</p></div>';
  }
  if(dlg.open)dlg.close();
