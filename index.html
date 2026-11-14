@@ -884,15 +884,14 @@ html[data-sun-theme="dark"] .sun-proc2026-alert.neutral{background:#2b3b4d!impor
 /* Control de procesos siempre como tabla, también en teléfonos. */
 #sunProcedures2026Panel .sun-proc2026-scroll{width:100%;max-width:100%;overflow-x:auto;overflow-y:visible;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;border:1px solid #d9e5f1;border-radius:11px;background:#fff}
 #sunProcedures2026Panel .sun-proc2026-table{width:100%;min-width:1000px;table-layout:fixed;border-collapse:separate;border-spacing:0}
-#sunProcedures2026Panel .sun-proc2026-table th:nth-child(1){width:31%}
-#sunProcedures2026Panel .sun-proc2026-table th:nth-child(2){width:20%}
-#sunProcedures2026Panel .sun-proc2026-table th:nth-child(3){width:20%}
-#sunProcedures2026Panel .sun-proc2026-table th:nth-child(4){width:13%}
-#sunProcedures2026Panel .sun-proc2026-table th:nth-child(5){width:16%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(1){width:32%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(2){width:21%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(3){width:21%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(4){width:26%}
 #sunProcedures2026Panel .sun-proc2026-table thead th{vertical-align:middle}
 #sunProcedures2026Panel .sun-proc2026-table tbody tr:nth-child(even) td{background:#f9fbfe}
 #sunProcedures2026Panel .sun-proc2026-table tbody tr:hover td{background:#eaf3ff!important}
-#sunProcedures2026Panel .sun-proc2026-table td:nth-child(5){text-align:left;vertical-align:middle}
+#sunProcedures2026Panel .sun-proc2026-table td:nth-child(4){text-align:left;vertical-align:middle}
 #sunProcedures2026Panel .sun-proc2026-eye{display:inline-flex!important;align-items:center;justify-content:center;margin:9px 0 0!important;min-height:37px;width:auto;max-width:150px;white-space:normal;line-height:1.35;text-align:center}
 #sunProcedures2026Panel .sun-proc2026-table tr:focus-within td{background:#f1f8ff}
 html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-table tbody tr:nth-child(even) td{background:#20334a!important}
@@ -2059,11 +2058,11 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Control de procedimientos</h3><p>Etapa, siguiente actuación y alertas en una sola vista. Abre 👁 para consultar los detalles.</p></div>
+  <div><h3>Control de procedimientos</h3><p>Etapa, responsable y alertas en una sola vista. Abre 👁 para consultar los detalles.</p></div>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
- <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Próxima actuación</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
+ <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
  <p class="sun-proc2026-foot">Alerta preventiva automática: se propone evaluar el inicio de una nueva contratación cuando falten 90 días o menos para el vencimiento y no consten actuaciones iniciadas. No equivale a una obligación legal automática ni confirma la publicación de una convocatoria. Valida la necesidad con el área usuaria y revisa el expediente.</p>
 </section><section id="sunAlertsDaily2026" class="sun-daily sun-dues-page" aria-label="Pendientes y plazos por especialista">
@@ -3698,11 +3697,6 @@ refresh();
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
    const end=expiry(r),alert=alertFor(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=norm(r.nuevaConvocatoria)==='SI'&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
-   const summary=follow.next||(follow.active?'Por precisar':'—');
-   const validity=follow.commitmentStatus;
-   const nextDate=follow.dateLabel?'<span class="sun-proc2026-nextdate '+validity+'">Compromiso interno: '+esc(follow.dateLabel)+'</span>':
-    (follow.commitmentRaw?'<span class="sun-proc2026-nextdate warn">Verificar fecha de compromiso</span>':'');
-   const stale=follow.since!==null&&follow.since>7?'<span class="sun-proc2026-stale">Sin actualización registrada hace '+follow.since+' días</span>':'';
    const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+'" title="Consultar ficha">👁 Ver ficha</button>';
    const alertButton='<button type="button" class="sun-proc2026-alert '+alert.kind+'" data-sun-proc-integral="'+i+'" aria-label="Alerta: '+esc(alert.label)+'. Abrir ficha de '+esc(field(r.descripcion))+'">'+
     '<strong>'+esc(alert.label)+'</strong>'+(alert.detail?'<small>'+esc(alert.detail)+'</small>':'')+'</button>';
@@ -3710,10 +3704,10 @@ refresh();
     '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
-    '<td data-label="Próxima actuación"><span class="sun-proc2026-next'+(!follow.next?' is-missing':'')+'">'+esc(summary)+'</span>'+nextDate+stale+'</td>'+
+
     '<td data-label="Seguimiento">'+(end.date!=='—'?'<span class="sun-proc2026-expiry-label">Vence contrato: <b>'+esc(end.date)+'</b></span>':'')+alertButton+'</td>'+
     '</tr>';
-  }).join(''):'<tr><td colspan="5" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
+  }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
  panel.addEventListener('click',e=>{
   const b=e.target.closest('[data-sun-proc-integral]');
