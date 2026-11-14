@@ -226,6 +226,58 @@ html[data-sun-theme="dark"] .sp-vpending,html[data-sun-theme="dark"] .sp-vfoot{c
 html[data-sun-theme="dark"] .sp-vfeedback{color:#aed4ff}
 @media(max-width:580px){.sp-vchart{padding:12px 7px 7px}.sp-vcolumns{gap:5px}.sp-vcol{height:240px;gap:5px;padding:4px 2px 6px}.sp-vtower{height:157px;min-width:26px;width:64%}.sp-vcount{font-size:21px}.sp-vperson{font-size:11px;gap:3px}.sp-vavatar{font-size:15px}.sp-vpending{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.sp-vbar{transition:none}}
+</style><style id="sunSpecialistAccordion2026">
+/* Tarjetas de especialistas inicialmente cerradas y abiertas solamente a petición */
+.sp-vcol[aria-expanded="true"]{border-color:currentColor!important;background:color-mix(in srgb,currentColor 9%,transparent)!important;box-shadow:0 3px 12px #234e7617}
+.sp-vcol.sp-color-sheyla{color:#2469af}
+.sp-vcol.sp-color-sonia{color:#117f74}
+.sp-vcol.sp-color-hermes{color:#7958b4}
+.sp-vcol[aria-expanded="true"] .sp-vcount{color:currentColor!important}
+.sp-mini-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-top:15px}
+.sp-person-tab{display:flex;align-items:center;justify-content:center;gap:7px;min-width:0;min-height:51px;padding:10px!important;border-radius:11px!important;font-size:12px!important;white-space:normal;cursor:pointer;transition:box-shadow .15s,background .15s,transform .15s}
+.sp-person-tab b{font-size:13px}
+.sp-person-tab.sp-color-sheyla{background:#e4f1ff!important;border:1px solid #9dc5eb!important;color:#205d9c!important}
+.sp-person-tab.sp-color-sonia{background:#ddf7ef!important;border:1px solid #8ed5bb!important;color:#126e59!important}
+.sp-person-tab.sp-color-hermes{background:#efe8ff!important;border:1px solid #c2afe9!important;color:#6740a4!important}
+.sp-person-tab[aria-expanded="true"]{box-shadow:inset 0 0 0 2px currentColor,0 3px 12px #102d421c!important}
+.sp-person-tab:hover{filter:brightness(.97);transform:translateY(-1px)}
+.sp-person-tab:focus-visible,.sp-accordion-close:focus-visible{outline:3px solid #246cae!important;outline-offset:2px}
+.sp-tab-count{font-size:11px;font-weight:500}
+.sp-tab-caret{font-size:16px;margin-left:auto}
+.sp-selected-container{scroll-margin-top:95px}
+.sp-collapsed-hint{text-align:center;padding:15px 12px;margin:12px 0 0;border:1px dashed #cbdced;border-radius:10px;color:#526f89;background:#f7faff;font-size:12px;line-height:1.6}
+.sp-accordion-card{margin-top:13px!important;border:1px solid #cdddea!important;border-left-width:5px!important;border-radius:12px!important;padding:15px!important;background:#f8fbff;animation:sp-slidein .18s ease-out}
+.sp-accordion-card.sp-color-sheyla{border-left-color:#3984cb!important;background:#f2f8ff}
+.sp-accordion-card.sp-color-sonia{border-left-color:#2b9b7d!important;background:#eefbf6}
+.sp-accordion-card.sp-color-hermes{border-left-color:#8c6acb!important;background:#f7f2ff}
+.sp-accordion-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sp-accordion-heading{display:flex;align-items:center;gap:11px;min-width:0}
+.sp-accordion-avatar{font-size:28px;background:#ffffffb8;border:1px solid #d7e2ed;display:grid;place-items:center;width:43px;height:43px;border-radius:13px}
+.sp-accordion-heading h3{font-size:16px;color:#224c73;margin:0 0 4px}
+.sp-accordion-heading span{font-size:12px;color:#526e85}
+.sp-accordion-close{padding:8px 10px!important;font-size:12px!important;border:1px solid #c2d6e7!important;border-radius:9px!important;background:#fff!important;color:#335977!important}
+.sp-accordion-results{margin-top:12px}
+.sp-accordion-results .sp-task-list{display:grid;gap:8px}
+.sp-accordion-results .sp-task{border-left:3px solid #9cbddc}
+.sp-color-sheyla .sp-task{border-left-color:#3984cb}
+.sp-color-sonia .sp-task{border-left-color:#2b9b7d}
+.sp-color-hermes .sp-task{border-left-color:#8c6acb}
+@keyframes sp-slidein{from{opacity:.5;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+html[data-sun-theme="dark"] .sp-vcol.sp-color-sheyla{color:#8ec6ff!important}
+html[data-sun-theme="dark"] .sp-vcol.sp-color-sonia{color:#7edec8!important}
+html[data-sun-theme="dark"] .sp-vcol.sp-color-hermes{color:#d0b5ff!important}
+html[data-sun-theme="dark"] .sp-person-tab.sp-color-sheyla{background:#224866!important;border-color:#508cc3!important;color:#c8e4ff!important}
+html[data-sun-theme="dark"] .sp-person-tab.sp-color-sonia{background:#174c44!important;border-color:#4b9b84!important;color:#c0f5e6!important}
+html[data-sun-theme="dark"] .sp-person-tab.sp-color-hermes{background:#43315c!important;border-color:#8965b8!important;color:#eadcff!important}
+html[data-sun-theme="dark"] .sp-collapsed-hint{background:#22374d;border-color:#476580;color:#d0e1f1}
+html[data-sun-theme="dark"] .sp-accordion-card.sp-color-sheyla{background:#203950!important;border-color:#55718a!important;border-left-color:#77b3ed!important}
+html[data-sun-theme="dark"] .sp-accordion-card.sp-color-sonia{background:#1c413e!important;border-color:#4f7e71!important;border-left-color:#75cfb2!important}
+html[data-sun-theme="dark"] .sp-accordion-card.sp-color-hermes{background:#372e4c!important;border-color:#6c5a8b!important;border-left-color:#be9bfb!important}
+html[data-sun-theme="dark"] .sp-accordion-heading h3,html[data-sun-theme="dark"] .sp-accordion-heading span{color:#eff7ff!important}
+html[data-sun-theme="dark"] .sp-accordion-avatar{background:#293f56;border-color:#58718a}
+html[data-sun-theme="dark"] .sp-accordion-close{background:#283f59!important;border-color:#537492!important;color:#f0f7ff!important}
+@media(max-width:700px){.sp-mini-tabs{gap:6px}.sp-person-tab{flex-wrap:wrap;min-height:55px;gap:4px;padding:8px 5px!important}.sp-person-tab b{font-size:12px}.sp-tab-count{width:100%;text-align:center}.sp-tab-caret{margin:0}.sp-accordion-card{padding:10px!important}.sp-accordion-heading h3{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.sp-accordion-card{animation:none}.sp-person-tab{transition:none}}
 </style><style id="finDetalleStyle">
 .fin-detail-btn{cursor:pointer;text-align:left;width:100%;font-family:inherit;border:1px solid #dbe5f1;transition:transform .15s,border-color .15s,box-shadow .15s;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .fin-detail-btn:hover{border-color:#4f8ac4;transform:translateY(-2px);box-shadow:0 5px 15px #153c6220;background:#eef6ff}
@@ -1414,31 +1466,37 @@ document.getElementById('alerts').addEventListener('click',function(event){
     ['PENDIENTE DEL SIGA','SIN ACTUACIONES REGISTRADAS','EN PROGRAMACION','EN PROGRAMACIÓN','EN EVALUACION','EN EVALUACIÓN','PUBLICADO','DESIERTO','CANCELADO'].some(x=>nu.includes(x));
  };
  let searchText='';
+ let selectedName=null;
  const allAssigned=()=>data.filter(r=>names.includes(person(r)));
  const pendingAll=()=>allAssigned().filter(esPendiente);
  function summary(){
   const assigned=allAssigned(),pending=pendingAll();
   const counts=names.map(name=>({
-   name,
-   count:assigned.filter(r=>person(r)===name).length,
+   name,count:assigned.filter(r=>person(r)===name).length,
    pending:pending.filter(r=>person(r)===name).length
   }));
   const max=Math.max(1,...counts.map(x=>x.count));
   const unassigned=data.filter(r=>person(r)==='SIN ESPECIALISTA ASIGNADO').length;
+  const colors={SHEYLA:'sheyla',SONIA:'sonia',HERMES:'hermes'};
   const columns=counts.map(x=>{
    const avatar=x.name==='HERMES'?'👨':'👩';
    const height=x.count?(x.count/max*100).toFixed(1):'0';
-   return '<button class="sp-vcol" type="button" data-sp-jump="'+x.name+'" aria-label="'+x.name+': '+x.count+' procedimientos asignados, '+x.pending+' pendientes. Ver pendientes de '+x.name+'" title="Ver pendientes de '+x.name+'">'+
+   const expanded=selectedName===x.name;
+   return '<button class="sp-vcol sp-color-'+colors[x.name]+'" type="button" data-sp-jump="'+x.name+'" aria-controls="spSelectedCard2026" aria-expanded="'+expanded+'" aria-label="'+x.name+': '+x.count+' procedimientos asignados y '+x.pending+' pendientes. '+(expanded?'Cerrar tarjeta':'Abrir tarjeta')+'" title="'+(expanded?'Cerrar':'Mostrar')+' seguimiento de '+x.name+'">'+
     '<span class="sp-vcount">'+x.count+'</span>'+
     '<span class="sp-vtower" aria-hidden="true"><span class="sp-vbar" style="height:'+height+'%"></span></span>'+
     '<span class="sp-vperson"><span class="sp-vavatar" aria-hidden="true">'+avatar+'</span>'+x.name+'</span>'+
     '<span class="sp-vpending">'+x.pending+' pendiente'+(x.pending===1?'':'s')+'</span></button>';
   }).join('');
-  return '<div class="sp-head"><div><h3>Procedimientos asignados por especialista</h3><p>Comparación de registros asignados. Selecciona una columna para consultar los pendientes de cada responsable.</p></div>'+
+  const tabs=counts.map(x=>{
+   const expanded=selectedName===x.name,avatar=x.name==='HERMES'?'👨':'👩';
+   return '<button type="button" class="sp-person-tab sp-color-'+colors[x.name]+'" data-sp-jump="'+x.name+'" aria-controls="spSelectedCard2026" aria-expanded="'+expanded+'" title="'+(expanded?'Cerrar':'Abrir')+' tarjeta de '+x.name+'"><span aria-hidden="true">'+avatar+'</span><b>'+x.name+'</b><span class="sp-tab-count">'+x.pending+' pendiente'+(x.pending===1?'':'s')+'</span><span class="sp-tab-caret" aria-hidden="true">'+(expanded?'▴':'▾')+'</span></button>';
+  }).join('');
+  return '<div class="sp-head"><div><h3>Procedimientos asignados por especialista</h3><p>Selecciona una barra para desplegar solo la tarjeta de ese especialista. Tócala nuevamente para cerrar.</p></div>'+
    '<span class="sp-head-count"><b>'+assigned.length+'</b> registros asignados</span></div>'+
-   '<div class="sp-vchart" role="group" aria-label="Gráfico de barras verticales de los procedimientos asignados por especialista"><div class="sp-vcolumns">'+columns+'</div></div>'+
+   '<div class="sp-vchart" role="group" aria-label="Gráfico de barras verticales de procedimientos por especialista"><div class="sp-vcolumns">'+columns+'</div></div>'+
    '<p class="sp-vfoot">'+(unassigned?unassigned+' registros sin especialista asignado no están incluidos en las columnas. ':'')+'Los recuentos reflejan registros del Excel, no necesariamente procedimientos únicos.</p>'+
-   '<p id="spChartFeedback2026" class="sp-vfeedback" role="status" aria-live="polite"></p>';
+   '<div class="sp-mini-tabs" role="group" aria-label="Tarjetas desplegables por especialista">'+tabs+'</div>';
  }
  function matches(r,q){
   if(!q)return true;
@@ -1448,43 +1506,44 @@ document.getElementById('alerts').addEventListener('click',function(event){
  function renderPending(){
   const holder=root.querySelector('#spPendingGroups2026');
   const count=root.querySelector('#spPendingCount2026');
-  if(!holder)return;
-  const pending=pendingAll();
+  if(!holder||!selectedName)return;
+  const pending=pendingAll().filter(r=>person(r)===selectedName);
   const visible=pending.filter(r=>matches(r,searchText));
   if(count)count.textContent=searchText?visible.length+' de '+pending.length:pending.length;
   if(!visible.length){
-   holder.innerHTML='<div class="sp-board-empty">'+(pending.length?'No se encontraron procedimientos con esa búsqueda.':'No hay procedimientos pendientes registrados.')+'</div>';
+   holder.innerHTML='<div class="sp-board-empty">'+(pending.length?'Sin resultados para esta búsqueda.':'No hay procedimientos pendientes registrados para '+selectedName+'.')+'</div>';
    return;
   }
-  holder.innerHTML=names.map(name=>{
-   const rows=visible.filter(r=>person(r)===name);
-   if(!rows.length)return '';
-   const entries=rows.map(r=>{
-    const idx=data.indexOf(r);
-    const description=plain(r.descripcion||r.procedimiento)||'Procedimiento sin descripción';
-    const state=plain(r.estado)||'Estado no registrado';
-    const pac=plain(r.pac)||'Sin número PAC';
-    const next=plain(r.estadoNueva)||'';
-    const extra=next&&norm(next)!==norm(state)?'<p class="sp-task-next">Nueva convocatoria: '+safe(next)+'</p>':'';
-    return '<article class="sp-task"><div class="sp-task-main">'+
-     '<p class="sp-task-title">'+safe(description)+'</p>'+
-     '<div class="sp-task-meta"><span>PAC: '+safe(pac)+'</span><span>Estado: '+safe(state)+'</span></div>'+
-     extra+'</div>'+
-     '<button type="button" class="sp-task-eye" data-sp-view="'+idx+'" aria-label="Ver ficha de '+safe(description)+'">👁 Ver ficha</button></article>';
-   }).join('');
-   return '<section class="sp-group" data-sp-group="'+name+'" tabindex="-1" aria-label="Pendientes de '+name+'">'+
-    '<div class="sp-group-head"><strong>'+name+'</strong><span>'+rows.length+' pendiente'+(rows.length===1?'':'s')+'</span></div>'+
-    '<div class="sp-task-list">'+entries+'</div></section>';
+  const entries=visible.map(r=>{
+   const idx=data.indexOf(r),description=plain(r.descripcion||r.procedimiento)||'Procedimiento sin descripción';
+   const state=plain(r.estado)||'Estado no registrado';
+   const pac=plain(r.pac)||'Sin número PAC';
+   const next=plain(r.estadoNueva)||'';
+   const extra=next&&norm(next)!==norm(state)?'<p class="sp-task-next">Nueva convocatoria: '+safe(next)+'</p>':'';
+   return '<article class="sp-task"><div class="sp-task-main">'+
+    '<p class="sp-task-title">'+safe(description)+'</p>'+
+    '<div class="sp-task-meta"><span>PAC: '+safe(pac)+'</span><span>Estado: '+safe(state)+'</span></div>'+
+    extra+'</div>'+
+    '<button type="button" class="sp-task-eye" data-sp-view="'+idx+'" aria-label="Ver ficha de '+safe(description)+'">👁 Ver ficha</button></article>';
   }).join('');
+  holder.innerHTML='<div class="sp-task-list">'+entries+'</div>';
  }
  function render(){
+  const colors={SHEYLA:'sheyla',SONIA:'sonia',HERMES:'hermes'};
+  const avatar=selectedName==='HERMES'?'👨':'👩';
+  const selected=!!selectedName;
+  const card=selected?
+   '<div class="sp-board sp-accordion-card sp-color-'+colors[selectedName]+'" aria-label="Procedimientos pendientes de '+selectedName+'">'+
+    '<div class="sp-accordion-head"><div class="sp-accordion-heading"><span class="sp-accordion-avatar" aria-hidden="true">'+avatar+'</span><div><h3>'+selectedName+' · Seguimiento de procedimientos</h3><span><b id="spPendingCount2026"></b> pendientes en seguimiento</span></div></div>'+
+    '<button type="button" class="sp-accordion-close" data-sp-close aria-label="Cerrar tarjeta de '+selectedName+'">✕ Cerrar</button></div>'+
+    '<label class="sp-board-search"><span aria-hidden="true">⌕</span><input id="spSearch2026" type="search" autocomplete="off" placeholder="Buscar servicio o estado de '+selectedName+'" aria-label="Buscar pendientes de '+selectedName+'" value="'+safe(searchText)+'"></label>'+
+    '<div id="spPendingGroups2026" class="sp-accordion-results"></div>'+
+   '</div>'
+   :'<p class="sp-collapsed-hint">👆 Selecciona una barra o una tarjeta de color para mostrar los procedimientos de un especialista.</p>';
   root.innerHTML='<section class="sp-dash" aria-label="Seguimiento por especialista">'+summary()+
-   '<section class="sp-board" aria-label="Pendientes de los especialistas">'+
-   '<div class="sp-board-head"><h3>📝 Pendientes en seguimiento <span id="spPendingCount2026" class="sp-board-count"></span></h3>'+
-   '<label class="sp-board-search"><span aria-hidden="true">⌕</span><input id="spSearch2026" type="search" autocomplete="off" placeholder="Buscar servicio, estado o responsable" aria-label="Buscar en todos los pendientes" value="'+safe(searchText)+'"></label></div>'+
-   '<p class="sp-board-help">Todos los pendientes están visibles. Usa el buscador solo si necesitas encontrar uno específico.</p>'+
-   '<div id="spPendingGroups2026" class="sp-board-list"></div></section></section>';
-  renderPending();
+   '<div id="spSelectedCard2026" class="sp-selected-container" role="region" aria-live="polite" '+(selected?'':'aria-label="Tarjeta de especialista cerrada"')+'>'+card+'</div>'+
+   '</section>';
+  if(selected)renderPending();
  }
  function openRecord(idx){
   if(!Number.isInteger(idx)||!data[idx])return;
@@ -1517,24 +1576,23 @@ document.getElementById('alerts').addEventListener('click',function(event){
  root.addEventListener('click',event=>{
   const eye=event.target.closest('[data-sp-view]');
   if(eye){openRecord(Number(eye.dataset.spView));return;}
+  if(event.target.closest('[data-sp-close]')){
+   selectedName=null;
+   searchText='';
+   render();
+   return;
+  }
   const jump=event.target.closest('[data-sp-jump]');
   if(jump){
    const name=jump.dataset.spJump;
-   if(searchText){
-    searchText='';
-    const input=root.querySelector('#spSearch2026');
-    if(input)input.value='';
-    renderPending();
-   }
-   const groupNode=[...root.querySelectorAll('[data-sp-group]')].find(el=>el.dataset.spGroup===name);
-   const feedback=root.querySelector('#spChartFeedback2026');
-   if(groupNode){
-    if(feedback)feedback.textContent='Mostrando los pendientes de '+name+'.';
-    groupNode.scrollIntoView({behavior:'smooth',block:'start'});
-   }else if(feedback){
-    feedback.textContent='No hay procedimientos pendientes registrados para '+name+'.';
-   }
-   return;
+   if(!names.includes(name))return;
+   selectedName=selectedName===name?null:name;
+   searchText='';
+   render();
+   if(selectedName)requestAnimationFrame(()=>{
+    const card=root.querySelector('#spSelectedCard2026');
+    if(card)card.scrollIntoView({behavior:'smooth',block:'start'});
+   });
   }
  });
  window.renderEspecialistas2026=render;
