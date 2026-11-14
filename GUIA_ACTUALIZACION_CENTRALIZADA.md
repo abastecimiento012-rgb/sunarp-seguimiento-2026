@@ -29,6 +29,25 @@ https://abastecimiento012-rgb.github.io/sunarp-seguimiento-2026/
 
 El archivo Excel debe conservar el formato del control: **primera hoja**, encabezado DESCRIPCIÓN en **C5**, registros desde la **fila 6**, y columnas B a BF según la plantilla actual. El publicador realiza verificaciones y bloquea la publicación si encuentra menos de 10 registros, identificadores vacíos o repetidos.
 
+## Seguimiento operativo (mejora compacta y opcional)
+
+El aplicativo conserva las mismas pestañas. En **Procedimientos** se muestran la etapa, el responsable, la próxima actuación y una única alerta; en **Alertas y plazos**, se despliegan los pendientes por especialista. Las fichas muestran solo la última actuación documentada, no un historial duplicado.
+
+Para usar estos datos de seguimiento, agrega **cuatro columnas opcionales después de BF**, sin alterar las columnas originales. Coloca los siguientes encabezados en la **fila 5**:
+
+| Columna | Encabezado exacto | Uso |
+| --- | --- | --- |
+| **BG5** | PRÓXIMA ACTUACIÓN | Acción específica pendiente, por ejemplo «Solicitar subsanación de TDR» |
+| **BH5** | FECHA DE COMPROMISO | Fecha interna completa, por ejemplo «18.11.2026» |
+| **BI5** | ÚLTIMA ACTUACIÓN | Breve descripción de la última actuación realizada |
+| **BJ5** | FECHA ÚLTIMA ACTUACIÓN | Fecha de esa actuación, por ejemplo «13.11.2026» |
+
+Las cuatro columnas son **opcionales**: si no existen, la actualización sigue funcionando y la página señala «Por precisar» cuando corresponde, sin inventar tareas. El publicador solo utiliza una columna adicional si reconoce su encabezado; admite encabezados con tilde y sin tilde.
+
+**Importante:** la fecha de compromiso es un objetivo interno de seguimiento. No equivale a un plazo legal y nunca debe presentarse como incumplimiento normativo automático. El indicador «sin actualización» se calcula solo si se registró una fecha válida en BJ.
+
+La versión pública muestra un único hito principal por pendiente y oculta los hitos adicionales dentro de un desplegable. El archivo original sigue bajo tu control.
+
 ## Seguridad y límites
 
 La página estática de GitHub Pages es **solo de consulta**; no hay edición remota desde el navegador. La autoridad para cambiar `datos.json` corresponde a quien tiene permisos sobre el repositorio GitHub. Si otras personas poseen permisos de escritura en ese repositorio, también podrían modificarlo: revisa **Settings → Collaborators**.
