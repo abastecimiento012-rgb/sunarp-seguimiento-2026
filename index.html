@@ -2071,26 +2071,62 @@ function listNew(){
  el('sunNewConvList').innerHTML=result.map(({r,i})=>'<button type="button" class="sun-newconv-item" data-sun-focus-new="'+i+'" aria-current="'+(String(r.id)===focused)+'"><b>'+esc(txt(r.descripcion))+'</b><small>Registro '+esc(r.id)+' · '+esc(spec(r))+' · '+esc(status(r))+'</small></button>').join('')||'<p class="sun-ct-note">Sin resultados para la búsqueda.</p>';
 }
 const field=(label,v)=>'<div class="sun-newconv-field"><small>'+esc(label)+'</small><strong>'+esc(txt(v))+'</strong></div>';
+
+const processPlaceholder=v=>{
+ const t=norm(v);
+ return !t||['-','—','NO APLICA','NO CORRESPONDE','NO REGISTRADO','PENDIENTE','EN ACTUACIONES PREPARATORIAS','CONTRATO VIGENTE','SIN INFORMACION'].includes(t)||/^NO HAY (UN )?CONTRATO VIGENTE/.test(t);
+};
+const processField=(label,value)=>processPlaceholder(value)?'':field(label,value);
 function details(id){
  const i=data.findIndex(r=>String(r.id)===String(id)),host=el('sunLinkedContent');
- if(i<0){focused=null;host.innerHTML='<p>Selecciona un registro para consultar su nueva convocatoria.</p>';listNew();return}
+ if(!host)return;
+ if(i<0){focused=null;host.innerHTML='<p>Selecciona un registro para consultar el seguimiento de una nueva contratación.</p>';listNew();return}
  const r=data[i];focused=String(r.id);
- host.innerHTML='<span class="sun-newconv-status '+(pending(r)?'warn':'')+'">'+esc(status(r))+'</span><h3>'+esc(txt(r.descripcion))+'</h3>'+
- '<p>'+(yes(r)?'El Excel registra necesidad de nueva convocatoria; verifica las actuaciones para identificar la etapa efectiva.':'Este contrato no tiene nueva convocatoria registrada en el Excel. No se presupone que ya haya comenzado.')+'</p>'+
- '<div class="sun-newconv-fields">'+field('N.º registro',r.id)+field('Especialista encargado',spec(r))+
- field('Estado actual',r.estado)+field('Estado de nueva convocatoria',status(r))+
- field('¿Requiere nueva convocatoria?',r.nuevaConvocatoria)+field('Área usuaria',r.area)+
- field('Tipo / número de procedimiento',r.procedimiento)+field('PAC',r.pac)+
- field('Fecha esperada',r.fechaEsperada)+field('Fecha de requerimiento',r.fechaRequerimiento)+
- field('Fecha de convocatoria',r.fechaConvocatoria)+field('Documentos de requerimiento',r.documentosRequerimiento)+
- field('Fecha de buena pro',r.fechaBuenaPro)+field('Fecha de consentimiento',r.fechaConsentimiento)+
- field('Fecha de firma / suscripción',r.fechaFirma)+field('Plazo de documentos',r.plazoDocumentos)+
- field('Modalidad de contratación',r.modalidadContratacion)+field('Cuantía estimada',r.cuantia)+
- field('Contrato vigente / anterior',r.contratoVigente)+field('Vencimiento contractual',r.vencimiento)+'</div>'+
- '<h4>Observaciones y próximas actuaciones</h4><div class="sun-newconv-notes">'+esc(txt(r.observaciones))+'</div>'+
- '<h4>Seguimiento registrado</h4><div class="sun-newconv-notes">'+esc(txt(r.seguimientoExcel))+'</div>'+
- '<div class="sun-newconv-actions"><button type="button" class="primary" data-sun-view-original="'+i+'">👁 Ver ficha completa</button>'+
- (current(r)?'<button type="button" data-sun-back-contract="'+i+'">▣ Volver al contrato vigente</button>':'<button type="button" data-sun-procedures>☷ Ver Procedimientos</button>')+'</div>';
+ if(!yes(r)){
+  host.innerHTML='<div class="sun-linked-title">'+esc(txt(r.descripcion))+'</div><p class="sun-linked-notice">No se ha registrado la necesidad de una nueva contratación. No se muestran datos del contrato anterior en esta ficha.</p>';
+  listNew();return;
+ }
+ const stage=norm(r.estadoNueva),general=norm(r.estado);
+ const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
+ const pendingStage=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PROGRAMADO PARA|PENDIENTE DEL SIGA/.test(stage);
+ const active=!pendingStage&&!second;
+ const launched=active&&(/CONVOCATORIA PUBLICADA|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
+ const years=[...String(r.procedimiento??'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
+ const newProcNumber=launched&&years.some(y=>y>=2026)&&!processPlaceholder(r.procedimiento);
+ const fields=[
+  field('N.º de registro',r.id),
+  field('Especialista responsable del nuevo proceso',spec(r)),
+  field('Área usuaria',r.area),
+  field('Requiere nueva contratación','Sí'),
+  field('Etapa de la nueva contratación',status(r))
+ ];
+ if(active){
+  if(general!=='CONTRATO VIGENTE'&&general!=='CONTRATO SUSCRITO'&&general!=='CULMINADO')fields.push(processField('Estado del procedimiento en seguimiento',r.estado));
+  fields.push(
+   processField('Fecha de requerimiento de la nueva contratación',r.fechaRequerimiento),
+   processField('Documentos del requerimiento en seguimiento',r.documentosRequerimiento),
+   processField('Cuantía estimada del proceso',r.cuantia),
+   processField('Hito o fecha prevista del proceso',r.fechaEsperada)
+  );
+ }
+ if(newProcNumber)fields.push(field('Tipo y número del procedimiento en seguimiento',r.procedimiento));
+ if(launched){
+  fields.push(
+   processField('Convocatoria: fecha consignada',r.fechaConvocatoria),
+   processField('Buena pro: fecha prevista o registrada',r.fechaBuenaPro),
+   processField('Consentimiento: fecha consignada',r.fechaConsentimiento),
+   processField('Formalización: fecha prevista o registrada',r.fechaFirma)
+  );
+ }
+ const notes=processPlaceholder(r.observaciones)?'':'<h4>Observaciones del nuevo procedimiento</h4><div class="sun-newconv-notes">'+esc(r.observaciones)+'</div>';
+ const follow=processPlaceholder(r.seguimientoExcel)?'':'<h4>Seguimiento de la nueva contratación</h4><div class="sun-newconv-notes">'+esc(r.seguimientoExcel)+'</div>';
+ const explanation=second?'Se registra una segunda convocatoria pendiente o prevista. Las fechas de la primera convocatoria no se muestran como si correspondieran a la segunda.':pendingStage?'La nueva contratación aún no tiene una convocatoria publicada acreditada en los campos de seguimiento.':'Se muestran los datos de las actuaciones de la nueva contratación consignadas en el Excel.';
+ host.innerHTML='<div class="sun-newconv-detail"><span class="sun-newconv-status '+(pending(r)?'warn':'')+'">'+esc(status(r))+'</span>'+
+  '<h3>'+esc(txt(r.descripcion))+'</h3>'+
+  '<p class="sun-linked-notice">'+esc(explanation)+'</p>'+
+  '<div class="sun-newconv-fields">'+fields.filter(Boolean).join('')+'</div>'+
+  notes+follow+
+  '<p class="sun-ct-note">Las fechas y el número del nuevo procedimiento deben contrastarse con el expediente. No se incluyen aquí los datos del contrato vigente o anterior.</p></div>';
  listNew();
 }
 function openRecord(i){
@@ -2106,27 +2142,53 @@ function openRecord(i){
  if(dlg.open)dlg.close();
  dlg.showModal();
 }
+
 function openContract(i){
  if(!Number.isInteger(i)||!data[i])return;
  const r=data[i],dlg=el('sunLinkedDetails'),content=el('sunLinkedContent');
  if(!dlg||!content)return;
  const gd=el('gerDetail');if(gd?.open)gd.close();
- const v=txt(r.contratoVigente),expiry=dated(r.vencimiento),today=new Date();today.setHours(0,0,0,0);
- const state=current(r)?'Vigente según fechas registradas':expiry&&expiry<today?'Fecha de vencimiento transcurrida':'Vigencia no verificada';
- el('sunLinkedTitle').textContent='Contrato vigente / último';
- content.innerHTML='<div class="sun-linked-title">'+esc(txt(r.descripcion))+'</div>'+
-  '<p class="sun-linked-notice"><strong>'+esc(state)+'.</strong> Información conforme a los datos del Excel. Confirmar con el contrato y sus modificaciones.</p>'+
-  '<div class="sun-newconv-fields">'+
-  field('N.º registro',r.id)+field('Especialista encargado',spec(r))+
-  field('Contrato vigente / último',r.contratoVigente)+field('N.º contrato',r.numeroContrato)+
-  field('Contratista',r.contratista||r.postor)+field('Estado contractual',r.estadoContrato)+
-  field('Fecha suscripción',r.fechaSuscripcion)+field('Fecha de inicio',r.fechaInicio)+
-  field('Vencimiento contractual',r.vencimiento)+field('Monto contratado',r.montoContratado)+
-  field('Plazo de ejecución',r.plazo)+'</div>';
+ const expiry=dated(r.vencimiento),today=new Date();today.setHours(0,0,0,0);
+ const missingContract=/^(NO HAY|SIN CONTRATO)/.test(norm(r.contratoVigente))||txt(r.contratoVigente)==='No registrado';
+ const expired=!!expiry&&expiry<today;
+ const contractPlaceholder=v=>{
+  const t=norm(v);
+  return !t||['-','—','NO APLICA','NO CORRESPONDE','NO REGISTRADO','PENDIENTE','CONTRATO VIGENTE','EN ACTUACIONES PREPARATORIAS','SIN INFORMACION'].includes(t)||/^NO HAY (UN )?CONTRATO VIGENTE/.test(t);
+ };
+ const onlyContractField=(label,value)=>contractPlaceholder(value)?'':field(label,value);
+ const title=missingContract?'Sin contrato vigente':expired?'Contrato vencido':'Contrato vigente';
+ el('sunLinkedTitle').textContent=title+' · ficha contractual';
+ const description='<div class="sun-linked-title">'+esc(txt(r.descripcion))+'</div>';
+ if(missingContract){
+  content.innerHTML=description+'<p class="sun-linked-notice">No hay un contrato vigente identificado en los datos del Excel para este servicio. Esta ficha no muestra actuaciones ni datos de la nueva convocatoria.</p>';
+ }else if(expired){
+  content.innerHTML=description+'<p class="sun-linked-notice">La fecha de vencimiento registrada ('+esc(r.vencimiento)+') ya transcurrió. No se presenta el contrato anterior como vigente. Consulta el nuevo procedimiento desde su botón independiente, cuando corresponda.</p>';
+ }else{
+  const number=contractPlaceholder(r.numeroContrato)?r.contratoVigente:r.numeroContrato;
+  const state=expiry?'Vigencia estimada según la fecha de vencimiento registrada':'Vigencia pendiente de verificar: no se ha registrado una fecha válida de vencimiento';
+  const fields=[
+   field('N.º de contrato vigente registrado',number),
+   onlyContractField('Referencia del contrato o adenda',norm(number)===norm(r.contratoVigente)?'':r.contratoVigente),
+   onlyContractField('Contratista',r.contratista),
+   onlyContractField('Estado contractual',r.estadoContrato),
+   onlyContractField('Fecha de suscripción',r.fechaSuscripcion),
+   onlyContractField('Inicio de la prestación',r.fechaInicio),
+   onlyContractField('Fecha de vencimiento',r.vencimiento),
+   onlyContractField('Plazo contractual',r.plazo),
+   onlyContractField('Naturaleza de la prestación',r.naturaleza),
+   onlyContractField('Monto contratado (S/)',r.montoContratado),
+   onlyContractField('Saldo contractual (S/)',r.saldoContrato),
+   onlyContractField('Primer devengado registrado',r.primerDevengado)
+  ].filter(Boolean);
+  const payments=contractPlaceholder(r.detallePagos)?'':'<h4>Detalle de pagos contractuales</h4><div class="sun-newconv-notes">'+esc(r.detallePagos)+'</div>';
+  content.innerHTML='<div class="sun-newconv-detail">'+description+
+   '<p class="sun-linked-notice"><strong>'+esc(state)+'.</strong> Datos tomados del Excel. Verifica el contrato, las adendas y las fechas vigentes.</p>'+
+   '<div class="sun-newconv-fields">'+fields.join('')+'</div>'+payments+
+   '<p class="sun-ct-note">Esta ficha contiene únicamente información contractual. La nueva convocatoria se consulta en su botón independiente.</p></div>';
+ }
  if(dlg.open)dlg.close();
  dlg.showModal();
 }
-
 window.sunarpOpenNuevaConvocatoria=openRecord;
 function addAlertToRows(){
  if(document.body.dataset.sunPage!=='contratos')return;
