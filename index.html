@@ -1573,6 +1573,22 @@ body[data-sun-page="especialistas"] .sp-vperson{font-size:17px!important}
  .sp-integral-fields{grid-template-columns:1fr}
 }
 </style>
+
+<style id="sunCalendarClickToView2026">
+/* Solo mostrar contratos cuando se seleccione una fecha de vencimiento. */
+#sunCalendarPage .sun-cal-layout:not(.has-selection){grid-template-columns:minmax(0,1fr)}
+#sunCalendarPage .sun-cal-layout:not(.has-selection) .sun-cal-sidebar{display:none!important}
+#sunCalendarPage .sun-cal-layout.has-selection .sun-cal-sidebar{display:block}
+#sunCalendarPage .sun-cal-click-help{font-size:16px;line-height:1.6;margin:12px 3px 0;color:#526e87}
+#sunCalendarPage .sun-cal-day:disabled{cursor:default;opacity:.65}
+#sunCalendarPage .sun-cal-day:disabled:hover{transform:none;box-shadow:none}
+#sunCalendarPage .sun-cal-day.has-events{cursor:pointer}
+html[data-sun-theme="dark"] #sunCalendarPage .sun-cal-click-help{color:#c4d7e7}
+@media(max-width:850px){
+ #sunCalendarPage .sun-cal-layout.has-selection{grid-template-columns:1fr}
+ #sunCalendarPage .sun-cal-layout.has-selection .sun-cal-sidebar{margin-top:13px}
+}
+</style>
 </head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
@@ -1653,7 +1669,7 @@ body[data-sun-page="especialistas"] .sp-vperson{font-size:17px!important}
 </div>
 <div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de procedimientos con desplazamiento horizontal y vertical"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div><p class="footer" id="counter"></p></section><section id="sunCalendarPage" class="sun-calendar-page" aria-label="Calendario de vencimientos contractuales">
  <div class="sun-cal-top">
-  <div><h3>📅 Calendario de vencimientos</h3><p>Los contratos con fecha válida del Excel aparecen en el día de vencimiento. Selecciona una fecha para consultar sus servicios y responsables.</p></div>
+  <div><h3>📅 Calendario de vencimientos</h3><p>Las fechas resaltadas indican vencimientos registrados. Haz clic en una de ellas para mostrar únicamente los contratos que vencen ese día.</p></div>
   <div id="sunCalStats" class="sun-cal-stats" aria-live="polite"></div>
  </div>
  <div class="sun-cal-controls">
@@ -1662,7 +1678,7 @@ body[data-sun-page="especialistas"] .sp-vperson{font-size:17px!important}
   <label for="sunCalYear" class="sun-cal-visually-hidden">Año</label><select id="sunCalYear" aria-label="Elegir año"></select>
   <button type="button" id="sunCalNext" class="sun-cal-arrow" aria-label="Ver mes siguiente">›</button>
   <button type="button" id="sunCalToday" class="sun-cal-control">Hoy</button>
-  <button type="button" id="sunCalUpcoming" class="sun-cal-control sun-cal-approach">◷ Próximo vencimiento</button>
+  <button type="button" id="sunCalUpcoming" class="sun-cal-control sun-cal-approach">◷ Ir al mes del próximo vencimiento</button>
  </div>
  <div class="sun-cal-legend"><span><i class="sun-cal-dot upcoming"></i>Fecha futura</span><span><i class="sun-cal-dot near"></i>Vence en 30 días o menos</span><span><i class="sun-cal-dot past"></i>Fecha transcurrida</span></div>
  <div class="sun-cal-layout">
@@ -1670,16 +1686,14 @@ body[data-sun-page="especialistas"] .sp-vperson{font-size:17px!important}
    <div id="sunCalMonthHeading" class="sun-cal-month-heading"></div>
    <div class="sun-cal-weekdays" aria-hidden="true"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
    <div id="sunCalGrid" class="sun-cal-grid" role="group" aria-label="Seleccionar fecha de vencimiento"></div>
+   <p class="sun-cal-click-help">Haz clic en una fecha resaltada para consultar sus vencimientos. Las demás fechas no presentan vencimientos contractuales registrados.</p>
   </div>
   <div class="sun-cal-sidebar">
    <div class="sun-cal-selected-head"><h4 id="sunCalSelectedTitle">Contratos del día</h4><span id="sunCalSelectedCount"></span></div>
    <div id="sunCalSelected" class="sun-cal-selected-list" aria-live="polite"></div>
   </div>
  </div>
- <div class="sun-cal-agenda">
-  <div class="sun-cal-agenda-head"><h4 id="sunCalAgendaTitle">Vencimientos del mes</h4><p>Selecciona un contrato para ubicar su fecha en el calendario.</p></div>
-  <div id="sunCalAgendaItems" class="sun-cal-agenda-list"></div>
- </div>
+
  <p class="sun-cal-note">Las fechas provienen del Excel del aplicativo. La vigencia debe confirmarse con el contrato, sus adendas y las actuaciones registradas. No se muestran registros sin fecha contractual válida.</p>
 </section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
 <article class="sun-report-card"><span class="sun-report-icon">▣</span><h3>Presentación PowerPoint</h3><p>Diapositivas para una reunión gerencial con indicadores, procedimientos, PAC, contratos y previsiones.</p><button type="button" class="primary" data-sun-report="reportPpt">Descargar PowerPoint (.pptx)</button></article>
@@ -3450,7 +3464,7 @@ refresh();
   return year>=2000&&year<=2100?d:null;
  };
  let displayMonth=new Date(localToday().getFullYear(),localToday().getMonth(),1);
- let selected=dayKey(localToday()),initiated=false;
+ let selected=null;
  function contracts(){
   return (Array.isArray(data)?data:[]).map((r,index)=>({r,index,d:parseDay(r.vencimiento)}))
    .filter(x=>x.d&&!invalidContract(x.r.contratoVigente))
@@ -3460,20 +3474,17 @@ refresh();
   const days=Math.round((d-localToday())/86400000);
   return days<0?'past':days<=30?'near':'upcoming';
  }
- function pickFirst(items,month){
-  const inMonth=items.find(x=>x.d.getFullYear()===month.getFullYear()&&x.d.getMonth()===month.getMonth());
-  return inMonth?dayKey(inMonth.d):dayKey(new Date(month.getFullYear(),month.getMonth(),1));
- }
- function navigate(d,items){
+ function navigate(d){
   displayMonth=new Date(d.getFullYear(),d.getMonth(),1);
-  selected=pickFirst(items,displayMonth);
+  selected=null;
   paint();
  }
  function selectDay(key){
   const parts=key.split('-').map(Number);
   if(parts.length!==3||!parts[0]||!parts[1]||!parts[2])return;
   displayMonth=new Date(parts[0],parts[1]-1,1);
-  selected=key;
+  if(!contracts().some(x=>dayKey(x.d)===key))return;
+  selected=selected===key?null:key;
   paint();
  }
  function longDate(d){
@@ -3500,20 +3511,13 @@ refresh();
  function paint(){
   const items=contracts();
   const now=localToday();
-  if(!initiated){
-   const first=items.find(x=>x.d>=now)||items[0];
-   if(first){
-    displayMonth=new Date(first.d.getFullYear(),first.d.getMonth(),1);
-    selected=dayKey(first.d);
-   }
-   initiated=true;
-  }
   const availableKeys=new Map();
   items.forEach(x=>{
    const key=dayKey(x.d);
    if(!availableKeys.has(key))availableKeys.set(key,[]);
    availableKeys.get(key).push(x);
   });
+  if(selected&&!availableKeys.has(selected))selected=null;
   const upcoming=items.filter(x=>x.d>=now);
   const within90=upcoming.filter(x=>(x.d-now)/86400000<=90).length;
   const monthItems=items.filter(x=>x.d.getFullYear()===displayMonth.getFullYear()&&x.d.getMonth()===displayMonth.getMonth());
@@ -3537,32 +3541,36 @@ refresh();
    const key=dayKey(d),onDay=availableKeys.get(key)||[];
    const st=currentStatus(d),isToday=key===dayKey(now),isSelected=key===selected;
    const hint=onDay.length?String(onDay[0].r.descripcion||'Contrato').trim():'';
-   cells.push('<button type="button" data-sun-cal-day="'+key+'" class="sun-cal-day'+(onDay.length?' has-events is-'+st:'')+(isToday?' is-today':'')+(isSelected?' is-selected':'')+'" aria-pressed="'+String(isSelected)+'" aria-label="'+safe(longDate(d))+': '+onDay.length+' contrato'+(onDay.length===1?'':'s')+' con vencimiento">'+
+   cells.push('<button type="button" data-sun-cal-day="'+key+'" class="sun-cal-day'+(onDay.length?' has-events is-'+st:'')+(isToday?' is-today':'')+(isSelected?' is-selected':'')+'" aria-pressed="'+String(isSelected)+'"'+(!onDay.length?' disabled':'')+' aria-label="'+safe(longDate(d))+': '+onDay.length+' contrato'+(onDay.length===1?'':'s')+' con vencimiento">'+
     '<span class="sun-cal-number">'+n+'</span>'+
     (onDay.length?'<span class="sun-cal-count">'+onDay.length+' contrato'+(onDay.length===1?'':'s')+'</span><span class="sun-cal-hint">'+safe(hint)+'</span>':'')+
     '</button>');
   }
   while(cells.length%7!==0)cells.push('<span class="sun-cal-blank" aria-hidden="true"></span>');
   el('sunCalGrid').innerHTML=cells.join('');
-  renderDayEntries(items,selected);
-  el('sunCalAgendaTitle').textContent='Vencimientos de '+nameMonths[displayMonth.getMonth()]+' ('+monthItems.length+')';
-  el('sunCalAgendaItems').innerHTML=monthItems.length?monthItems.map(x=>
-   '<button type="button" class="sun-cal-agenda-item" data-sun-cal-select="'+dayKey(x.d)+'"><strong>'+safe(longDate(x.d))+'</strong><span>'+safe(x.r.descripcion||'Contrato sin descripción')+'</span><span>'+safe(daySummary(x))+'</span></button>'
-  ).join(''):'<div class="sun-cal-agenda-empty">No se registran vencimientos de contratos durante este mes.</div>';
+  const layout=root.querySelector('.sun-cal-layout');
+  if(layout)layout.classList.toggle('has-selection',Boolean(selected));
+  if(selected){
+   renderDayEntries(items,selected);
+  }else{
+   el('sunCalSelectedTitle').textContent='Vencimientos de la fecha seleccionada';
+   el('sunCalSelectedCount').textContent='';
+   el('sunCalSelected').innerHTML='';
+  }
   el('sunCalUpcoming').disabled=!upcoming.length;
  }
  root.addEventListener('click',e=>{
   const day=e.target.closest('[data-sun-cal-day],[data-sun-cal-select]');
   if(day){selectDay(day.dataset.sunCalDay||day.dataset.sunCalSelect);return}
-  if(e.target.closest('#sunCalPrev')){navigate(new Date(displayMonth.getFullYear(),displayMonth.getMonth()-1,1),contracts());return}
-  if(e.target.closest('#sunCalNext')){navigate(new Date(displayMonth.getFullYear(),displayMonth.getMonth()+1,1),contracts());return}
-  if(e.target.closest('#sunCalToday')){const d=localToday();displayMonth=new Date(d.getFullYear(),d.getMonth(),1);selected=dayKey(d);paint();return}
-  if(e.target.closest('#sunCalUpcoming')){const first=contracts().find(x=>x.d>=localToday());if(first)selectDay(dayKey(first.d));return}
+  if(e.target.closest('#sunCalPrev')){navigate(new Date(displayMonth.getFullYear(),displayMonth.getMonth()-1,1));return}
+  if(e.target.closest('#sunCalNext')){navigate(new Date(displayMonth.getFullYear(),displayMonth.getMonth()+1,1));return}
+  if(e.target.closest('#sunCalToday')){navigate(localToday());return}
+  if(e.target.closest('#sunCalUpcoming')){const first=contracts().find(x=>x.d>=localToday());if(first)navigate(first.d);return}
  });
  root.addEventListener('change',e=>{
   if(e.target.id==='sunCalMonth'||e.target.id==='sunCalYear'){
    const year=Number(el('sunCalYear').value),month=Number(el('sunCalMonth').value);
-   if(Number.isInteger(year)&&Number.isInteger(month)&&month>=0&&month<12)navigate(new Date(year,month,1),contracts());
+   if(Number.isInteger(year)&&Number.isInteger(month)&&month>=0&&month<12)navigate(new Date(year,month,1));
   }
  });
  window.addEventListener('sunarp:pagechange',e=>{if(e.detail?.page==='calendario')paint()});
