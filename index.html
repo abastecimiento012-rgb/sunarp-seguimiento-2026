@@ -4369,6 +4369,12 @@ html[data-sun-theme="dark"] #sunCentralStatus.is-error{background:#583037;color:
 #sunBellSummary2026{color:#476783;font-size:12px}
 .sun-bell-entry{padding:10px;border:1px solid #d2e0ed;border-left:4px solid #dea640;background:#f7faff;border-radius:9px;margin:7px 0;overflow-wrap:anywhere}
 .sun-bell-entry.overdue{border-left-color:#c53636;background:#fff2f2}
+.sun-bell-entry-link{display:block;width:100%;text-align:left;font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+.sun-bell-entry-link:hover{border-color:#4387be;box-shadow:0 3px 12px #153b6626;background:#eaf3ff}
+.sun-bell-entry-link:focus-visible{outline:3px solid #3583cf;outline-offset:2px}
+.sun-bell-openhint{display:block;margin-top:8px;font-size:12px;font-weight:750;color:#135a93}
+html[data-sun-theme="dark"] .sun-bell-openhint{color:#a2d9ff}
+
 .sun-bell-entry p{margin:7px 0}
 .sun-bell-empty{text-align:center;padding:18px;background:#edf4fa;border-radius:8px}
 html[data-sun-theme="dark"] #sunBellPanel2026{background:#192e45;color:#e4f1ff;border-color:#53718f}
@@ -4400,7 +4406,7 @@ function update(){
  const items=dueItems(),today=items.filter(x=>x.days===0),over=items.filter(x=>x.days<0);
  count.textContent=today.length;count.hidden=!today.length;
  summary.textContent=today.length+' entrega(s) para hoy · '+over.length+' plazo(s) vencidos';
- list.innerHTML=items.length?items.map(x=>'<article class="sun-bell-entry '+(x.days<0?'overdue':'')+'"><b>'+(x.days===0?'🔔 Vence hoy':'⚠ Plazo vencido')+' · '+escape(x.owner)+'</b><p>'+escape(x.description)+'</p><small>Plazo: '+escape(api().fmt(x.date))+' · '+escape(x.detail)+'</small></article>').join(''):'<div class="sun-bell-empty">No hay entregas con vencimiento hoy ni plazos vencidos con fecha registrada.</div>';
+ list.innerHTML=items.length?items.map(x=>'<button type="button" class="sun-bell-entry sun-bell-entry-link '+(x.days<0?'overdue':'')+'" data-sun-bell-record="'+escape(x.id)+'" aria-label="Abrir ficha de '+escape(x.description)+' en Alertas y plazos"><b>'+(x.days===0?'🔔 Vence hoy':'⚠ Plazo vencido')+' · '+escape(x.owner)+'</b><p>'+escape(x.description)+'</p><small>Plazo: '+escape(api().fmt(x.date))+' · '+escape(x.detail)+'</small><span class="sun-bell-openhint">👁 Ver ficha en Alertas y plazos</span></button>').join(''):'<div class="sun-bell-empty">No hay entregas con vencimiento hoy ni plazos vencidos con fecha registrada.</div>';
  browser.textContent=!('Notification' in window)?'No disponible':Notification.permission==='granted'?'Avisos activados':Notification.permission==='denied'?'Avisos bloqueados':'Activar avisos del navegador';
  if('Notification' in window&&Notification.permission==='granted'&&today.length){
   const t=new Date(),key='sunarp_entregas_'+[t.getFullYear(),t.getMonth()+1,t.getDate()].join('-');
@@ -4409,6 +4415,28 @@ function update(){
   if(fresh.length)try{new Notification('SUNARP · Plazos que vencen hoy',{body:fresh.length+' entrega(s): '+[...new Set(fresh.map(x=>x.owner))].join(', '),tag:key});localStorage.setItem(key,JSON.stringify([...new Set([...sent,...fresh.map(x=>x.id)])]))}catch(e){}
  }
 }
+list.addEventListener('click',e=>{
+ const card=e.target.closest('[data-sun-bell-record]');
+ if(!card)return;
+ e.preventDefault();
+ e.stopPropagation();
+ const recordId=card.dataset.sunBellRecord;
+ panel.hidden=true;
+ button.setAttribute('aria-expanded','false');
+ // Resolve by stable record ID, not by row order, so Excel updates don't break links.
+ const open=()=>{
+  const rows=typeof data!=='undefined'&&Array.isArray(data)?data:[];
+  const idx=rows.findIndex(r=>String(r.id??'')===recordId);
+  if(idx<0)return;
+  if(typeof window.sunarpOpenFichaIntegral2026==='function')window.sunarpOpenFichaIntegral2026(idx);
+ };
+ if(typeof window.sunarpNavigate==='function')window.sunarpNavigate('alertas');
+ else{
+  const url=new URL(location.href);url.searchParams.set('pagina','alertas');history.pushState({},'',url.pathname+url.search+url.hash);
+  document.body.dataset.sunPage='alertas';
+ }
+ requestAnimationFrame(()=>requestAnimationFrame(open));
+});
 button.addEventListener('click',()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)update()});
 document.getElementById('sunBellClose2026').addEventListener('click',()=>{panel.hidden=true;button.setAttribute('aria-expanded','false')});
 document.getElementById('sunBellGo2026').addEventListener('click',()=>{panel.hidden=true;button.setAttribute('aria-expanded','false')});
