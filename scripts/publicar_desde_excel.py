@@ -161,8 +161,10 @@ def convertir_excel(path):
                 continue
             registro = {k: texto_campo(hoja[f"{col}{n}"], k) for col, k in COLUMNAS.items() if k not in CAMPOS_NO_PUBLICAR}
             registro.update({key: texto(hoja[f"{col}{n}"]) for col, key in activos.items()})
-            registro["fechaEsperada"] = registro.get("plazoEntrega", "")
             registro["fechaCompromiso"] = fecha_compromiso(registro.get("plazoEntrega"))
+            if registro["fechaCompromiso"]:
+                registro["plazoEntrega"] = registro["fechaCompromiso"]
+            registro["fechaEsperada"] = registro.get("plazoEntrega", "")
             registro["nuevaConvocatoria"] = nueva_convocatoria(registro)
             registro["filaExcel"] = n
             rows.append(registro)
