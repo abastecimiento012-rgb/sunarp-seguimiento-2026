@@ -3735,7 +3735,6 @@ refresh();
    const end=expiry(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=norm(r.nuevaConvocatoria)==='SI'&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
    const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+'" title="Consultar ficha">👁 Ver ficha</button>';
-   const schedule='<button type="button" class="sun-chrono-btn" data-sun-chrono="'+i+'" title="Consultar cronograma y plazos normativos">📅 Cronograma</button>';
    const ns=newState(r);
    const active=['ongoing','published','relaunch'].includes(ns.kind);
    const pending=['pending','unknown'].includes(ns.kind);
@@ -3743,7 +3742,7 @@ refresh();
    const title=active?(ns.kind==='published'?'⚠ Nueva convocatoria':ns.kind==='relaunch'?'⚠ Nueva convocatoria pendiente':'⚠ Actuaciones preparatorias'):pending?'◷ Por verificar':state==='valid'?'✓ Contrato vigente':state==='soon'?'◷ Contrato por vencer':state==='expired'?'⚠ Contrato vencido':state==='pending'?'◷ Vigencia por verificar':'— Sin contrato vigente';
    const newButton=active?'<button type="button" class="sun-proc2026-newbtn sun-proc2026-alertbtn" data-sun-proc-new="'+i+'" title="Abrir seguimiento del nuevo procedimiento">'+title+'</button>':'<span class="sun-proc2026-status sun-proc2026-status-'+state+'">'+title+'</span>'; 
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
-    '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+schedule+'</td>'+
+    '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
 
@@ -3752,8 +3751,6 @@ refresh();
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
  panel.addEventListener('click',e=>{
-  const chrono=e.target.closest('[data-sun-chrono]');
-  if(chrono){e.preventDefault();e.stopPropagation();window.sunarpOpenChrono2026?.(Number(chrono.dataset.sunChrono));return}
   const newLink=e.target.closest('[data-sun-proc-new]');
   if(newLink){
    e.preventDefault();e.stopPropagation();
@@ -4373,160 +4370,7 @@ setInterval(update,60000);setTimeout(update,1500);update();
 })();
 </script>
 
-<style id="sunChronoStyles">
-.sun-chrono-btn{display:inline-flex;align-items:center;margin:6px 0 0 7px;padding:7px 10px;border:1px solid #8ebadf;border-radius:8px;background:#e6f3ff;color:#174e80;font-weight:800;font-size:12px;cursor:pointer}
-.sun-chrono-btn:hover{background:#cde8ff}
-#sunChronoDialog{width:min(1040px,96vw);max-height:92vh;padding:0;border:1px solid #b6cce1;border-radius:16px;box-shadow:0 28px 75px #102d4e66;background:#fff;color:#163b61}
-#sunChronoDialog::backdrop{background:#0d213a99}
-.sun-chrono-head{padding:17px 22px;background:linear-gradient(110deg,#163b64,#126b9d);color:#fff;display:flex;justify-content:space-between;gap:16px}
-.sun-chrono-head h2{margin:0 0 7px;font-size:22px}
-.sun-chrono-head p{margin:0;font-size:13px}
-.sun-chrono-head button{align-self:start;background:white;border:0;border-radius:8px;padding:9px 13px;color:#17476f;cursor:pointer}
-.sun-chrono-body{padding:18px 22px;max-height:calc(92vh - 100px);overflow:auto}
-.sun-chrono-notice{border-left:4px solid #d49729;background:#fff5df;border-radius:7px;padding:11px;margin-bottom:14px;font-size:12px;line-height:1.5;color:#6a4b17}
-.sun-chrono-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
-.sun-chrono-fields label{font-size:12px;font-weight:750;display:grid;gap:5px}
-.sun-chrono-fields input,.sun-chrono-fields select{width:100%;min-width:0;border:1px solid #b6cbe0;border-radius:7px;padding:9px;background:#fff;color:#173c60}
-.sun-chrono-fields label.wide{grid-column:span 3}
-.sun-chrono-body h3{font-size:16px;margin:18px 0 8px}
-.sun-chrono-tablewrap{overflow-x:auto}
-.sun-chrono-table{width:100%;border-collapse:collapse;font-size:12px}
-.sun-chrono-table th{text-align:left;background:#dceaf7;color:#123d65;padding:10px}
-.sun-chrono-table td{border-bottom:1px solid #d8e4ef;padding:11px 10px;vertical-align:top;line-height:1.5}
-.sun-chrono-table td:first-child{font-weight:750}
-.sun-chrono-table td small{display:block;color:#56718a;margin-top:4px}
-.sun-chrono-date{font-weight:850;white-space:nowrap}
-.sun-chrono-pending{color:#956024;font-weight:750}
-.sun-chrono-legend{font-size:12px;color:#506a80;line-height:1.6;margin-top:13px}
-html[data-sun-theme="dark"] #sunChronoDialog{background:#142c42;color:#e7f2ff;border-color:#4d6d8a}
-html[data-sun-theme="dark"] .sun-chrono-notice{background:#42341e;color:#ffdf9e}
-html[data-sun-theme="dark"] .sun-chrono-table th{background:#23455f;color:#f1f7ff}
-html[data-sun-theme="dark"] .sun-chrono-table td{border-color:#37546e}
-html[data-sun-theme="dark"] .sun-chrono-table td small,html[data-sun-theme="dark"] .sun-chrono-legend{color:#bbd1e7}
-@media(max-width:650px){.sun-chrono-fields{grid-template-columns:1fr}.sun-chrono-fields label.wide{grid-column:auto}.sun-chrono-head h2{font-size:18px}}
-@media print{#sunChronoDialog{position:static!important;max-height:none!important;overflow:visible;box-shadow:none}.sun-chrono-body{max-height:none;overflow:visible}.sun-chrono-head button,.sun-chrono-fields{display:none}}
-</style>
-<dialog id="sunChronoDialog" aria-label="Cronograma normativo del procedimiento">
-<div class="sun-chrono-head"><div><h2>📅 Cronograma normativo y de seguimiento</h2><p id="sunChronoName"></p></div><button type="button" id="sunChronoClose">✕ Cerrar</button></div>
-<div class="sun-chrono-body">
-<div class="sun-chrono-notice">Proyección referencial bajo la Ley 32069 y el Reglamento DS 009-2025-EF, modificado. Se respeta la fecha oficial de Pladicop cuando está registrada. No se estiman automáticamente fechas de evaluación, buena pro ni firma sin un hito confirmado. Verifica las bases estándar, suspensiones, recursos, modificaciones y días no laborables especiales antes de utilizar las fechas para decisiones formales.</div>
-<div id="sunChronoMeta"></div>
-<div class="sun-chrono-fields">
-<label>Fecha de convocatoria (Pladicop)<input id="sunChronoCall" type="date"></label>
-<label>Tipo de modalidad<select id="sunChronoMode"><option value="ordinary">Ordinaria, con consultas</option><option value="short">Abreviada, con consultas</option><option value="noqueries">Sin consultas ni observaciones</option><option value="price">Comparación de precios</option></select></label>
-<label>Integración de bases (si consta)<input id="sunChronoIntegration" type="date"></label>
-<label>Fecha de buena pro (si consta)<input id="sunChronoAward" type="date"></label>
-<label>Fecha oficial de ofertas (si consta)<input id="sunChronoOffers" type="date"></label>
-<label>Anuncio de contratación futura (opcional)<input id="sunChronoAnnouncement" type="date"></label>
-<label class="wide">Otros días no laborables del sector público aplicables (AAAA-MM-DD, separados por comas)<input id="sunChronoExtra" type="text" placeholder="Ej.: 2026-11-16, 2026-12-24"></label>
-</div>
-<h3>Hitos y fechas</h3><div class="sun-chrono-tablewrap"><table class="sun-chrono-table"><thead><tr><th>Etapa / actuación</th><th>Fecha</th><th>Cómputo / sustento</th><th>Tipo de fecha</th></tr></thead><tbody id="sunChronoRows"></tbody></table></div>
-<p class="sun-chrono-legend">Días hábiles: se excluyen sábados, domingos, feriados nacionales y días no laborables del sector público que se hayan registrado. Días calendario: se cuentan todos los días. En los mínimos reglamentarios, se excluye el día inicial. Los días no laborables especiales dependen del ámbito y vigencia de cada norma. Los datos que ingreses aquí se usan para esta simulación, sin modificar el registro oficial del aplicativo.</p>
-<div class="sun-chrono-legend">Fundamento: Reglamento artículos 62.2, 64, 66, 68 y, cuando corresponda, 82. Consulta el cronograma publicado en Pladicop y las bases estándar aplicables.</div>
-</div></dialog>
-<script id="sunChronoLogic">
-(function(){
-'use strict';
-const dialog=document.getElementById('sunChronoDialog');
-if(!dialog)return;
-const $=id=>document.getElementById(id);
-const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const parse=v=>{
- const x=String(v??'').trim();
- const iso=x.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/),peru=x.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
- if(!iso&&!peru)return null;
- const y=+(iso?iso[1]:peru[3]),m=+(iso?iso[2]:peru[2]),d=+(iso?iso[3]:peru[1]);
- const date=new Date(y,m-1,d,12);
- return date.getFullYear()===y&&date.getMonth()===m-1&&date.getDate()===d?date:null;
-};
-const iso=d=>d?[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'):'';
-const format=d=>d?d.toLocaleDateString('es-PE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'}):'Pendiente';
-const addCalendar=(date,num)=>{const d=new Date(date);d.setDate(d.getDate()+num);return d};
-function easter(year){
- const a=year%19,b=Math.floor(year/100),c=year%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k+7)%7,m=Math.floor((a+11*h+22*l)/451),month=Math.floor((h+l-7*m+114)/31),day=(h+l-7*m+114)%31+1;
- return new Date(year,month-1,day,12);
-}
-function holidays(year){
- const fixed=['01-01','05-01','06-07','06-29','07-23','07-28','07-29','08-06','08-30','10-08','11-01','12-08','12-09','12-25'];
- const out=new Set(fixed.map(md=>year+'-'+md));
- const ep=easter(year);out.add(iso(addCalendar(ep,-3)));out.add(iso(addCalendar(ep,-2)));
- return out;
-}
-let selected=null;
-function excluded(){
- const values=$('sunChronoExtra').value.split(/[,;\s]+/).map(x=>x.trim()).filter(Boolean);
- const blocked=new Set(values.map(x=>iso(parse(x))).filter(Boolean));
- // DS 132-2026-PCM: día no laborable del 16/11/2026 para Lima/Callao.
- // No se aplica automáticamente a todas las entidades del país: exigir su registro manual.
- return blocked;
-}
-function business(date,blocked){
- const day=date.getDay(),key=iso(date);
- return day!==0&&day!==6&&!holidays(date.getFullYear()).has(key)&&!blocked.has(key);
-}
-function addBusiness(date,n,blocked){
- if(!date||!Number.isInteger(n)||n<1)return null;
- let d=new Date(date),count=0;
- for(let step=0;count<n&&step<1800;step++){
-  d=addCalendar(d,1);
-  if(business(d,blocked))count++;
- }
- return count===n?d:null;
-}
-const positive=d=>d?'<span class="sun-chrono-date">'+safe(format(d))+'</span>':'<span class="sun-chrono-pending">Pendiente de registrar</span>';
-function row(label,date,reason,origin){
- return '<tr><td>'+safe(label)+'</td><td>'+positive(date)+'</td><td>'+safe(reason)+'</td><td>'+safe(origin)+'</td></tr>';
-}
-function paint(){
- if(!selected)return;
- const call=parse($('sunChronoCall').value),integration=parse($('sunChronoIntegration').value),award=parse($('sunChronoAward').value),offers=parse($('sunChronoOffers').value),announcement=parse($('sunChronoAnnouncement').value);
- const mode=$('sunChronoMode').value,blocked=excluded(),abbrev=mode==='short',noq=mode==='noqueries'||mode==='price';
- let rows='';
- rows+=row('Convocatoria',call,'La publicación en Pladicop da inicio a la fase de selección. Art. 63.','Registrada / simulada');
- if(!noq){
-  rows+=row('Fin mínimo de consultas y observaciones',addBusiness(call,abbrev?3:7,blocked),(abbrev?'3':'7')+' días hábiles desde el día siguiente de convocatoria. Art. 66.1.','Mínimo normativo');
-  rows+=row('Integración de bases',integration,'Hito real sujeto a absolución, eventuales cuestionamientos y publicación.','Solo fecha registrada');
- }
- let offerMin=null,offerReason='';
- if(mode==='ordinary'){
-  if(integration){offerMin=addBusiness(integration,7,blocked);offerReason='7 días hábiles desde integración (art. 68.1); también debe respetar el mínimo global de 22 días hábiles desde convocatoria (art. 64.1).';const base=addBusiness(call,22,blocked);if(base&&offerMin&&offerMin<base)offerMin=base}
-  else{offerMin=addBusiness(call,22,blocked);offerReason='Mínimo global de 22 días hábiles desde convocatoria (art. 64.1); no sustituye los 7 días desde la integración de bases.'}
- }else if(mode==='short'){
-  offerMin=addBusiness(integration,3,blocked);offerReason='3 días hábiles desde integración (art. 68.1). Sin fecha de integración no puede calcularse.';
- }else{
-  offerMin=addBusiness(call,mode==='price'?3:6,blocked);
-  offerReason=(mode==='price'?'3':'6')+' días hábiles desde convocatoria cuando no hay consultas (art. 68.2); verificar que esta modalidad corresponda.';
- }
- rows+=row('Primera fecha mínima de presentación de ofertas',offerMin,offerReason,'Mínimo calculado, no fecha oficial');
- rows+=row('Presentación de ofertas programada',offers,'Fecha oficial de bases/Pladicop, si se conoce.','Solo fecha registrada');
- if(call&&offers&&offerMin&&offers<offerMin)rows+=row('⚠ Revisión del cronograma',null,'La fecha de ofertas registrada es anterior al mínimo calculado; verificar las excepciones y el cronograma oficial.','Alerta de verificación');
- rows+=row('Evaluación y calificación',null,'Plazo de ejecución variable según las bases y las actuaciones reales.','No estimable automáticamente');
- rows+=row('Otorgamiento de la buena pro',award,'Debe verificarse la adjudicación realmente publicada.','Solo fecha registrada');
- rows+=row('Consentimiento de buena pro',null,'Depende del número de ofertas, recursos y art. 82; no asignar fecha sin los datos pertinentes.','Condicionado');
- rows+=row('Perfeccionamiento del contrato',parse(selected.fechaFirma)||parse(selected.fechaSuscripcion),'Depende de consentimiento, garantía, requisitos, subsanaciones y art. 90.','Solo fecha registrada');
- if(announcement&&call){
-  const earliest=addCalendar(announcement,40);
-  rows+=row('Anuncio de contratación futura',announcement,'Entre anuncio y convocatoria deben mediar al menos 40 días calendario para evaluar la reducción especial del art. 64.3. '+(call>=earliest?'Intervalo cumplido; verificar bases estándar.':'Intervalo de 40 días calendario no cumplido.'),'Referencia de días calendario');
- }
- $('sunChronoRows').innerHTML=rows;
-}
-window.sunarpOpenChrono2026=function(i){
- const r=typeof data!=='undefined'&&Array.isArray(data)?data[i]:null;if(!r)return;
- selected=r;
- $('sunChronoName').textContent=(r.descripcion||'Servicio')+' · '+(r.procedimiento||'Procedimiento por definir');
- $('sunChronoMeta').textContent='Registro '+(r.id||'—')+' · Especialista: '+(r.especialista||'Sin asignar')+' · Estado: '+(r.estado||'Sin dato');
- $('sunChronoCall').value=iso(parse(r.fechaConvocatoria));
- $('sunChronoIntegration').value=iso(parse(r.fechaIntegracion||r.fechaIntegracionBases));
- $('sunChronoAward').value=iso(parse(r.fechaBuenaPro));
- $('sunChronoOffers').value=iso(parse(r.fechaPresentacionOfertas));
- $('sunChronoAnnouncement').value='';
- $('sunChronoExtra').value='';
- const type=String(r.procedimiento||'').toUpperCase();
- $('sunChronoMode').value=/COMPARACI[ÓO]N DE PRECIOS/.test(type)?'price':/ABREVIAD/.test(type)?'short':'ordinary';
- paint();dialog.showModal();
-};
-for(const id of ['sunChronoCall','sunChronoIntegration','sunChronoAward','sunChronoOffers','sunChronoAnnouncement','sunChronoExtra','sunChronoMode'])$(id).addEventListener('input',paint);
-$('sunChronoClose').onclick=()=>dialog.close();
-})();
-</script>
+
+
+
 </body></html>
