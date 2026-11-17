@@ -3944,11 +3944,21 @@ refresh();
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
 
-    '<td data-label="Seguimiento">'+newButton+(end.date!=='—'?'<div class="sun-proc2026-sub" style="margin-top:9px;font-weight:700;white-space:nowrap"><span style="font-weight:600">📅 Vencimiento:</span> '+esc(end.date)+'</div>':'')+'</td>'+
+    '<td data-label="Seguimiento">'+newButton+(end.date!=='—'?'<button type="button" data-sun-proc-calendar="'+i+'" class="sun-proc2026-sub" style="display:block;margin-top:9px;padding:4px 2px;background:transparent;border:0;color:inherit;font-weight:700;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px" title="Abrir fecha y contrato en el calendario" aria-label="Ver vencimiento '+esc(end.date)+' en el calendario">📅 Vencimiento: '+esc(end.date)+'</button>':'')+'</td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
  panel.addEventListener('click',e=>{
+  const calendarLink=e.target.closest('[data-sun-proc-calendar]');
+  if(calendarLink){
+   e.preventDefault();e.stopPropagation();
+   const i=Number(calendarLink.dataset.sunProcCalendar);
+   const r=Array.isArray(data)?data[i]:null, d=r?dateOf(r.vencimiento):null;
+   if(!r||!d||!hasContract(r))return;
+   if(typeof window.sunarpNavigate==='function')window.sunarpNavigate('calendario');
+   window.dispatchEvent(new CustomEvent('sunarp:focus-contract-expiry',{detail:{date:[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'),recordId:String(r.id??''),recordIndex:i}}));
+   return;
+  }
   const newLink=e.target.closest('[data-sun-proc-new]');
   if(newLink){
    e.preventDefault();e.stopPropagation();
@@ -4189,7 +4199,7 @@ refresh();
   return year>=2000&&year<=2100?d:null;
  };
  let displayMonth=new Date(localToday().getFullYear(),localToday().getMonth(),1);
- let selected=null;
+ let selected=null,focusedRecordId=null;
  function contracts(){
   return (Array.isArray(data)?data:[]).map((r,index)=>({r,index,d:parseDay(r.vencimiento)}))
    .filter(x=>x.d&&!invalidContract(x.r.contratoVigente))
@@ -4226,7 +4236,7 @@ refresh();
   el('sunCalSelectedCount').textContent=found.length+' contrato'+(found.length===1?'':'s');
   el('sunCalSelected').innerHTML=found.length?found.map(x=>{
    const alert=['SI','SÍ'].includes(normalize(x.r.nuevaConvocatoria));
-   return '<article class="sun-cal-entry"><div class="sun-cal-entry-title">'+safe(x.r.descripcion||'Servicio sin descripción')+'</div>'+
+   return '<article class="sun-cal-entry"'+(String(x.r.id??'')===focusedRecordId?' style="outline:3px solid #1685c1;outline-offset:2px" data-sun-focused-expiry="true"':'')+'><div class="sun-cal-entry-title">'+safe(x.r.descripcion||'Servicio sin descripción')+'</div>'+
     '<div class="sun-cal-entry-meta"><span>Contrato: '+safe(daySummary(x))+'</span><span>Especialista: '+safe(x.r.especialista||'Sin asignar')+'</span><span>Vencimiento: '+safe(x.r.vencimiento)+'</span></div>'+
     '<div class="sun-cal-entry-actions"><button type="button" data-sun-proc-contract="'+x.index+'">👁 Ver contrato</button>'+
     (alert?'<button type="button" class="new" data-sun-open-new="'+x.index+'">⚑ Nueva contratación</button>':'')+
@@ -4297,6 +4307,18 @@ refresh();
    const year=Number(el('sunCalYear').value),month=Number(el('sunCalMonth').value);
    if(Number.isInteger(year)&&Number.isInteger(month)&&month>=0&&month<12)navigate(new Date(year,month,1));
   }
+ });
+ window.addEventListener('sunarp:focus-contract-expiry',e=>{
+  const key=String(e.detail?.date||''),recordId=String(e.detail?.recordId||'');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(key))return;
+  const matching=contracts().some(x=>dayKey(x.d)===key&&String(x.r.id??'')===recordId);
+  if(!matching)return;
+  focusedRecordId=recordId;
+  const [year,month]=key.split('-').map(Number);
+  displayMonth=new Date(year,month-1,1);
+  selected=key;
+  paint();
+  requestAnimationFrame(()=>{const node=root.querySelector('[data-sun-focused-expiry]')||root.querySelector('#sunCalSelected');node?.scrollIntoView({behavior:'smooth',block:'center'});});
  });
  window.addEventListener('sunarp:pagechange',e=>{if(e.detail?.page==='calendario')paint()});
  const oldRender=render;
