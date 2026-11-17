@@ -16,7 +16,7 @@ function closeRecordResults(){searchResults.hidden=true;searchInput.setAttribute
 function drawRecordResults(){
  const query=fold(searchInput.value);
  const candidates=records().filter(r=>!query||fold([r.descripcion,r.procedimiento,r.especialista,r.pac,r.id].join(' ')).includes(query));
- searchMatches=candidates.slice(0,60);searchFocus=0;
+ searchMatches=candidates.slice(0,60);searchFocus=query&&searchMatches.length?1:0;
  let html='<button type="button" role="option" class="sc-record-choice" data-sc-choice=""><b>＋ Nueva contratación desde cero</b></button>';
  html+=searchMatches.map((r,j)=>'<button type="button" role="option" class="sc-record-choice" data-sc-choice="'+esc(String(r.id))+'"><b>'+esc(r.descripcion||'Sin descripción')+'</b><small>'+esc(r.procedimiento||'Sin número')+' · PAC: '+esc(r.pac||'—')+' · '+esc(r.especialista||'Sin especialista')+'</small></button>').join('');
  if(!candidates.length)html+='<div class="sc-record-empty">No hay procedimientos coincidentes. Puedes crear una contratación nueva.</div>';
