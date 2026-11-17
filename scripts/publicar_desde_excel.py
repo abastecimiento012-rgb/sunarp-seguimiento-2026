@@ -78,7 +78,7 @@ def texto(celda):
 # Para fechas almacenadas por Excel como números de serie (por ejemplo, 46351).
 # No convertir importes ni otros campos numéricos.
 COLUMNAS_FECHA = {
-    "fechaEsperada", "fechaRequerimiento", "fechaConvocatoria",
+    "plazoEntrega", "vencimiento", "fechaEsperada", "fechaRequerimiento", "fechaConvocatoria",
     "fechaBuenaPro", "fechaConsentimiento", "plazoDocumentos",
     "fechaFirma", "fechaSuscripcion", "fechaInicio",
 }
@@ -96,9 +96,9 @@ def fecha_compromiso(raw):
     """Convierte fecha completa P a fecha comparable; no convierte frases en vencimientos."""
     import re
     valor = str(raw or "").strip()
-    match = re.fullmatch(r"(\\d{1,2})\\.(\\d{1,2})\\.(\\d{4})", valor)
+    match = re.fullmatch(r"(\d{1,2})\.(\d{1,2})\.(\d{4})", valor)
     if not match:
-        match = re.fullmatch(r"(\\d{1,2})\\.(\\d{2})(\\d{4})", valor)
+        match = re.fullmatch(r"(\d{1,2})\.(\d{2})(\d{4})", valor)
     if not match:
         return ""
     try:
