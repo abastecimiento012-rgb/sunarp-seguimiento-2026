@@ -515,7 +515,14 @@ html[data-sun-theme="dark"] #insightDetail:has(.sp-integral-detail) .insight-sum
 .sun-nav-report-sim-stack{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:2px;flex:none;min-width:max-content}
 .sun-nav-report-sim-stack>.sun-nav-link{width:100%;text-align:left;padding-top:6px;padding-bottom:6px}
 @media(max-width:800px){.sun-nav-inner>.sun-nav-report-sim-stack{order:0}}
-</style><style id="sunNavStackTitle2026">
+</style><style id="sunPacPrepButton2026">
+#insightDetail .sun-pac-actions{min-width:185px;vertical-align:top}
+#insightDetail .sun-pac-prep-action{display:block;margin-top:8px;border:1px solid #d1a15b;border-radius:8px;background:#fff0d3;color:#79500e;padding:9px 12px;cursor:pointer;font-size:12px;font-weight:800;line-height:1.4;text-align:left;max-width:215px;white-space:normal}
+#insightDetail .sun-pac-prep-action:hover{background:#ffe2ac;border-color:#b8802f}
+#insightDetail .sun-pac-prep-action:focus-visible{outline:3px solid #e3a43b;outline-offset:2px}
+html[data-sun-theme="dark"] #insightDetail .sun-pac-prep-action{background:#50391f;color:#ffe6b9;border-color:#a98348}
+</style>
+<style id="sunNavStackTitle2026">
 .sun-nav-title-stacked{gap:6px!important;line-height:1.05;align-items:center;white-space:normal;font-size:15px!important}
 .sun-nav-title-words{display:flex;flex-direction:column;font-size:inherit;font-weight:800;letter-spacing:0}
 .sun-nav-title-words span{display:block}
@@ -3151,6 +3158,21 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const modal=document.getElementById('insightDetail');
  if(!modal)return;
  modal.addEventListener('click',function(e){
+  const prep=e.target.closest('[data-pac-prep-record]');
+  if(prep){
+    e.preventDefault();
+    const recordId=prep.dataset.pacPrepRecord;
+    const idx=data.findIndex(r=>String(r.id??'')===recordId);
+    if(idx<0)return;
+    if(typeof window.sunarpOpenFichaIntegral2026==='function'){
+      window.sunarpOpenFichaIntegral2026(idx);
+      requestAnimationFrame(()=>{
+        const section=modal.querySelector('.sp-integral-section.process');
+        if(section)section.scrollIntoView({block:'start',behavior:'smooth'});
+      });
+    }
+    return;
+  }
   const b=e.target.closest('[data-insight-record]');
   if(b){const idx=Number(b.dataset.insightRecord);modal.close();if(Number.isInteger(idx)&&data[idx])edit(idx)}
  });
@@ -3381,13 +3403,17 @@ experts();apply();
       (!y || (y==='none'?!parseDate(r.vencimiento):String(yrFn(r.vencimiento))===y))
    );
  }
+ function hasPreparatoryWork(r){
+   const stage=getNorm([r.estado,r.estadoNueva].join(' '));
+   return /ACTUACIONES PREPARATORIAS|INTERACCION CON EL MERCADO|INDAGACION DE MERCADO|ACTOS PREPARATORIOS/.test(stage);
+ }
  function openDetail(title, explain, rows){
    const modal=document.getElementById('insightDetail'); if(!modal)return;
    document.getElementById('insightDetailTitle').textContent=title;
    document.getElementById('insightDetailExplain').textContent=explain;
    const body=document.getElementById('insightDetailRows');
    if(!rows.length){body.innerHTML='<div class="insight-empty">No hay registros en esta categoría con los filtros actuales.</div>'; if(!modal.open)modal.showModal(); return;}
-   body.innerHTML='<table><thead><tr><th>N.º</th><th>Servicio / procedimiento</th><th>PAC</th><th>Área / especialista</th><th>Estado</th><th>Contrato / vencimiento</th><th>Ficha</th></tr></thead><tbody>'+rows.map((r,i)=>{const idx=data.indexOf(r);return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(r.descripcion||'—')+'</strong><div class="muted">'+esc(r.procedimiento||'—')+'</div></td><td>'+esc(r.pac||'—')+'</td><td>'+esc(r.area||'—')+'<div class="muted">'+esc(r.especialista||'—')+'</div></td><td>'+esc(r.estado||'—')+'<div class="muted">'+esc(r.estadoNueva||r.seguimientoExcel||'')+'</div></td><td>'+esc(r.numeroContrato||r.contratoVigente||'—')+'<div class="muted">Vence: '+esc(r.vencimiento||'—')+'</div></td><td><button type="button" class="eye-action" data-insight-record="'+idx+'">👁 Ver ficha</button></td></tr>';}).join('')+'</tbody></table>';
+   body.innerHTML='<table><thead><tr><th>N.º</th><th>Servicio / procedimiento</th><th>PAC</th><th>Área / especialista</th><th>Estado</th><th>Contrato / vencimiento</th><th>Ficha</th></tr></thead><tbody>'+rows.map((r,i)=>{const idx=data.indexOf(r);return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(r.descripcion||'—')+'</strong><div class="muted">'+esc(r.procedimiento||'—')+'</div></td><td>'+esc(r.pac||'—')+'</td><td>'+esc(r.area||'—')+'<div class="muted">'+esc(r.especialista||'—')+'</div></td><td>'+esc(r.estado||'—')+'<div class="muted">'+esc(r.estadoNueva||r.seguimientoExcel||'')+'</div></td><td>'+esc(r.numeroContrato||r.contratoVigente||'—')+'<div class="muted">Vence: '+esc(r.vencimiento||'—')+'</div></td><td class="sun-pac-actions"><button type="button" class="eye-action" data-insight-record="'+idx+'">👁 Ver ficha</button>'+(hasPreparatoryWork(r)?'<button type="button" class="sun-pac-prep-action" data-pac-prep-record="'+esc(r.id)+'" title="Consultar las actuaciones preparatorias de este procedimiento">⚠ Actuaciones preparatorias</button>':'')+'</td></tr>';}).join('')+'</tbody></table>';
    if(!modal.open)modal.showModal();
  }
  function enhancePac(){
