@@ -2145,32 +2145,44 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
 </div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Simulador de procedimientos de selección" class="sim26">
 <div class="sim26-head"><h2>📅 Simulador de plazos de contratación</h2><p>Consulta cuánto podría demorar un nuevo procedimiento. Herramienta independiente del PAC y de los expedientes registrados.</p></div>
 <div class="sim26-note">Este simulador es una <b>proyección preventiva</b>, no un cronograma oficial ni un pronunciamiento legal. Los mínimos normativos se distinguen de los tiempos internos estimados. La modalidad debe verificarse según objeto, cuantía, supuestos especiales y bases estándar vigentes.</div>
-<div class="sim26-form">
-<label>Procedimiento de selección<select id="sim26Type">
+<div class="sim26-quick">
+<div class="sim26-step"><strong>1. ¿Qué procedimiento quieres realizar?</strong>
+<select id="sim26Type" aria-label="Tipo de procedimiento">
 <option value="lp">Licitación pública — bienes u obras</option>
 <option value="cps">Concurso público — servicios o consultorías</option>
 <option value="lpa">Licitación pública abreviada</option>
 <option value="cpa">Concurso público abreviado</option>
-<option value="nq">Procedimiento sin consultas y observaciones (si corresponde)</option>
+<option value="nq">Procedimiento sin consultas (si corresponde)</option>
 <option value="cp">Comparación de precios (si corresponde)</option>
 <option value="sie">Subasta inversa electrónica</option>
-<option value="nc">Procedimiento no competitivo (causal por verificar)</option>
-<option value="especial">Otra modalidad especial / precalificación / diálogo</option>
-</select></label>
-<label>Fecha de recepción de requerimiento<input type="date" id="sim26Date"></label>
-<label>Área usuaria <input id="sim26Area" placeholder="Ej. OTI" maxlength="90"></label>
-<label>Objeto de contratación<input id="sim26Name" placeholder="Servicio o bien que se pretende contratar" maxlength="170"></label>
-<label>Cuantía referencial (S/) <input id="sim26Amount" type="number" min="0" step="0.01" placeholder="Opcional"></label>
-<label>Ubicación del procedimiento<select id="sim26Place"><option value="national">Calendario nacional</option><option value="lima">Lima y Callao (incluir día no laborable conocido)</option></select></label>
-<label>Días hábiles estimados de actuaciones preparatorias<input id="sim26Prep" type="number" min="0" max="365" value="15"></label>
-<label>Días hábiles estimados para absolución e integración<input id="sim26Answer" type="number" min="0" max="120" value="5"></label>
-<label>Días hábiles estimados para evaluación y buena pro<input id="sim26Evaluate" type="number" min="0" max="120" value="5"></label>
-<label>Garantía de fiel cumplimiento<select id="sim26Guarantee"><option value="yes">Se exige (8 días para presentar requisitos)</option><option value="no">No se exige (5 días para presentar requisitos)</option></select></label>
-<label>Cantidad de ofertas asumida<select id="sim26Offers"><option value="multiple">Dos o más, sin apelación</option><option value="one">Una sola oferta</option></select></label>
-<label>Días adicionales de contingencia (hábiles)<input id="sim26Buffer" type="number" min="0" max="365" value="5"></label>
-<label class="sim26-wide">Días no laborables excepcionales (AAAA-MM-DD, separados por comas)<input id="sim26Blocked" placeholder="2026-12-24, 2027-01-04"></label>
+<option value="nc">Procedimiento no competitivo</option>
+<option value="especial">Otra modalidad especial</option>
+</select></div>
+<div class="sim26-step"><strong>2. ¿Qué escenario deseas evaluar?</strong>
+<div id="sim26Scenarios" class="sim26-scenarios" role="group" aria-label="Escenario de gestión">
+<button type="button" data-sim-scenario="agil">Ágil <small>Menos demoras internas</small></button>
+<button type="button" data-sim-scenario="normal" class="selected" aria-pressed="true">Estándar <small>Estimación central</small></button>
+<button type="button" data-sim-scenario="cauteloso">Conservador <small>Mayor margen preventivo</small></button>
+</div></div>
+<div class="sim26-instant">📍 El cálculo comienza <b>hoy, <span id="sim26TodayLabel">fecha actual</span></b> (hora de Perú). No necesitas ingresar ninguna fecha.</div>
 </div>
-<div class="sim26-actions"><button type="button" id="sim26Run">Generar cronograma estimado</button><button type="button" id="sim26Print">Imprimir / Guardar PDF</button><button type="button" id="sim26Csv">Descargar CSV</button></div>
+<details class="sim26-extra"><summary>⚙ Ajustar supuestos (opcional)</summary>
+<p>Estos campos son opcionales. Si no los cambias, la aplicación utiliza valores predefinidos de gestión; no son plazos normativos.</p>
+<div class="sim26-form">
+<input type="hidden" id="sim26Date">
+<label>Área usuaria<input id="sim26Area" placeholder="Ej. OTI"></label>
+<label>Objeto de contratación<input id="sim26Name" placeholder="Ej. Servicio de soporte"></label>
+<label>Cuantía aproximada en S/ <input id="sim26Amount" type="number" min="0" step="0.01" placeholder="Opcional"></label>
+<label>Ubicación<select id="sim26Place"><option value="national">Calendario nacional</option><option value="lima">Lima y Callao (incluir fecha excepcional conocida)</option></select></label>
+<label>Actuaciones preparatorias, días hábiles<input id="sim26Prep" type="number" min="0" max="365" value="15"></label>
+<label>Absolución e integración, días hábiles<input id="sim26Answer" type="number" min="0" max="120" value="5"></label>
+<label>Evaluación y buena pro, días hábiles<input id="sim26Evaluate" type="number" min="0" max="120" value="5"></label>
+<label>Garantía de fiel cumplimiento<select id="sim26Guarantee"><option value="yes">Se exige</option><option value="no">No se exige</option></select></label>
+<label>Ofertas asumidas<select id="sim26Offers"><option value="multiple">Dos o más, sin apelación</option><option value="one">Una oferta</option></select></label>
+<label>Contingencia, días hábiles<input id="sim26Buffer" type="number" min="0" max="365" value="5"></label>
+<label class="sim26-wide">Días no laborables excepcionales (AAAA-MM-DD, separados por comas)<input id="sim26Blocked" placeholder="Ejemplo: 2026-12-24"></label>
+</div></details>
+<div class="sim26-actions"><button type="button" id="sim26Run">↻ Recalcular ahora</button><button type="button" id="sim26Print">Imprimir / Guardar PDF</button><button type="button" id="sim26Csv">Descargar cronograma CSV</button></div>
 <div id="sim26Result" aria-live="polite"></div>
 <div class="sim26-sources"><b>Fuentes normativas:</b> <a href="https://www.gob.pe/institucion/mef/normas-legales/6401561-009-2025-ef" target="_blank" rel="noopener">D. S. 009-2025-EF</a> · <a href="https://www.gob.pe/institucion/mef/normas-legales/7601483-001-2026-ef" target="_blank" rel="noopener">D. S. 001-2026-EF</a> · <a href="https://www.gob.pe/institucion/mef/normas-legales/7614286-0001-2026-ef-54-01" target="_blank" rel="noopener">Directiva 0005-2025-EF/54.01 y modificación de enero 2026</a> · <a href="https://www.gob.pe/feriados" target="_blank" rel="noopener">Feriados oficiales del Perú</a>. La base normativa debe revisarse ante modificaciones posteriores.
 </div>
@@ -4507,7 +4519,7 @@ if(kind.kind!=='special'){
 }
 const days=total?Math.round((total-dt)/86400000):null;
 const currency=$('sim26Amount').value?Number($('sim26Amount').value).toLocaleString('es-PE',{style:'currency',currency:'PEN'}):'No indicada';
-let html='<div class="sim26-summary"><div class="sim26-kpi"><small>Procedimiento consultado</small><strong>'+esc(kind.label)+'</strong></div><div class="sim26-kpi"><small>Fin estimado del escenario</small><strong>'+esc(fmt(total))+'</strong></div><div class="sim26-kpi"><small>Duración aproximada</small><strong>'+(days!==null?days+' días calendario':'No calculable')+'</strong></div></div>';
+let html='<div class="sim26-outcome"><div class="sim26-outcome-label">FECHA ESTIMADA DE CONTRATO SUSCRITO</div><div class="sim26-outcome-date">'+(total?esc(total.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})):'Requiere revisión de modalidad')+'</div><div class="sim26-outcome-caption">'+(days!==null?'Aproximadamente '+days+' días calendario desde hoy · Escenario '+esc(scenario==='agil'?'ágil':scenario==='cauteloso'?'conservador':'estándar'):'No existe un plazo único extrapolable para este procedimiento')+'</div></div><div class="sim26-summary"><div class="sim26-kpi"><small>Procedimiento consultado</small><strong>'+esc(kind.label)+'</strong></div><div class="sim26-kpi"><small>Fin estimado del escenario</small><strong>'+esc(fmt(total))+'</strong></div><div class="sim26-kpi"><small>Duración aproximada</small><strong>'+(days!==null?days+' días calendario':'No calculable')+'</strong></div></div>';
 html+='<p><b>Objeto:</b> '+esc(title)+' · <b>Área:</b> '+esc(area)+' · <b>Cuantía:</b> '+esc(currency)+'</p>';
 html+='<div class="sim26-tablebox"><table class="sim26-table"><thead><tr><th>Etapa o hito</th><th>Fecha estimada</th><th>Plazo empleado</th><th>Sustento</th><th>Carácter</th></tr></thead><tbody>';
 for(const r of rows)html+='<tr><td>'+esc(r.stage)+'</td><td><b>'+esc(fmt(r.date))+'</b></td><td>'+esc(r.duration)+'</td><td>'+esc(r.basis)+'</td><td>'+esc(r.category)+'</td></tr>';
@@ -4519,6 +4531,69 @@ $('sim26Run').addEventListener('click',calculate);
 $('sim26Print').addEventListener('click',()=>{calculate();window.print()});
 $('sim26Csv').addEventListener('click',()=>{calculate();const lines=[['Etapa','Fecha','Plazo','Sustento','Carácter'],...exportRows];const csv='\uFEFF'+lines.map(a=>a.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(';')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='cronograma_estimado_ley_32069.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 for(const id of fields)$(id).addEventListener('change',()=>{if($('sim26Result').innerHTML)calculate()});
-$('sim26Date').value=iso(new Date());calculate();
+function todayInPeru(){
+ const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Lima',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+ const map=Object.fromEntries(parts.map(x=>[x.type,x.value]));
+ return map.year+'-'+map.month+'-'+map.day;
+}
+let scenario='normal';
+const assumptions={
+ agil:{prep:7,answer:3,evaluate:3,buffer:2},
+ normal:{prep:15,answer:5,evaluate:5,buffer:5},
+ cauteloso:{prep:30,answer:10,evaluate:10,buffer:15}
+};
+function setScenario(name){
+ if(!assumptions[name])return;
+ scenario=name;
+ const p=assumptions[name];
+ $('sim26Prep').value=p.prep;
+ $('sim26Answer').value=p.answer;
+ $('sim26Evaluate').value=p.evaluate;
+ $('sim26Buffer').value=p.buffer;
+ document.querySelectorAll('[data-sim-scenario]').forEach(b=>{
+   const on=b.dataset.simScenario===name;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));
+ });
+ calculate();
+}
+document.getElementById('sim26Scenarios').addEventListener('click',e=>{
+ const b=e.target.closest('[data-sim-scenario]');if(b)setScenario(b.dataset.simScenario);
+});
+for(const id of fields){
+ const el=$(id);if(!el)continue;
+ el.addEventListener('input',()=>{if(id!=='sim26Date')calculate()});
+}
+const realCalculate=calculate;
+function refreshClock(){
+ const current=todayInPeru();
+ $('sim26Date').value=current;
+ const dt=date(current);
+ $('sim26TodayLabel').textContent=dt?dt.toLocaleDateString('es-PE',{day:'numeric',month:'long',year:'numeric'}):current;
+ realCalculate();
+}
+window.addEventListener('focus',refreshClock);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshClock()});
+window.addEventListener('sunarp:pagechange',e=>{if(e.detail?.page==='simulador')refreshClock()});
+refreshClock();
 })();
-</script></body></html>
+</script><style id="sim26QuickStyle">
+.sim26-quick{display:grid;gap:17px;margin:18px 0}
+.sim26-step{display:grid;gap:11px}
+.sim26-step>strong{font-size:16px}
+.sim26-step>select{max-width:640px;min-height:48px;font-size:15px;font-weight:700;border-radius:10px;border:1px solid #9dbbd5;background:#edf6ff;color:#143e69;padding:9px 12px}
+.sim26-scenarios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sim26-scenarios button{min-height:75px;border:2px solid #d0dfeb;border-radius:12px;background:#f6faff;color:#244661;padding:12px;cursor:pointer;font-weight:850;font-size:15px}
+.sim26-scenarios button small{font-weight:500;font-size:11px;display:block;margin-top:6px}
+.sim26-scenarios button.selected{border-color:#1763a0;background:#dceeff;color:#123d66}
+.sim26-instant{padding:12px 15px;background:#e7f6ee;color:#12533e;border-radius:10px;font-size:13px}
+.sim26-extra{border:1px solid #c7d9e9;border-radius:11px;padding:12px 16px;margin:15px 0}
+.sim26-extra summary{font-weight:850;cursor:pointer}
+.sim26-extra>p{font-size:12px;line-height:1.6}
+.sim26-outcome{text-align:center;padding:25px 15px;margin:16px 0;background:linear-gradient(135deg,#143d69,#177ba8);border-radius:16px;color:#fff}
+.sim26-outcome-label{font-weight:850;letter-spacing:.06em;font-size:12px;color:#cce8fa}
+.sim26-outcome-date{font-size:clamp(23px,4vw,35px);font-weight:900;margin:11px 0;text-transform:capitalize}
+.sim26-outcome-caption{font-size:14px;color:#e4f2fd}
+html[data-sun-theme="dark"] .sim26-step>select,html[data-sun-theme="dark"] .sim26-scenarios button{background:#24415a;color:#e9f4ff;border-color:#4f738e}
+html[data-sun-theme="dark"] .sim26-scenarios button.selected{background:#205781;border-color:#9dd0ff}
+html[data-sun-theme="dark"] .sim26-instant{background:#1c4b42;color:#c2ffe5}
+@media(max-width:560px){.sim26-scenarios{grid-template-columns:1fr}.sim26-scenarios button{min-height:56px}.sim26-outcome{padding:18px 10px}}
+</style></body></html>
