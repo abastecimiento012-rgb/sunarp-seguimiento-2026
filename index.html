@@ -511,6 +511,10 @@ html[data-sun-theme="dark"] #insightDetail:has(.sp-integral-detail) .insight-sum
 .sun-pac-quick button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
 @media(max-width:620px){.sun-pac-quick{padding:11px;gap:7px}.sun-pac-quick-intro{flex-basis:100%}.sun-pac-quick button{flex:1 1 auto;justify-content:center}}
 @media print{#sunPacQuick{display:none!important}}
+</style><style id="sunReportSimStack2026">
+.sun-nav-report-sim-stack{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:2px;flex:none;min-width:max-content}
+.sun-nav-report-sim-stack>.sun-nav-link{width:100%;text-align:left;padding-top:6px;padding-bottom:6px}
+@media(max-width:800px){.sun-nav-inner>.sun-nav-report-sim-stack{order:0}}
 </style><style id="sunNavStackTitle2026">
 .sun-nav-title-stacked{gap:6px!important;line-height:1.05;align-items:center;white-space:normal;font-size:15px!important}
 .sun-nav-title-words{display:flex;flex-direction:column;font-size:inherit;font-weight:800;letter-spacing:0}
@@ -2047,8 +2051,10 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
       <button type="button" class="sun-nav-link" data-sun-route="alertas" title="3. Revisión diaria de alertas y plazos registrados">③ Alertas y plazos</button>
       <button type="button" class="sun-nav-link" data-sun-route="especialistas" title="4. Asignaciones, responsables y carga de trabajo">④ Especialistas</button>
     </div>
-    <button type="button" class="sun-nav-link" data-sun-route="reportes" title="5. Reportes para control gerencial">⑤ Reportes</button>
-    <button type="button" class="sun-nav-link" data-sun-route="simulador" title="Consultar duración estimada de una nueva contratación">⑥ Simulador de plazos</button>
+    <div class="sun-nav-report-sim-stack">
+      <button type="button" class="sun-nav-link" data-sun-route="reportes" title="5. Reportes para control gerencial">⑤ Reportes</button>
+      <button type="button" class="sun-nav-link" data-sun-route="simulador" title="Consultar duración estimada de una nueva contratación">⑥ Simulador de plazos</button>
+    </div>
     <div class="sun-bell-wrap"><button type="button" id="sunBell2026" aria-label="Notificaciones de entregas" aria-expanded="false" title="Entregas de especialistas">🔔 <span id="sunBellCount2026" hidden>0</span></button><section id="sunBellPanel2026" hidden><header><strong>🔔 Plazos de entrega</strong><button type="button" id="sunBellClose2026">✕</button></header><p id="sunBellSummary2026"></p><div id="sunBellItems2026"></div><footer><button type="button" id="sunBellBrowser2026">Activar avisos del navegador</button><button type="button" data-sun-route="alertas" id="sunBellGo2026">Ver alertas y plazos</button></footer><small>Los avisos se calculan a partir de las fechas registradas. Los avisos del navegador requieren que la aplicación permanezca abierta.</small></section></div><div class="sun-nav-tools" aria-label="Apariencia y calendario">
       <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
         <button type="button" class="sun-theme-option" data-sun-theme-option="light" aria-pressed="true" title="Modo claro">☀ Claro</button>
