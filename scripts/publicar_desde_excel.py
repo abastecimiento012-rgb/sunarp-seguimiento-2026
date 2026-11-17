@@ -19,28 +19,23 @@ from pathlib import Path
 REPO = "abastecimiento012-rgb/sunarp-seguimiento-2026"
 DEST = "datos.json"
 COLUMNAS = {
-    "B": "id", "C": "descripcion", "D": "procedimiento", "E": "pac",
-    "F": "itemCMN", "G": "clasificador", "H": "meta", "I": "especialista",
-    "J": "area", "K": "cuantia", "L": "inversion", "M": "cui",
-    "N": "estado", "O": "fechaEsperada", "P": "observaciones",
-    "Q": "relacionHosting", "R": "contratoVigente", "S": "contratista",
-    "T": "vencimiento", "U": "naturaleza", "V": "nuevaConvocatoria",
-    "W": "estadoNueva", "X": "documentosRequerimiento",
-    "Y": "fechaRequerimiento", "Z": "compatibilizacion",
-    "AA": "informeSoftware", "AB": "modalidadContratacion",
-    "AC": "fechaConvocatoria", "AD": "fechaBuenaPro",
-    "AE": "fechaConsentimiento", "AF": "plazoDocumentos",
-    "AG": "fechaFirma", "AH": "primerDevengado", "AI": "detallePagos",
-    "AJ": "saldoContrato", "AK": "ccp2026", "AL": "montoCCP2026",
-    "AM": "prevision2027", "AN": "montoPrevision2027",
-    "AO": "prevision2028", "AP": "montoPrevision2028",
-    "AQ": "prevision2029", "AR": "montoPrevision2029",
-    "AS": "prevision2030", "AT": "montoPrevision2030",
-    "AU": "montoAdelanto", "AV": "montoAdjudicado",
-    "AW": "numeroContrato", "AX": "fechaSuscripcion", "AY": "fechaInicio",
-    "AZ": "montoContratado", "BA": "postor", "BB": "plazo",
-    "BC": "estadoContrato", "BD": "diasVencimientoExcel",
-    "BE": "semaforoExcel", "BF": "seguimientoExcel",
+    "B":"id","C":"descripcion","D":"procedimiento","E":"pac","F":"itemCMN",
+    "G":"clasificador","H":"meta","I":"especialista","J":"area","K":"cuantia",
+    "L":"inversion","M":"cui","N":"estado","O":"observaciones",
+    "P":"plazoEntrega","Q":"relacionHosting","R":"contratoVigente",
+    "S":"contratista","T":"vencimiento","U":"naturaleza",
+    "V":"estadoNueva","W":"documentosRequerimiento","X":"fechaRequerimiento",
+    "Y":"compatibilizacion","Z":"informeSoftware","AA":"modalidadContratacion",
+    "AB":"fechaConvocatoria","AC":"fechaBuenaPro","AD":"fechaConsentimiento",
+    "AE":"plazoDocumentos","AF":"fechaFirma","AG":"primerDevengado",
+    "AH":"detallePagos","AI":"saldoContrato","AJ":"ccp2026","AK":"montoCCP2026",
+    "AL":"prevision2027","AM":"montoPrevision2027","AN":"prevision2028",
+    "AO":"montoPrevision2028","AP":"prevision2029","AQ":"montoPrevision2029",
+    "AR":"prevision2030","AS":"montoPrevision2030","AT":"montoAdelanto",
+    "AU":"montoAdjudicado","AV":"numeroContrato","AW":"fechaSuscripcion",
+    "AX":"fechaInicio","AY":"montoContratado","AZ":"postor","BA":"plazo",
+    "BB":"estadoContrato","BC":"diasVencimientoExcel",
+    "BD":"semaforoExcel","BE":"seguimientoExcel",
 }
 # Columnas opcionales de seguimiento operativo. Se leen solo si tienen
 # el encabezado esperado en fila 5; la plantilla antigua sigue siendo válida.
@@ -97,6 +92,29 @@ def texto_campo(celda, campo):
     return texto(celda)
 
 
+def fecha_compromiso(raw):
+    """Convierte fecha completa P a fecha comparable; no convierte frases en vencimientos."""
+    import re
+    valor = str(raw or "").strip()
+    match = re.fullmatch(r"(\\d{1,2})\\.(\\d{1,2})\\.(\\d{4})", valor)
+    if not match:
+        match = re.fullmatch(r"(\\d{1,2})\\.(\\d{2})(\\d{4})", valor)
+    if not match:
+        return ""
+    try:
+        return datetime(int(match.group(3)), int(match.group(2)), int(match.group(1))).strftime("%d.%m.%Y")
+    except ValueError:
+        return ""
+
+
+def nueva_convocatoria(registro):
+    import unicodedata
+    estado = normalizar_encabezado(registro.get("estado", "") + " " + registro.get("estadoNueva", ""))
+    return "SÍ" if any(x in estado for x in (
+        "ACTUACIONES PREPARATORIAS", "CONVOCATORIA", "DESIERTO", "EN EVALUACION"
+    )) else "NO"
+
+
 def seleccionar_archivo():
     if len(sys.argv) >= 2:
         return Path(sys.argv[1]).expanduser().resolve()
@@ -143,6 +161,9 @@ def convertir_excel(path):
                 continue
             registro = {k: texto_campo(hoja[f"{col}{n}"], k) for col, k in COLUMNAS.items() if k not in CAMPOS_NO_PUBLICAR}
             registro.update({key: texto(hoja[f"{col}{n}"]) for col, key in activos.items()})
+            registro["fechaEsperada"] = registro.get("plazoEntrega", "")
+            registro["fechaCompromiso"] = fecha_compromiso(registro.get("plazoEntrega"))
+            registro["nuevaConvocatoria"] = nueva_convocatoria(registro)
             registro["filaExcel"] = n
             rows.append(registro)
         if len(rows) < 10:
