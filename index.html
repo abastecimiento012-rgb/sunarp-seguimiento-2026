@@ -3126,7 +3126,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  '<div class="gd-cell"><small>Detalle de la actuación / entrega pendiente</small><strong>'+pendingIfEmpty(r.detalleEntrega)+'</strong></div>'+
  '<div class="gd-cell"><small>Plazo de entrega</small><strong>'+pendingIfEmpty(r.plazoEntrega)+'</strong></div></div>';
  const steps=[['Requerimiento',r.fechaRequerimiento],['Convocatoria',r.fechaConvocatoria],['Buena pro',r.fechaBuenaPro],['Consentimiento',r.fechaConsentimiento],['Firma',r.fechaFirma||r.fechaSuscripcion]];
- const timeline='<div class="gd-timeline">'+steps.map(([label,value])=>'<div class="gd-step"><small>'+E(label)+'</small><strong>'+V(value)+'</strong></div>').join('')+'</div>';
+ const timeline='<div class="gd-timeline">'+steps.map(([label,value])=>'<div class="gd-step"><small>'+E(label)+'</small><strong style="white-space:pre-line;line-height:1.75">'+V(value).replace(/(\d{2}[./-]\d{2}[./-]\d{4})\s+(?=\d{2}[./-]\d{2}[./-]\d{4})/g,'$1<br>')+'</strong></div>').join('')+'</div>';
  const obs='<div class="gd-observation">'+V(r.observaciones)+'</div><div class="gd-grid" style="margin-top:12px">'+cell('Seguimiento preventivo',r.seguimientoExcel,true)+cell('Documentos de requerimiento',r.documentosRequerimiento,true)+'</div>';
  const contractNumber=contractValid(r.numeroContrato)?r.numeroContrato:r.contratoVigente;
  const contractFields=[
