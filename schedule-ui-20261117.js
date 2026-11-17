@@ -9,6 +9,46 @@ $('scActualFields').innerHTML=Object.entries(actualFields).map(([k,v])=>'<label>
 $('scInternalFields').innerHTML=api.templates['LP-CP ABREV.'].filter(r=>r.row<=28).map(r=>'<label>'+esc(r.label.split('\n')[0])+'<input type="number" min="1" max="365" value="'+r.days+'" data-sc-duration="'+r.row+'"><small>'+esc(r.owner)+' · '+esc(r.source)+'</small></label>').join('')+'<label>Absolución e integración de bases<input type="number" min="1" max="120" value="2" data-sc-duration="integration"></label><label>Calificación y evaluación de ofertas<input type="number" min="1" max="120" value="2" data-sc-duration="evaluation"></label>';
 let result=null,choiceSignature='';
 function populate(){const selected=$('scRecord').value;const rows=records();const sig=rows.map(r=>r.id+'|'+r.descripcion+'|'+r.procedimiento).join('\n');if(sig===choiceSignature)return;choiceSignature=sig;$('scRecord').innerHTML='<option value="">＋ Nueva contratación desde cero</option>'+rows.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.descripcion)+' · '+esc(r.procedimiento||'Sin tipo registrado')+'</option>').join('');if(rows.some(r=>String(r.id)===selected))$('scRecord').value=selected;}
+const searchInput=$('scRecordSearch'),searchResults=$('scRecordResults'),selectionHint=$('scRecordSelected');
+let searchMatches=[],searchFocus=0;
+const fold=v=>api.norm(String(v??'')).replace(/\s+/g,' ').trim();
+function closeRecordResults(){searchResults.hidden=true;searchInput.setAttribute('aria-expanded','false');}
+function drawRecordResults(){
+ const query=fold(searchInput.value);
+ const candidates=records().filter(r=>!query||fold([r.descripcion,r.procedimiento,r.especialista,r.pac,r.id].join(' ')).includes(query));
+ searchMatches=candidates.slice(0,60);searchFocus=0;
+ let html='<button type="button" role="option" class="sc-record-choice" data-sc-choice=""><b>＋ Nueva contratación desde cero</b></button>';
+ html+=searchMatches.map((r,j)=>'<button type="button" role="option" class="sc-record-choice" data-sc-choice="'+esc(String(r.id))+'"><b>'+esc(r.descripcion||'Sin descripción')+'</b><small>'+esc(r.procedimiento||'Sin número')+' · PAC: '+esc(r.pac||'—')+' · '+esc(r.especialista||'Sin especialista')+'</small></button>').join('');
+ if(!candidates.length)html+='<div class="sc-record-empty">No hay procedimientos coincidentes. Puedes crear una contratación nueva.</div>';
+ if(candidates.length>60)html+='<div class="sc-record-empty">Mostrando 60 resultados. Escribe más caracteres para filtrar.</div>';
+ searchResults.innerHTML=html;
+ searchResults.hidden=false;searchInput.setAttribute('aria-expanded','true');
+}
+function setRecordSearch(id){
+ const r=records().find(x=>String(x.id)===String(id));
+ searchInput.value=r?(r.descripcion||''):'';
+ selectionHint.textContent=r?'Seleccionado: '+(r.procedimiento||'sin número')+' · '+(r.especialista||'Sin asignar'):'Nueva contratación desde cero (sin registro del Excel).';
+ closeRecordResults();
+}
+searchInput.addEventListener('input',()=>{drawRecordResults();});
+searchInput.addEventListener('focus',()=>drawRecordResults());
+searchInput.addEventListener('keydown',e=>{
+ const opts=[...searchResults.querySelectorAll('[data-sc-choice]')];
+ if(e.key==='Escape'){closeRecordResults();return;}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+  e.preventDefault();
+  if(searchResults.hidden)drawRecordResults();
+  const choices=[...searchResults.querySelectorAll('[data-sc-choice]')];
+  searchFocus=(searchFocus+(e.key==='ArrowDown'?1:-1)+choices.length)%choices.length;
+  choices.forEach((node,j)=>node.classList.toggle('is-focused',j===searchFocus));
+  choices[searchFocus]?.scrollIntoView({block:'nearest'});
+ }else if(e.key==='Enter'&&!searchResults.hidden){
+  e.preventDefault();const choices=[...searchResults.querySelectorAll('[data-sc-choice]')];
+  const chosen=choices[searchFocus];if(chosen)applyRecord(chosen.dataset.scChoice);
+ }
+});
+searchResults.addEventListener('click',e=>{const btn=e.target.closest('[data-sc-choice]');if(btn)applyRecord(btn.dataset.scChoice);});
+document.addEventListener('click',e=>{if(!e.target.closest('.sc-record-search'))closeRecordResults();});
 function config(){const actual=Object.fromEntries([...document.querySelectorAll('[data-sc-actual]')].filter(e=>e.value).map(e=>[e.dataset.scActual,e.value]));const durations=Object.fromEntries([...document.querySelectorAll('[data-sc-duration]')].map(e=>[e.dataset.scDuration,Number(e.value)]));return {type:$('scType').value,anchor:$('scAnchor').value,date:$('scDate').value,singleOffer:$('scSingle').value==='one',guarantee:$('scGuarantee').value==='yes',elevation:$('scElevation').value==='yes',prepObservations:$('scPrepObs').value==='yes',contractObservations:$('scContractObs').value==='yes',guaranteeExtension:$('scExtension').value==='yes',appeal:$('scAppeal').value,appealSubsanation:$('scAppealSub').value==='yes',appealInformation:$('scAppealInfo').value==='yes',place:$('scPlace').value,extra:$('scExtra').value.split(/[;,\s]+/).filter(Boolean),actual,durations};}
 function simpleMilestones(res){
  if(res.unsupported)return '';
@@ -37,13 +77,13 @@ else if(/APEL/.test(query))explanation='Para consultar el trámite de apelación
 else if(/ELEV|OECE/.test(query))explanation='Activa la elevación al OECE en las condiciones del LP/CP ordinario para calcular sus hitos.';
 else if(/MERCADO|INDAG|REQUERIMIENTO|PREPARATOR/.test(query))explanation='Para ver las actividades previas a la convocatoria selecciona el hito “Inicio de actuaciones preparatorias” o “Inicio de programación / CMN”. Sus duraciones provienen del cronograma aportado.';
 $('scAnswer').textContent=explanation;}
-function applyRecord(id){populate();$('scRecord').value=id||'';const r=records().find(x=>String(x.id)===String(id));$('scAdjust').open=false;document.querySelectorAll('[data-sc-actual]').forEach(e=>e.value='');if(!r){$('scName').value='';$('scDate').value=peruToday();$('scAnchor').value='prep';$('scType').value='cp';$('scRecordHint').textContent='Contratación nueva: ingresa el objeto, selecciona el tipo y ajusta la fecha de inicio. No se necesita registrarla en el Excel.';render();return;}
+function applyRecord(id){populate();$('scRecord').value=id||'';setRecordSearch(id);const r=records().find(x=>String(x.id)===String(id));$('scAdjust').open=false;document.querySelectorAll('[data-sc-actual]').forEach(e=>e.value='');if(!r){$('scName').value='';$('scDate').value=peruToday();$('scAnchor').value='prep';$('scType').value='cp';$('scRecordHint').textContent='Contratación nueva: ingresa el objeto, selecciona el tipo y ajusta la fecha de inicio. No se necesita registrarla en el Excel.';render();return;}
 $('scType').value=api.inferType(r.procedimiento);$('scName').value=r.descripcion||'';const call=api.date(r.fechaConvocatoria);$('scAnchor').value=call?'call':'prep';$('scDate').value=call?api.iso(call):peruToday();
 $('scRecordHint').textContent='✓ Datos cargados automáticamente · Especialista: '+(r.especialista||'Sin asignar')+' · '+(r.procedimiento||'Sin tipo registrado')+'. '+(call?'La fecha de convocatoria proviene del Excel.':'Sin convocatoria fechada: estimación a partir de hoy.')+(r.fechaConsentimiento?' Consentimiento referencial del Excel: '+r.fechaConsentimiento+'.':'')+(/CANCELADO|DESIERTO/.test(api.norm(r.estado)+' '+api.norm(r.estadoNueva))?' ATENCIÓN: procedimiento cancelado o desierto; el cálculo es solo referencial y no implica una convocatoria activa.':'');render();}
 function openRecord(id){for(const d of document.querySelectorAll('dialog[open]'))d.close();const nav=document.querySelector('[data-sun-route="simulador"]');if(nav)nav.click();else{document.body.dataset.sunPage='simulador';window.dispatchEvent(new CustomEvent('sunarp:pagechange',{detail:{page:'simulador'}}));const url=new URL(location.href);url.searchParams.set('pagina','simulador');history.replaceState(null,'',url);}
 applyRecord(id);$('sunTimelineSimulator').scrollIntoView({behavior:'smooth',block:'start'});}
 function injectLinks(){for(const b of document.querySelectorAll('[data-sun-open-new],[data-sun-proc-contract],.sun-proc2026-eye[data-sun-proc-context]')){const i=Number(b.dataset.sunOpenNew??b.dataset.sunProcContract??b.dataset.sunProcContext);const r=records()[i];if(!r||!b.parentElement||b.parentElement.querySelector('[data-sc-record]'))continue;const el=document.createElement('button');el.type='button';el.className='sun-proc-linked';el.dataset.scRecord=String(r.id);el.textContent='📅 Consultar plazos';b.parentElement.appendChild(el);}}
-$('scDate').value=peruToday();$('scAnchor').value='prep';populate();render();
+$('scDate').value=peruToday();$('scAnchor').value='prep';populate();setRecordSearch('');render();
 $('scRecord').addEventListener('change',()=>applyRecord($('scRecord').value));$('scRun').onclick=render;
 $('sunTimelineSimulator').addEventListener('change',e=>{if(e.target.id!=='scRecord')render();});
 $('scName').addEventListener('input',render);
