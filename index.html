@@ -3134,10 +3134,32 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  ].filter(Boolean);
  const contract=contractIdentified&&contractFields.length?'<div class="gd-grid">'+contractFields.join('')+'</div>':'';
 
- const budgets=[['2026 · CCP',r.ccp2026,r.montoCCP2026],['2027',r.prevision2027,r.montoPrevision2027],['2028',r.prevision2028,r.montoPrevision2028],['2029',r.prevision2029,r.montoPrevision2029],['2030',r.prevision2030,r.montoPrevision2030]];
- const budget='<div class="gd-budget">'+budgets.map(([year,doc,amount])=>'<div class="gd-year"><b>'+E(year)+'</b><span>'+pendingIfEmpty(doc)+'</span><strong>'+(/^(?:\\s*|\\s*-\\s*|sin dato registrado)$/i.test(String(amount??''))?pending:moneySafe(amount))+'</strong></div>').join('')+'</div><p class="gd-note">CCP y previsiones: importes sujetos a verificación documental.</p>';
- // No mostrar el bloque presupuestario al consultar contratos vigentes.
- // La información sigue disponible en la página independiente de Previsiones.
+ // Resumen presupuestario compacto, calculado desde los campos del Excel.
+ const budgetPresence=(pairs)=>{
+  const values=pairs.flatMap(([doc,amount])=>[doc,amount]).map(v=>String(v??'').trim());
+  const normalized=v=>v.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+  const negatives=/^(?:NO|NO CORRESPONDE|NO APLICA|SIN CERTIFICACION|SIN PREVISION|NO CUENTA|0(?:[.,]0+)?)$/;
+  const unknown=/^(?:|[-—]|SIN DATO(?: REGISTRADO)?|PENDIENTE|POR VERIFICAR|POR DETERMINAR|N\/A)$/;
+  let explicitNo=false;
+  for(const [doc,amount] of pairs){
+   const d=normalized(String(doc??'').trim()),a=normalized(String(amount??'').trim());
+   const num=Number(a.replace(/S\/\s*/g,'').replace(/,/g,''));
+   if((a&&!unknown.test(a)&&!negatives.test(a)&&Number.isFinite(num)&&num>0)||
+      (d&&!unknown.test(d)&&!negatives.test(d)))return 'si';
+   if(negatives.test(d)||negatives.test(a))explicitNo=true;
+  }
+  return explicitNo?'no':'verificar';
+ };
+ const budgetBadge=(label,status,positive,negative)=>{
+  const ok=status==='si',no=status==='no';
+  const caption=ok?'Sí — '+positive:no?'No — '+negative:'Por verificar';
+  const bg=ok?'#e4f4ea':no?'#fcebea':'#fff3dc';
+  const fg=ok?'#17643d':no?'#9a3434':'#855900';
+  return '<div class="gd-cell" style="min-width:0"><small>'+E(label)+'</small><strong style="display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap;color:'+fg+';background:'+bg+';border-radius:9px;padding:8px 12px;font-size:14px">'+(ok?'✓':no?'✕':'?')+' '+E(caption)+'</strong></div>';
+ };
+ const certState=budgetPresence([[r.ccp2026,r.montoCCP2026]]);
+ const prevState=budgetPresence([[r.prevision2027,r.montoPrevision2027],[r.prevision2028,r.montoPrevision2028],[r.prevision2029,r.montoPrevision2029],[r.prevision2030,r.montoPrevision2030]]);
+ const budget='<div class="gd-grid">'+budgetBadge('Certificación de Crédito Presupuestario (CCP)',certState,'Cuenta con certificación','No cuenta con certificación')+budgetBadge('Previsión presupuestaria',prevState,'Cuenta con previsión','No cuenta con previsión')+'</div>';
  const expiry=typeof date==='function'?date(r.vencimiento):null;
  const today=new Date();today.setHours(0,0,0,0);
  const hasCurrentContract=String(r.contratoVigente||'').trim()&&!noContract;
@@ -3147,7 +3169,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const extra='<div class="gd-grid">'+cell('Ítem CMN',r.itemCMN)+cell('Clasificador de gasto',r.clasificador)+cell('Meta presupuestal',r.meta)+cell('Inversión',r.inversion)+cell('CUI',r.cui)+cell('Compatibilización',r.compatibilizacion)+cell('Informe de software',r.informeSoftware)+cellMoney('Monto adjudicado',r.montoAdjudicado)+'</div>';
  const newRegistered=/^S[IÍ](?:\b|\s|-)/.test(String(r.nuevaConvocatoria||'').trim().toUpperCase());
  const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
- body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('▦ Información general',info)+sec('◉ Nuevo procedimiento de selección',nuevo)+sec('◷ Fecha estimada, detalle y plazo de entrega',expected)+sec('◉ Observaciones y actuaciones pendientes',obs)+sec('◷ Cronología de actuaciones',timeline)+sec('▤ Contrato vigente o último contrato registrado',contract||'<p class="gd-note">No hay contrato vigente o no se han registrado datos contractuales verificables.</p>')+((document.body.dataset.sunPage==='pac'||!omitBudget)?sec('▥ CCP 2026 y previsiones 2027–2030',budget):'')+sec('▣ Información administrativa complementaria',extra);
+ body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('▦ Información general',info)+sec('◉ Nuevo procedimiento de selección',nuevo)+sec('◷ Fecha estimada, detalle y plazo de entrega',expected)+sec('◉ Observaciones y actuaciones pendientes',obs)+sec('◷ Cronología de actuaciones',timeline)+sec('▤ Contrato vigente o último contrato registrado',contract||'<p class="gd-note">No hay contrato vigente o no se han registrado datos contractuales verificables.</p>')+sec('▥ Información presupuestaria',budget)+sec('▣ Información administrativa complementaria',extra);
  body.scrollTop=0;dlg.showModal();}
  edit=show;
  document.getElementById('gdClose').onclick=()=>dlg.close();document.getElementById('gdCloseBottom').onclick=()=>dlg.close();document.getElementById('gdPrint').onclick=()=>window.print();
