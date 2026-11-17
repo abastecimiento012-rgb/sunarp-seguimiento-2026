@@ -3949,8 +3949,8 @@ refresh();
     other.map(x=>'<div class="sun-due-deadline"><span>'+esc(x.label)+(x.kind==='hito'?' · cronograma':'')+'</span><strong>'+esc(displayDate(x.date))+'</strong></div>').join('')+'</details>':'';
   const noDate=t.unconfirmed?'<p class="sun-due-no-date">'+esc(t.unconfirmed)+' · confirmar fecha completa.</p>':
    (t.deadlines.length?'':'<p class="sun-due-no-date">Fecha de próxima actuación por confirmar.</p>');
-  const next=flow.next?'<p class="sun-due-next"><b>Próxima actuación:</b> '+esc(flow.next)+'</p>':
-   '<p class="sun-due-next is-missing">Próxima actuación por precisar.</p>';
+  const detail=String(t.r.observaciones||'').replace(/\s+/g,' ').trim();
+  const next=flow.next?'<p class="sun-due-next"><b>Próxima actuación:</b> '+esc(flow.next)+'</p>':detail?'<p class="sun-due-next"><b>Detalle del seguimiento:</b> '+esc(detail.slice(0,260))+(detail.length>260?'…':'')+'</p>':'<p class="sun-due-next is-missing">Próxima actuación por precisar.</p>';
   const last=flow.since!==null&&flow.since>7?'<p class="sun-due-last">Última actuación fechada hace '+flow.since+' días · revisar novedades</p>':'';
   return '<article class="sun-due-item'+(mark?' is-reviewed':'')+'">'+
    '<div class="sun-due-item-head"><span class="sun-due-status '+st.kind+'">'+esc(st.label)+'</span></div>'+
@@ -4400,7 +4400,7 @@ return rows.flatMap((r,i)=>{
  const days=api().daysFromToday(d);
  if(days===null||days>0)return [];
  if(/CULMINADO|ADJUDICADO/.test(String(r.estado||'').toUpperCase())&&!String(r.detalleEntrega||r.proximaActuacion||'').trim())return [];
- return [{id:String(r.id||i),owner,description:r.descripcion||'Servicio sin descripción',detail:r.detalleEntrega||r.proximaActuacion||r.plazoEntrega||'Plazo de entrega registrado',date:d,days}];
+ return [{id:String(r.id||i),owner,description:r.descripcion||'Servicio sin descripción',detail:(r.detalleEntrega||r.proximaActuacion||r.observaciones||'Plazo de entrega registrado').slice(0,210),date:d,days}];
 }).sort((a,b)=>a.days-b.days||a.owner.localeCompare(b.owner));
 }
 function update(){
