@@ -2123,7 +2123,7 @@ window.sunarpFormatSoles2026=function(value){
  </div>
  <div class="sun-proc2026-segments" role="group" aria-label="Segmentar los procedimientos por estado">
   <button type="button" class="sun-proc2026-segment is-active" data-sun-proc-segment="vigentes" aria-pressed="true">✓ Contratos vigentes <span id="sunProc2026VigentesCount"></span></button>
-  <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="preparatorias" aria-pressed="false">⚑ Actuaciones preparatorias y en trámite <span id="sunProc2026PreparatoriasCount"></span></button>
+  <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="preparatorias" aria-pressed="false">⚑ Procedimientos en selección <span id="sunProc2026PreparatoriasCount"></span></button>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
@@ -3865,11 +3865,16 @@ refresh();
 .sun-proc2026-alertbtn{background:#fff0d5!important;color:#8a4b09!important;border-color:#e7ab47!important;font-weight:800!important}
 .sun-proc2026-alertbtn:hover{background:#ffe0a0!important}
 .sun-proc2026-segments{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}
-.sun-proc2026-segment{border:1px solid #aac8e8;border-radius:10px;padding:12px 16px;background:#edf5ff;color:#16466e;font-size:14px;font-weight:750}
-.sun-proc2026-segment.is-active{background:#165b96;color:#fff;border-color:#165b96}
-.sun-proc2026-segment span{display:inline-flex;align-items:center;justify-content:center;min-width:26px;margin-left:7px;padding:2px 7px;border-radius:20px;background:#ffffff33}
-.sun-proc2026-segment:not(.is-active) span{background:#d7e6f6}
-html[data-sun-theme="dark"] .sun-proc2026-segment:not(.is-active){background:#293c4d;color:#e7f2ff;border-color:#647f97}
+.sun-proc2026-segment{border:1px solid transparent;border-radius:10px;padding:12px 16px;font-size:14px;font-weight:800;transition:background .18s,border-color .18s,box-shadow .18s}
+.sun-proc2026-segment[data-sun-proc-segment="vigentes"]{background:#e2f4e9!important;color:#17623b!important;border-color:#8acda6!important}
+.sun-proc2026-segment[data-sun-proc-segment="vigentes"].is-active{background:#147445!important;color:#fff!important;border-color:#147445!important;box-shadow:0 0 0 2px #14744528}
+.sun-proc2026-segment[data-sun-proc-segment="preparatorias"]{background:#fff0d2!important;color:#8b4a0b!important;border-color:#e3b25a!important}
+.sun-proc2026-segment[data-sun-proc-segment="preparatorias"].is-active{background:#a75b13!important;color:#fff!important;border-color:#a75b13!important;box-shadow:0 0 0 2px #a75b1328}
+.sun-proc2026-segment span{display:inline-flex;align-items:center;justify-content:center;min-width:26px;margin-left:7px;padding:2px 7px;border-radius:20px;background:#ffffff66}
+.sun-proc2026-segment.is-active span{background:#ffffff2b;color:#fff}
+.sun-proc2026-segment:focus-visible{outline:3px solid #64748b;outline-offset:3px}
+html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="vigentes"]:not(.is-active){background:#203f32!important;color:#b5f2cf!important;border-color:#428b64!important}
+html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="preparatorias"]:not(.is-active){background:#49351e!important;color:#ffe0a0!important;border-color:#ae7837!important}
 @media(max-width:650px){.sun-proc2026-segment{flex:1 1 100%;text-align:left}}
 </style><script id="sunProcedures2026Script">
 (function(){
