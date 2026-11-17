@@ -2080,6 +2080,23 @@ html[data-sun-theme="dark"] .sun-primary-nav .sun-nav-link.is-active{background:
 html[data-sun-theme="dark"] .sun-primary-nav .sun-nav-link:hover:not(.is-active){background:#344c66!important;color:#fff!important}
 html[data-sun-theme="dark"] .sun-primary-nav .sun-nav-reports summary{background:#304d6a!important;color:#fff!important;border-color:#6688ac!important}
 @media(max-width:680px){.hero .actions button{min-height:42px!important}.sun-primary-nav .sun-nav-link{font-size:12px!important}}
+</style><style id="scAutomaticSimple2026">
+#sunTimelineSimulator #scRecord{min-height:51px;font-size:16px;font-weight:700;border:2px solid #83a8c8;background:#f4f9ff;color:#183f62}
+#sunTimelineSimulator #scAdjust{margin:9px 0;border:1px solid #cdddeb;background:transparent;padding:10px 14px}
+#sunTimelineSimulator #scAdjust summary{color:#215980;font-size:14px}
+#sunTimelineSimulator .sc-simple-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+#sunTimelineSimulator .sc-simple-step{background:var(--sc-card);border:1px solid var(--sc-line);border-radius:10px;padding:12px;min-width:0}
+#sunTimelineSimulator .sc-simple-step small{display:block;color:var(--sc-muted);font-weight:700;font-size:12px}
+#sunTimelineSimulator .sc-simple-step strong{display:block;color:var(--sc-ink);font-size:17px;margin:5px 0}
+#sunTimelineSimulator .sc-simple-step em{font-size:11px;font-style:normal;color:var(--sc-muted)}
+#sunTimelineSimulator .sc-simple-step.is-recorded{border-left:4px solid #168560}
+#sunTimelineSimulator .sc-simple-step.is-forecast{border-left:4px solid #d29330}
+#sunTimelineSimulator #scResult .sc-result-advanced{border:1px solid var(--sc-line);border-radius:10px;padding:10px 13px;margin:15px 0}
+#sunTimelineSimulator #scResult .sc-result-advanced summary{color:var(--sc-ink);font-weight:750}
+#sunTimelineSimulator #scRecordHint{font-size:13px}
+html[data-sun-theme="dark"] #sunTimelineSimulator #scRecord{background:#21374f;color:#f2f8ff;border-color:#8ab6df}
+html[data-sun-theme="dark"] #sunTimelineSimulator #scAdjust summary{color:#d5ecff}
+@media print{#sunTimelineSimulator #scResult .sc-result-advanced{display:block!important}#sunTimelineSimulator #scResult .sc-result-advanced .sc-tablewrap{display:block!important}}
 </style><script id="sunarpSolesFormat2026">
 window.sunarpFormatSoles2026=function(value){
  const raw=String(value??'').trim();
@@ -2232,16 +2249,16 @@ html[data-sun-theme="dark"] .sc-phase th{background:#43515f;color:#fff}html[data
 <article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Resumen de seguimiento listo para imprimir o guardar como PDF.</p><button type="button" data-sun-report="reportPdf">Abrir reporte PDF</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
 </div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Cronogramas y consulta de plazos" class="sim26">
-<div class="sim26-head"><h2>📅 Cronogramas y consulta de plazos</h2><p>Calcula las fechas de un procedimiento registrado o de una nueva contratación con tu cronograma de seguimiento.</p></div>
-<div class="sc-notice">Las fechas se recalculan en días hábiles. Cada actividad distingue <b>plazos normativos</b>, <b>tiempos internos de tu cronograma</b> y <b>fechas registradas</b>. La proyección no reemplaza el cronograma publicado en Pladicop/SEACE.</div>
+<div class="sim26-head"><h2>📅 Cronograma automático de contrataciones</h2><p>Elige un procedimiento del Excel. El cronograma calcula automáticamente sus etapas y fechas estimadas en días hábiles.</p></div>
+<div class="sc-notice"><b>Uso sencillo:</b> 1. Selecciona el procedimiento. 2. Revisa las fechas calculadas. 3. Descarga el cronograma si lo necesitas. Los resultados son proyecciones; verifica las fechas oficiales publicadas en Pladicop/SEACE.</div>
 <div class="sc-grid">
 <label class="sc-wide">Procedimiento a consultar<select id="scRecord"><option value="">＋ Nueva contratación / consulta libre</option></select></label>
-<label>Tipo de procedimiento<select id="scType"><option value="cp">Concurso público de servicios</option><option value="lp">Licitación pública de bienes</option><option value="cpa">Concurso público abreviado de servicios</option><option value="lpa">Licitación pública abreviada de bienes</option><option value="other">Otro procedimiento / régimen</option></select></label>
+<details class="sc-details" id="scAdjust"><summary>⚙ Ajustar tipo de procedimiento, fecha de inicio u objeto (opcional)</summary><div class="sc-grid"><label>Tipo de procedimiento<select id="scType"><option value="cp">Concurso público de servicios</option><option value="lp">Licitación pública de bienes</option><option value="cpa">Concurso público abreviado de servicios</option><option value="lpa">Licitación pública abreviada de bienes</option><option value="other">Otro procedimiento / régimen</option></select></label>
 <label>Objeto de contratación<input id="scName" placeholder="Nombre del servicio o bien"></label>
 <label>¿Desde qué hito calculamos?<select id="scAnchor"><option value="call">Convocatoria publicada o prevista</option><option value="cmn">Inicio de programación / CMN</option><option value="prep">Inicio de actuaciones preparatorias</option><option value="review">Recepción del requerimiento para revisión</option><option value="award">Buena pro notificada</option><option value="consent">Registro del consentimiento</option><option value="documents">Requisitos para el contrato presentados</option><option value="correction">Observaciones contractuales notificadas</option><option value="appeal">Apelación presentada o subsanada</option></select></label>
 <label>Fecha del hito<input id="scDate" type="date" min="2026-01-01"></label>
 </div>
-<p id="scRecordHint" role="status" class="sc-help">Selecciona el tipo y la fecha para generar el cronograma automáticamente.</p>
+</div></details><p id="scRecordHint" role="status" class="sc-help">Selecciona el tipo y la fecha para generar el cronograma automáticamente.</p>
 <details class="sc-details"><summary>Condiciones del procedimiento</summary><div class="sc-grid">
 <label>Número de ofertas<select id="scSingle"><option value="multiple">Dos o más, sin recurso de apelación</option><option value="one">Una sola oferta</option></select></label>
 <label>Garantía de fiel cumplimiento<select id="scGuarantee"><option value="yes">Se requiere presentación: 8 días</option><option value="no">No se requiere presentación: 5 días</option></select></label>
