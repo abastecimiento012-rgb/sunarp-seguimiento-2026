@@ -2793,48 +2793,41 @@ window.sunMonitoring2026=(function(){
     '<p class="sp-integral-caveat">La vigencia debe verificarse con el contrato, sus adendas y las fechas oficiales.</p>';
  }
  function newContractView(r){
-  const yes=/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria));
-  if(!yes){
-   const prep=norm(r.estado).includes('ACTUACIONES PREPARATORIAS')||norm(r.estadoNueva).includes('ACTUACIONES PREPARATORIAS');
-   if(!prep)return '<div class="sp-integral-empty">No hay actuaciones preparatorias de una nueva contratación registradas para este servicio. Si corresponde continuar el servicio, debe verificarse con el área usuaria.</div>';
-   const fields=[
-    showField('Especialista encargado',r.especialista),
-    showField('Área usuaria',r.area),
-    showField('Etapa del procedimiento registrado',r.estado),
-    showField('Estado de actuaciones preparatorias',r.estadoNueva),
-    showField('Fecha de requerimiento registrada',r.fechaRequerimiento),
-    showField('Documentos de requerimiento',r.documentosRequerimiento)
-   ].filter(Boolean);
-   return '<p class="sp-integral-status pending">Se registran actuaciones preparatorias, pero no consta una nueva convocatoria identificada. Verificar a qué procedimiento corresponden.</p>'+
-    '<div class="sp-integral-fields">'+fields.join('')+'</div>'+
-    (!invalidValue(r.observaciones)?'<div class="sp-integral-note"><b>Observaciones</b><p>'+safe(r.observaciones)+'</p></div>':'');
-  }
+  // Esta sección muestra el detalle/estado de la columna O del Excel incluso
+  // cuando no se ha marcado formalmente una nueva convocatoria.
+  const yes=/^SI(?:\\b|\\s|-)/.test(norm(r.nuevaConvocatoria));
   const stage=norm(r.estadoNueva),general=norm(r.estado);
+  const statusText=invalidValue(r.estadoNueva)?r.estado:r.estadoNueva;
+  const detail=!invalidValue(r.observaciones)?plain(r.observaciones):'';
+  const follow=!invalidValue(r.seguimientoExcel)?plain(r.seguimientoExcel):'';
+  const due=!invalidValue(r.plazoEntrega)?plain(r.plazoEntrega):(!invalidValue(r.fechaCompromiso)?plain(r.fechaCompromiso):'');
+  const stagePrep=/ACTUACIONES PREPARATORIAS|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|INTERACCION CON EL MERCADO|INDAGACION DE MERCADO/.test(stage+' '+general);
+  const stageProcess=/CONVOCATORIA|FORMULACION DE CONSULTAS|PRESENTACION DE OFERTAS|EN EVALUACION|DESIERTO|CANCELADO/.test(stage+' '+general);
+  const isNew=yes||stagePrep||stageProcess;
   const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
   const pending=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA/.test(stage);
-  const launched=!second&&!pending&&(/CONVOCATORIA PUBLICADA|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
-  const stageName=invalidValue(r.estadoNueva)?'Etapa de nueva contratación por confirmar':plain(r.estadoNueva);
+  const launched=isNew&&!second&&!pending&&/CONVOCATORIA PUBLICADA|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general);
   const fields=[
-   showField('Especialista responsable',r.especialista),
-   showField('Área usuaria',r.area),
-   showField('Estado de la nueva contratación',stageName),
-   (!['CONTRATO VIGENTE','CONTRATO SUSCRITO','CULMINADO'].includes(general))?showField('Estado actual del procedimiento',r.estado):'',
-   !second&&!pending?showField('Fecha de requerimiento',r.fechaRequerimiento):'',
-   !second&&!pending?showField('Documentos de requerimiento',r.documentosRequerimiento):'',
-   !second&&!pending?showField('Cuantía estimada del nuevo procedimiento',r.cuantia):'',
-   launched?showField('Fecha de convocatoria (verificar)',r.fechaConvocatoria):'',
-   launched?showField('Fecha de buena pro (verificar)',r.fechaBuenaPro):'',
-   launched?showField('Fecha de consentimiento (verificar)',r.fechaConsentimiento):'',
-   launched?showField('Fecha prevista de formalización (verificar)',r.fechaFirma):''
+    showField('Especialista responsable',r.especialista),
+    showField('Área usuaria',r.area),
+    showField('Estado / etapa del procedimiento (Excel)',statusText),
+    (!invalidValue(r.estado)&&norm(r.estado)!==norm(statusText))?showField('Estado actual registrado',r.estado):'',
+    (isNew&&!second&&!pending)?showField('Fecha de requerimiento',r.fechaRequerimiento):'',
+    (isNew&&!second&&!pending)?showField('Documentos de requerimiento',r.documentosRequerimiento):'',
+    (isNew&&!second&&!pending)?showField('Cuantía estimada',r.cuantia):'',
+    launched?showField('Fecha de convocatoria (verificar)',r.fechaConvocatoria):'',
+    launched?showField('Fecha de buena pro (verificar)',r.fechaBuenaPro):'',
+    due?showField('Plazo de presentación / entrega (Excel)',due):''
   ].filter(Boolean);
-  const note=second?'Se está gestionando o prevé una segunda convocatoria. No se atribuyen a esta las fechas de la primera.':
-   pending?'La nueva contratación se encuentra pendiente o por confirmar; no se presume una convocatoria publicada.':
-   'Seguimiento de las actuaciones identificadas; confirma los hitos en el expediente.';
-  return '<p class="sp-integral-status '+(launched?'active':'pending')+'">'+safe(note)+'</p>'+
-   '<div class="sp-integral-fields">'+fields.join('')+'</div>'+
-   (!invalidValue(r.observaciones)?'<div class="sp-integral-note"><b>Observaciones del nuevo proceso</b><p>'+safe(r.observaciones)+'</p></div>':'')+
-   (!invalidValue(r.seguimientoExcel)?'<div class="sp-integral-note"><b>Seguimiento y próximas actuaciones</b><p>'+safe(r.seguimientoExcel)+'</p></div>':'')+
-   '<p class="sp-integral-caveat">Las actuaciones preparatorias no equivalen necesariamente a una convocatoria publicada. Verifica el expediente y la información oficial.</p>';
+  const details=detail?'<div class="sp-integral-note"><b>Detalle / estado del procedimiento · Excel</b><p>'+safe(detail)+'</p></div>':'';
+  const tracking=follow&&norm(follow)!==norm(detail)?'<div class="sp-integral-note"><b>Seguimiento registrado</b><p>'+safe(follow)+'</p></div>':'';
+  const explanation=isNew?(second?'Se registra una segunda convocatoria en seguimiento. Las fechas de la primera no se atribuyen a la nueva.':pending?'La contratación se encuentra pendiente; no se presume convocatoria publicada.':'Actuaciones y situación registradas en el Excel; verificar las actuaciones oficiales.'):
+   'Información del estado y detalle registrado en el Excel. No se presume el inicio de una nueva contratación.';
+  return '<p class="sp-integral-status '+(launched?'active':'pending')+'">'+safe(explanation)+'</p>'+
+    (fields.length?'<div class="sp-integral-fields">'+fields.join('')+'</div>':'')+
+    details+tracking+
+    (!fields.length&&!detail&&!follow?'<div class="sp-integral-empty">Datos del procedimiento pendientes de registrar en el Excel.</div>':'')+
+    '<p class="sp-integral-caveat">Los datos provienen del cuadro de seguimiento y deben contrastarse con el expediente y el cronograma oficial.</p>';
  }
  function openRecord(idx){
   if(!Number.isInteger(idx)||!data[idx])return;
