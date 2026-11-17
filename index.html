@@ -3217,10 +3217,16 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
  body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('▦ Información general',info)+(isVigente?'':sec('◉ Nuevo procedimiento de selección',nuevo))+(hidePreparatoryDelivery?'':sec('◷ Fecha estimada, detalle y plazo de entrega',expected))+sec('◉ Observaciones y actuaciones pendientes',obs)+(contractIdentified&&signedIn2026?sec('◷ Cronología de actuaciones',timeline):'')+sec('▤ Contrato vigente o último contrato registrado',contract||'<p class="gd-note">No hay contrato vigente o no se han registrado datos contractuales verificables.</p>')+sec('▥ Información presupuestaria',budget)+sec('▣ Información administrativa complementaria',extra);
  // En contratos de ejercicios anteriores, omitir campos sin información en la vista, sin alterar el Excel.
- const contractYearCandidates=[r.numeroContrato,r.contratoVigente].map(v=>String(v??'').match(/\b(20\d{2})\b/)).filter(Boolean).map(m=>Number(m[1]));
+ const extractContractYear=v=>{
+  const t=String(v??'');
+  const m=t.match(/(?:N[.°ºo\s]*|CONTRATO[^\d]*)(?:\d+[\sY,-]*)?[-/]\s*(20\d{2})\b/i)||t.match(/\b(20\d{2})\b/);
+  return m?Number(m[1]):null;
+ };
+ const contractYear=extractContractYear(r.numeroContrato)||extractContractYear(r.contratoVigente);
+ const actualSignature=typeof date==='function'?date(r.fechaSuscripcion):null;
  const priorSignedContract=contractIdentified&&(
-  (signedDate&&signedDate.getFullYear()<2026)||
-  (!signedDate&&contractYearCandidates.some(y=>y>=2000&&y<2026))
+  contractYear!==null?(contractYear>=2000&&contractYear<2026):
+  !!actualSignature&&actualSignature.getFullYear()<2026
  );
  if(priorSignedContract){
   const missingText=v=>{
