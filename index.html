@@ -3655,8 +3655,8 @@ function current(r){
 const rows=()=>data.map((r,i)=>({r,i}));
 const flagged=()=>rows().filter(({r})=>yes(r));
 const inForce=()=>rows().filter(({r})=>current(r)).sort((a,b)=>dated(a.r.vencimiento)-dated(b.r.vencimiento));
-const status=r=>!yes(r)?'Nueva convocatoria no registrada':txt(r.estadoNueva)==='No registrado'?'Estado por verificar':norm(r.estadoNueva)==='CONTRATO VIGENTE'?'Estado de nueva convocatoria por confirmar':txt(r.estadoNueva);
-const pending=r=>!yes(r)||['NO INICIADA','PENDIENTE DE REQUERIMIENTO','CONTRATO VIGENTE','PROGRAMADO PARA DICIEMBRE'].includes(norm(r.estadoNueva));
+const status=r=>!yes(r)?'Nueva convocatoria no registrada':norm(r.estado)==='SIN REQUERIMIENTO'?'SIN REQUERIMIENTO':txt(r.estadoNueva)==='No registrado'?'Estado por verificar':norm(r.estadoNueva)==='CONTRATO VIGENTE'?'Estado de nueva convocatoria por confirmar':txt(r.estadoNueva);
+const pending=r=>!yes(r)||norm(r.estado)==='SIN REQUERIMIENTO'||['NO INICIADA','PENDIENTE DE REQUERIMIENTO','SIN REQUERIMIENTO','CONTRATO VIGENTE','PROGRAMADO PARA DICIEMBRE'].includes(norm(r.estadoNueva));
 let focused=null,contractTab='vigentes';
 function tabs(){
  document.body.dataset.sunContractTab=contractTab;
@@ -3704,7 +3704,7 @@ function details(id){
  }
  const stage=norm(r.estadoNueva),general=norm(r.estado);
  const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
- const pendingStage=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PROGRAMADO PARA|PENDIENTE DEL SIGA/.test(stage);
+ const pendingStage=general==='SIN REQUERIMIENTO'||/CONTRATO VIGENTE|NO INICIADA|SIN REQUERIMIENTO|PENDIENTE DE REQUERIMIENTO|PROGRAMADO PARA|PENDIENTE DEL SIGA/.test(stage);
  const active=!pendingStage&&!second;
  const launched=active&&(/CONVOCATORIA PUBLICADA|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
  const years=[...String(r.procedimiento??'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
@@ -3713,7 +3713,8 @@ function details(id){
   field('N.º de registro',r.id),
   field('Especialista responsable del nuevo proceso',spec(r)),
   field('Área usuaria',r.area),
-  field('Etapa de la nueva contratación',status(r))
+  field('Etapa de la nueva contratación',status(r)),
+  ...(general==='SIN REQUERIMIENTO'?[field('Situación del requerimiento','SIN REQUERIMIENTO')]:[])
  ];
  if(active){
   if(general!=='CONTRATO VIGENTE'&&general!=='CONTRATO SUSCRITO'&&general!=='CULMINADO')fields.push(processField('Estado del procedimiento en seguimiento',r.estado));
@@ -3789,7 +3790,7 @@ function openContract(i){
    onlyContractField('Tipo y número de procedimiento',r.procedimiento),
    onlyContractField('N.º de contrato',number),
    onlyContractField('Contratista',r.contratista),
-   onlyContractField('Estado contractual',r.estadoContrato),
+   field('Estado contractual (según vencimiento)',expiry?'VIGENTE — vigencia estimada':'POR VERIFICAR — sin fecha válida'),
    onlyContractField('Fecha de suscripción',r.fechaSuscripcion),
    onlyContractField('Inicio de la prestación',r.fechaInicio),
    onlyContractField('Fecha de vencimiento',r.vencimiento),
@@ -3800,7 +3801,7 @@ function openContract(i){
   content.innerHTML='<div class="sun-newconv-detail">'+description+
    '<p class="sun-linked-notice"><strong>'+esc(state)+'.</strong> Verifica el contrato, sus adendas y las fechas vigentes.</p>'+
    '<div class="sun-newconv-fields">'+fields.join('')+'</div>'+
-   '<p class="sun-ct-note">Esta ficha contiene únicamente información contractual. La nueva convocatoria se consulta en su botón independiente.</p></div>';
+   '<p class="sun-ct-note">El estado contractual se estima únicamente a partir de la fecha de vencimiento. El estado del requerimiento y las etapas de selección se consultan en la ficha independiente de nueva contratación; no equivalen al estado del contrato.</p></div>';
  }
  if(dlg.open)dlg.close();
  dlg.showModal();
