@@ -2955,8 +2955,6 @@ window.sunMonitoring2026=(function(){
   const flow=window.sunMonitoring2026.read(r);
   const trackingFields=[];
   if(flow.owner)trackingFields.push('<div class="sp-flow-item"><small>Responsable</small><strong>'+safe(flow.owner)+'</strong></div>');
-  if(flow.dateLabel)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso interno</small><strong>'+safe(flow.dateLabel)+'</strong></div>');
-  else if(flow.commitmentRaw)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso</small><strong>Fecha por verificar</strong></div>');
   if(flow.last||flow.lastLabel)trackingFields.push('<div class="sp-flow-item"><small>Última actuación documentada'+(flow.lastLabel?' · '+safe(flow.lastLabel):'')+'</small><strong>'+safe(flow.last||'Actuación por precisar')+'</strong></div>');
   const staleNote=flow.since!==null&&flow.since>7?'<p class="sp-flow-notice">Última actuación fechada hace '+flow.since+' días. Revisar si existen novedades.</p>':'';
   const trackingSection=trackingFields.length?'<section class="sp-flow" aria-label="Seguimiento operativo del procedimiento"><h3>Seguimiento operativo</h3><div class="sp-flow-fields">'+trackingFields.join('')+'</div>'+staleNote+'</section>':'';
