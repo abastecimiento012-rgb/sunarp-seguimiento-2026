@@ -12,7 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
@@ -80,6 +80,23 @@ def texto(celda):
     return str(value).strip()
 
 
+# Para fechas almacenadas por Excel como números de serie (por ejemplo, 46351).
+# No convertir importes ni otros campos numéricos.
+COLUMNAS_FECHA = {
+    "fechaEsperada", "fechaRequerimiento", "fechaConvocatoria",
+    "fechaBuenaPro", "fechaConsentimiento", "plazoDocumentos",
+    "fechaFirma", "fechaSuscripcion", "fechaInicio",
+}
+
+def texto_campo(celda, campo):
+    valor = celda.value
+    if campo in COLUMNAS_FECHA and isinstance(valor, (int, float)) and not isinstance(valor, bool):
+        numero = float(valor)
+        if 40000 <= numero <= 75000:
+            return (datetime(1899, 12, 30) + timedelta(days=numero)).strftime("%d.%m.%Y")
+    return texto(celda)
+
+
 def seleccionar_archivo():
     if len(sys.argv) >= 2:
         return Path(sys.argv[1]).expanduser().resolve()
@@ -124,7 +141,7 @@ def convertir_excel(path):
         for n in range(6, hoja.max_row + 1):
             if not texto(hoja[f"C{n}"]):
                 continue
-            registro = {k: texto(hoja[f"{col}{n}"]) for col, k in COLUMNAS.items() if k not in CAMPOS_NO_PUBLICAR}
+            registro = {k: texto_campo(hoja[f"{col}{n}"], k) for col, k in COLUMNAS.items() if k not in CAMPOS_NO_PUBLICAR}
             registro.update({key: texto(hoja[f"{col}{n}"]) for col, key in activos.items()})
             registro["filaExcel"] = n
             rows.append(registro)
