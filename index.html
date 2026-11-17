@@ -2870,14 +2870,12 @@ window.sunMonitoring2026=(function(){
   const contractNumber=invalidValue(r.numeroContrato)?r.contratoVigente:r.numeroContrato;
   const flow=window.sunMonitoring2026.read(r);
   const trackingFields=[];
-  if(flow.next)trackingFields.push('<div class="sp-flow-item is-main"><small>Próxima actuación</small><strong>'+safe(flow.next)+'</strong></div>');
-  else if(flow.active)trackingFields.push('<div class="sp-flow-item is-main"><small>Próxima actuación</small><strong class="sp-flow-missing">Por precisar con el responsable</strong></div>');
   if(flow.owner)trackingFields.push('<div class="sp-flow-item"><small>Responsable</small><strong>'+safe(flow.owner)+'</strong></div>');
   if(flow.dateLabel)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso interno</small><strong>'+safe(flow.dateLabel)+'</strong></div>');
   else if(flow.commitmentRaw)trackingFields.push('<div class="sp-flow-item"><small>Fecha de compromiso</small><strong>Fecha por verificar</strong></div>');
   if(flow.last||flow.lastLabel)trackingFields.push('<div class="sp-flow-item"><small>Última actuación documentada'+(flow.lastLabel?' · '+safe(flow.lastLabel):'')+'</small><strong>'+safe(flow.last||'Actuación por precisar')+'</strong></div>');
   const staleNote=flow.since!==null&&flow.since>7?'<p class="sp-flow-notice">Última actuación fechada hace '+flow.since+' días. Revisar si existen novedades.</p>':'';
-  const trackingSection=(flow.active||flow.next||flow.commitmentRaw||flow.last||flow.lastDate)?'<section class="sp-flow" aria-label="Seguimiento operativo del procedimiento"><h3>Seguimiento operativo</h3><div class="sp-flow-fields">'+trackingFields.join('')+'</div>'+staleNote+'</section>':'';
+  const trackingSection=trackingFields.length?'<section class="sp-flow" aria-label="Seguimiento operativo del procedimiento"><h3>Seguimiento operativo</h3><div class="sp-flow-fields">'+trackingFields.join('')+'</div>'+staleNote+'</section>':'';
   const keyFields=[
     showField('Tipo y número de procedimiento',r.procedimiento,'sp-ref-procedure'),
     hasContract?showField('N.º de contrato',contractNumber,'sp-ref-contract'):''
@@ -4162,9 +4160,9 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   const more=other.length?'<details class="sun-due-other"><summary>'+other.length+' hito'+(other.length===1?' adicional':'s adicionales')+'</summary>'+
     other.map(x=>'<div class="sun-due-deadline"><span>'+esc(x.label)+(x.kind==='hito'?' · cronograma':'')+'</span><strong>'+esc(displayDate(x.date))+'</strong></div>').join('')+'</details>':'';
   const noDate=t.unconfirmed?'<p class="sun-due-no-date">'+esc(t.unconfirmed)+' · confirmar fecha completa.</p>':
-   (t.deadlines.length?'':'<p class="sun-due-no-date">Fecha de próxima actuación por confirmar.</p>');
+   (t.deadlines.length?'':'<p class="sun-due-no-date">Fecha de atención por confirmar.</p>');
   const detail=String(t.r.observaciones||'').replace(/\s+/g,' ').trim();
-  const next=flow.next?'<p class="sun-due-next"><b>Próxima actuación:</b> '+esc(flow.next)+'</p>':detail?'<p class="sun-due-next"><b>Detalle del seguimiento:</b> '+esc(detail.slice(0,260))+(detail.length>260?'…':'')+'</p>':'<p class="sun-due-next is-missing">Próxima actuación por precisar.</p>';
+  const next=detail?'<p class="sun-due-next"><b>Detalle del seguimiento:</b> '+esc(detail.slice(0,260))+(detail.length>260?'…':'')+'</p>':'';
   const last=flow.since!==null&&flow.since>7?'<p class="sun-due-last">Última actuación fechada hace '+flow.since+' días · revisar novedades</p>':'';
   return '<article class="sun-due-item'+(mark?' is-reviewed':'')+'">'+
    '<div class="sun-due-item-head"><span class="sun-due-status '+st.kind+'">'+esc(st.label)+'</span></div>'+
@@ -4214,11 +4212,11 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   redraw();
  });
  $('sunDailyExport').addEventListener('click',()=>{
-  const cols=['Especialista','Servicio','Etapa','Próxima actuación','Hito o plazo','Fecha','Tipo','Revisado hoy'];
+  const cols=['Especialista','Servicio','Etapa','Hito o plazo','Fecha','Tipo','Revisado hoy'];
   const rows=tasks.flatMap(t=>{
    const d=t.deadlines.length?t.deadlines.slice():[{label:'Fecha por confirmar',date:null,kind:'sin-fecha'}];
    if(t.unconfirmed)d.push({label:t.unconfirmed,date:null,kind:'fecha-incompleta'});
-   return d.map(v=>[t.owner,t.service,t.stage,window.sunMonitoring2026.read(t.r).next||'Por precisar',v.label,v.date?displayDate(v.date):'',v.kind,checked.has(t.id)?'Sí':'No']);
+   return d.map(v=>[t.owner,t.service,t.stage,v.label,v.date?displayDate(v.date):'',v.kind,checked.has(t.id)?'Sí':'No']);
   });
   const safeCSV=x=>{let v=String(x??'');if(/^\s*[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"';};
   const csv='\uFEFF'+[cols,...rows].map(row=>row.map(safeCSV).join(';')).join('\r\n');
