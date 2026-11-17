@@ -2106,6 +2106,19 @@ html[data-sun-theme="dark"] #sunTimelineSimulator #scAdjust summary{color:#d5ecf
 #sunTimelineSimulator #scResult .sc-simple-steps{margin-top:12px}
 html[data-sun-theme="dark"] #sunTimelineSimulator>.sc-grid :is(input,select){border-color:#7696b8}
 @media(max-width:690px){#sunTimelineSimulator>.sc-grid{grid-template-columns:1fr}}
+</style><style id="scSearchableRecord2026">
+#sunTimelineSimulator .sc-record-search{position:relative;display:flex;flex-direction:column;gap:7px;min-width:0}
+#sunTimelineSimulator .sc-record-search label{font-weight:750;color:var(--sc-ink)}
+#sunTimelineSimulator #scRecordSearch{width:100%;min-height:50px;padding:11px 14px;background:var(--sc-bg);color:var(--sc-ink);border:2px solid #94b7d7;border-radius:10px;font-size:15px;font-weight:600}
+#sunTimelineSimulator #scRecordSearch:focus{outline:3px solid #95c5f6;outline-offset:1px}
+#sunTimelineSimulator .sc-record-results{position:relative;max-height:290px;overflow-y:auto;background:var(--sc-card);border:1px solid var(--sc-line);border-radius:10px;box-shadow:0 8px 21px #16324c20;z-index:4;padding:4px}
+#sunTimelineSimulator .sc-record-results[hidden]{display:none!important}
+#sunTimelineSimulator .sc-record-choice{display:block;width:100%;text-align:left;background:transparent!important;color:var(--sc-ink)!important;border:0!important;border-radius:7px;padding:10px 12px;line-height:1.35;font-size:13px;font-weight:600;white-space:normal;overflow-wrap:anywhere}
+#sunTimelineSimulator .sc-record-choice:hover,#sunTimelineSimulator .sc-record-choice.is-focused{background:#e4f0ff!important;color:#133e69!important}
+#sunTimelineSimulator .sc-record-choice small{display:block;font-size:11px;color:var(--sc-muted);font-weight:500;margin-top:3px}
+#sunTimelineSimulator .sc-record-empty{padding:12px;font-size:13px;color:var(--sc-muted)}
+html[data-sun-theme="dark"] #sunTimelineSimulator .sc-record-choice:hover,html[data-sun-theme="dark"] #sunTimelineSimulator .sc-record-choice.is-focused{background:#345879!important;color:#fff!important}
+html[data-sun-theme="dark"] #sunTimelineSimulator #scRecordSearch{border-color:#7faace}
 </style><script id="sunarpSolesFormat2026">
 window.sunarpFormatSoles2026=function(value){
  const raw=String(value??'').trim();
@@ -2270,7 +2283,7 @@ html[data-sun-theme="dark"] .sc-phase th{background:#43515f;color:#fff}html[data
 <label class="sc-wide">Etapa desde la que deseas proyectar<select id="scAnchor"><option value="prep">Inicio de actuaciones preparatorias</option><option value="cmn">Inicio de programación / CMN</option><option value="review">Recepción del requerimiento para revisión</option><option value="call">Convocatoria publicada o prevista</option><option value="award">Buena pro notificada</option><option value="consent">Registro del consentimiento</option><option value="documents">Requisitos para el contrato presentados</option><option value="correction">Observaciones contractuales notificadas</option><option value="appeal">Apelación presentada o subsanada</option></select></label>
 </div></details>
 <details class="sc-details" id="scExcelLookup"><summary>Consultar un procedimiento existente del Excel (opcional)</summary><div class="sc-grid">
-<label class="sc-wide">Procedimiento registrado<select id="scRecord"><option value="">＋ Nueva contratación sin registro en Excel</option></select></label>
+<div class="sc-wide sc-record-search"><label for="scRecordSearch">Procedimiento a consultar</label><input id="scRecordSearch" type="search" autocomplete="off" placeholder="Buscar por nombre, número, PAC o especialista..." aria-controls="scRecordResults" aria-expanded="false" aria-autocomplete="list" role="combobox"/><div id="scRecordResults" role="listbox" class="sc-record-results" hidden></div><select id="scRecord" aria-label="Procedimiento seleccionado" hidden><option value="">＋ Nueva contratación sin registro en Excel</option></select><small id="scRecordSelected" class="sc-help">Puedes buscar un procedimiento existente o dejar vacío para planificar uno nuevo.</small></div>
 </div><p class="sc-help">Seleccionar un registro existente cargará sus datos para consultar un cronograma distinto. Para planificar uno nuevo, deja esta opción vacía.</p></details>
 <p id="scRecordHint" role="status" class="sc-help">Nueva contratación: completa los tres datos anteriores; las fechas se recalculan automáticamente.</p>
 <details class="sc-details"><summary>Condiciones del procedimiento</summary><div class="sc-grid">
