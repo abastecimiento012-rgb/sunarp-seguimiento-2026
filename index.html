@@ -3216,6 +3216,35 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const newRegistered=/^S[IÍ](?:\b|\s|-)/.test(String(r.nuevaConvocatoria||'').trim().toUpperCase());
  const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
  body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('▦ Información general',info)+(isVigente?'':sec('◉ Nuevo procedimiento de selección',nuevo))+(hidePreparatoryDelivery?'':sec('◷ Fecha estimada, detalle y plazo de entrega',expected))+sec('◉ Observaciones y actuaciones pendientes',obs)+(contractIdentified&&signedIn2026?sec('◷ Cronología de actuaciones',timeline):'')+sec('▤ Contrato vigente o último contrato registrado',contract||'<p class="gd-note">No hay contrato vigente o no se han registrado datos contractuales verificables.</p>')+sec('▥ Información presupuestaria',budget)+sec('▣ Información administrativa complementaria',extra);
+ // En contratos de ejercicios anteriores, omitir campos sin información en la vista, sin alterar el Excel.
+ const contractYearCandidates=[r.numeroContrato,r.contratoVigente].map(v=>String(v??'').match(/\b(20\d{2})\b/)).filter(Boolean).map(m=>Number(m[1]));
+ const priorSignedContract=contractIdentified&&(
+  (signedDate&&signedDate.getFullYear()<2026)||
+  (!signedDate&&contractYearCandidates.some(y=>y>=2000&&y<2026))
+ );
+ if(priorSignedContract){
+  const missingText=v=>{
+   const t=String(v??'').replace(/\s+/g,' ').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+   return !t||/^(?:-|—|SIN DATO REGISTRADO|DATOS PENDIENTES DE REGISTRAR|PENDIENTE DE REGISTRAR|POR VERIFICAR|NO REGISTRADO|SIN INFORMACION|NO CORRESPONDE|NO APLICA|N\/A|POR DETERMINAR)$/.test(t);
+  };
+  body.querySelectorAll('.gd-cell,.gd-metric,.gd-step,.gd-year').forEach(el=>{
+   const value=el.querySelector('strong')||el.querySelector('.gd-pending');
+   if(value&&missingText(value.textContent))el.remove();
+  });
+  body.querySelectorAll('.gd-observation').forEach(el=>{if(missingText(el.textContent))el.remove()});
+  // Los indicadores de presupuesto sin confirmar no aportan datos en contratos anteriores.
+  body.querySelectorAll('.gd-cell').forEach(el=>{
+   const label=el.querySelector('small')?.textContent||'';
+   const value=el.querySelector('strong')?.textContent||'';
+   if(/Certificaci[oó]n de Cr[eé]dito Presupuestario|Previsi[oó]n presupuestaria/i.test(label)&&/Por verificar/i.test(value))el.remove();
+  });
+  body.querySelectorAll('.gd-section').forEach(section=>{
+   const content=section.querySelector('.gd-content');
+   if(!content)return;
+   if(!content.querySelector('.gd-cell,.gd-metric,.gd-step,.gd-year,.gd-observation,.gd-newalert,.gd-budget')&&
+      !content.querySelector('[data-sun-open-new]'))section.remove();
+  });
+ }
  body.scrollTop=0;dlg.showModal();}
  edit=show;
  document.getElementById('gdClose').onclick=()=>dlg.close();document.getElementById('gdCloseBottom').onclick=()=>dlg.close();document.getElementById('gdPrint').onclick=()=>window.print();
