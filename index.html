@@ -2041,7 +2041,7 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
       <button type="button" class="sun-nav-link" data-sun-route="especialistas" title="4. Asignaciones, responsables y carga de trabajo">④ Especialistas</button>
     </div>
     <button type="button" class="sun-nav-link" data-sun-route="reportes" title="5. Reportes para control gerencial">⑤ Reportes</button>
-    <div class="sun-nav-tools" aria-label="Apariencia y calendario">
+    <div class="sun-bell-wrap"><button type="button" id="sunBell2026" aria-label="Notificaciones de entregas" aria-expanded="false" title="Entregas de especialistas">🔔 <span id="sunBellCount2026" hidden>0</span></button><section id="sunBellPanel2026" hidden><header><strong>🔔 Plazos de entrega</strong><button type="button" id="sunBellClose2026">✕</button></header><p id="sunBellSummary2026"></p><div id="sunBellItems2026"></div><footer><button type="button" id="sunBellBrowser2026">Activar avisos del navegador</button><button type="button" data-sun-route="alertas" id="sunBellGo2026">Ver alertas y plazos</button></footer><small>Los avisos se calculan a partir de las fechas registradas. Los avisos del navegador requieren que la aplicación permanezca abierta.</small></section></div><div class="sun-nav-tools" aria-label="Apariencia y calendario">
       <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
         <button type="button" class="sun-theme-option" data-sun-theme-option="light" aria-pressed="true" title="Modo claro">☀ Claro</button>
         <button type="button" class="sun-theme-option" data-sun-theme-option="dark" aria-pressed="false" title="Modo oscuro">☾ Oscuro</button>
@@ -4304,6 +4304,69 @@ html[data-sun-theme="dark"] #sunCentralStatus.is-error{background:#583037;color:
  window.addEventListener('focus',()=>{if(ready)load()});
  setInterval(()=>{if(ready&&!document.hidden)load()},180000);
  load();
+})();
+</script>
+
+<style id="sunBell2026Style">
+.sun-bell-wrap{position:relative;z-index:99;flex:none}
+#sunBell2026{border:1px solid #a6c9e9;background:#e7f1ff;color:#153b6a;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:18px;white-space:nowrap}
+#sunBellCount2026:not([hidden]){display:inline-flex;justify-content:center;align-items:center;border-radius:20px;background:#bf2a2a;color:white;font-size:12px;font-weight:800;min-width:20px;height:20px;padding:2px}
+#sunBellCount2026[hidden],#sunBellPanel2026[hidden]{display:none!important}
+#sunBellPanel2026{position:absolute;top:calc(100% + 9px);right:0;width:min(410px,calc(100vw - 26px));max-height:75vh;overflow:auto;background:#fff;border:1px solid #b9cfdf;border-radius:13px;box-shadow:0 15px 45px #10304a55;padding:14px;color:#193e61;font-size:13px;z-index:110}
+#sunBellPanel2026 header,#sunBellPanel2026 footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+#sunBellPanel2026 header button,#sunBellPanel2026 footer button{border:1px solid #b7cfe7;border-radius:7px;background:#eaf3ff;color:#164a76;cursor:pointer;padding:7px 9px}
+#sunBellPanel2026 footer{margin:12px 0}
+#sunBellPanel2026 small{font-size:11px;line-height:1.5;color:#607993;display:block}
+#sunBellSummary2026{color:#476783;font-size:12px}
+.sun-bell-entry{padding:10px;border:1px solid #d2e0ed;border-left:4px solid #dea640;background:#f7faff;border-radius:9px;margin:7px 0;overflow-wrap:anywhere}
+.sun-bell-entry.overdue{border-left-color:#c53636;background:#fff2f2}
+.sun-bell-entry p{margin:7px 0}
+.sun-bell-empty{text-align:center;padding:18px;background:#edf4fa;border-radius:8px}
+html[data-sun-theme="dark"] #sunBellPanel2026{background:#192e45;color:#e4f1ff;border-color:#53718f}
+html[data-sun-theme="dark"] .sun-bell-entry{background:#243d55;color:#f0f6ff;border-color:#4f6d88}
+html[data-sun-theme="dark"] .sun-bell-entry.overdue{background:#47303b}
+html[data-sun-theme="dark"] #sunBellSummary2026,html[data-sun-theme="dark"] #sunBellPanel2026 small{color:#b9d1e5}
+</style>
+<script id="sunBell2026Script">
+(function(){
+const button=document.getElementById('sunBell2026'),panel=document.getElementById('sunBellPanel2026'),count=document.getElementById('sunBellCount2026'),list=document.getElementById('sunBellItems2026'),summary=document.getElementById('sunBellSummary2026'),browser=document.getElementById('sunBellBrowser2026');
+if(!button)return;
+const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const api=()=>window.sunMonitoring2026;
+function dueItems(){
+const rows=typeof data!=='undefined'&&Array.isArray(data)?data:[];
+if(!api())return [];
+return rows.flatMap((r,i)=>{
+ const owner=String(r.especialista||'').trim();
+ if(!owner||['-','NO APLICA','SIN ASIGNAR'].includes(owner.toUpperCase()))return [];
+ const d=api().parseDate(r.fechaCompromiso)||api().parseDate(r.plazoEntrega)||api().parseDate(r.fechaEsperada);
+ if(!d)return [];
+ const days=api().daysFromToday(d);
+ if(days===null||days>0)return [];
+ if(/CULMINADO|ADJUDICADO/.test(String(r.estado||'').toUpperCase())&&!String(r.detalleEntrega||r.proximaActuacion||'').trim())return [];
+ return [{id:String(r.id||i),owner,description:r.descripcion||'Servicio sin descripción',detail:r.detalleEntrega||r.proximaActuacion||'Plazo de entrega registrado',date:d,days}];
+}).sort((a,b)=>a.days-b.days||a.owner.localeCompare(b.owner));
+}
+function update(){
+ const items=dueItems(),today=items.filter(x=>x.days===0),over=items.filter(x=>x.days<0);
+ count.textContent=today.length;count.hidden=!today.length;
+ summary.textContent=today.length+' entrega(s) para hoy · '+over.length+' plazo(s) vencidos';
+ list.innerHTML=items.length?items.map(x=>'<article class="sun-bell-entry '+(x.days<0?'overdue':'')+'"><b>'+(x.days===0?'🔔 Vence hoy':'⚠ Plazo vencido')+' · '+escape(x.owner)+'</b><p>'+escape(x.description)+'</p><small>Plazo: '+escape(api().fmt(x.date))+' · '+escape(x.detail)+'</small></article>').join(''):'<div class="sun-bell-empty">No hay entregas con vencimiento hoy ni plazos vencidos con fecha registrada.</div>';
+ browser.textContent=!('Notification' in window)?'No disponible':Notification.permission==='granted'?'Avisos activados':Notification.permission==='denied'?'Avisos bloqueados':'Activar avisos del navegador';
+ if('Notification' in window&&Notification.permission==='granted'&&today.length){
+  const t=new Date(),key='sunarp_entregas_'+[t.getFullYear(),t.getMonth()+1,t.getDate()].join('-');
+  let sent=[];try{sent=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+  const fresh=today.filter(x=>!sent.includes(x.id));
+  if(fresh.length)try{new Notification('SUNARP · Plazos que vencen hoy',{body:fresh.length+' entrega(s): '+[...new Set(fresh.map(x=>x.owner))].join(', '),tag:key});localStorage.setItem(key,JSON.stringify([...new Set([...sent,...fresh.map(x=>x.id)])]))}catch(e){}
+ }
+}
+button.addEventListener('click',()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)update()});
+document.getElementById('sunBellClose2026').addEventListener('click',()=>{panel.hidden=true;button.setAttribute('aria-expanded','false')});
+document.getElementById('sunBellGo2026').addEventListener('click',()=>{panel.hidden=true;button.setAttribute('aria-expanded','false')});
+document.addEventListener('click',e=>{if(!panel.hidden&&!e.target.closest('.sun-bell-wrap')){panel.hidden=true;button.setAttribute('aria-expanded','false')}});
+browser.addEventListener('click',async()=>{if(!('Notification' in window)||Notification.permission==='denied')return;try{await Notification.requestPermission();update()}catch(e){}});
+window.addEventListener('focus',update);document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});window.addEventListener('sunarp:pagechange',update);
+setInterval(update,60000);setTimeout(update,1500);update();
 })();
 </script>
 </body></html>
