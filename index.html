@@ -3938,7 +3938,7 @@ refresh();
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
 
-    '<td data-label="Seguimiento">'+newButton+'</td>'+
+    '<td data-label="Seguimiento">'+newButton+(end.date!=='—'?'<div class="sun-proc2026-sub" style="margin-top:9px;font-weight:700;white-space:nowrap"><span style="font-weight:600">📅 Vencimiento:</span> '+esc(end.date)+'</div>':'')+'</td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
