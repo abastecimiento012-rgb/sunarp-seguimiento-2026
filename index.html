@@ -2900,7 +2900,6 @@ window.sunMonitoring2026=(function(){
   const label=end&&end<now?'expired':end?'active':'pending';
   const fields=[
    showField('Contratista',r.contratista),
-   showField('Estado contractual',(/CONTRATO COMPLEMENTARIO/.test(norm(r.descripcion))&&end&&end>=now&&norm(r.estadoContrato)==='CANCELADO')?'EN EJECUCIÓN (contrato complementario vigente)':r.estadoContrato),
    validDate(r.fechaSuscripcion)?showField('Fecha de suscripción',r.fechaSuscripcion):'',
    validDate(r.fechaInicio)?showField('Inicio de la prestación',r.fechaInicio):'',
    end?showField('Vencimiento contractual',r.vencimiento):'',
@@ -3877,7 +3876,6 @@ function openContract(i){
    onlyContractField('Tipo y número de procedimiento',r.procedimiento),
    onlyContractField('N.º de contrato',number),
    onlyContractField('Contratista',r.contratista),
-   field('Estado contractual (según vencimiento)',expiry?'VIGENTE — vigencia estimada':'POR VERIFICAR — sin fecha válida'),
    onlyContractField('Fecha de suscripción',r.fechaSuscripcion),
    onlyContractField('Inicio de la prestación',r.fechaInicio),
    onlyContractField('Fecha de vencimiento',r.vencimiento),
