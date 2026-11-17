@@ -2144,7 +2144,7 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
 </div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Simulador de procedimientos de selección" class="sim26">
 <div class="sim26-head"><h2>📅 Simulador de plazos de contratación</h2><p>Consulta cuánto podría demorar un nuevo procedimiento. Herramienta independiente del PAC y de los expedientes registrados.</p></div>
-<div class="sim26-note">Este simulador es una <b>proyección preventiva</b>, no un cronograma oficial ni un pronunciamiento legal. Los mínimos normativos se distinguen de los tiempos internos estimados. La modalidad debe verificarse según objeto, cuantía, supuestos especiales y bases estándar vigentes.</div>
+<div class="sim26-note">Este simulador aplica los <b>plazos fijados en el Reglamento</b> cuando corresponden al procedimiento. El período de actuaciones preparatorias, evaluación y otras actuaciones sin plazo uniforme seguirá siendo una <b>estimación operativa</b>; por eso la fecha de suscripción no es legalmente garantizada. La modalidad debe verificarse según objeto, cuantía, supuestos especiales y bases estándar vigentes.</div>
 <div class="sim26-quick">
 <div class="sim26-step"><strong>1. ¿Qué procedimiento quieres realizar?</strong>
 <select id="sim26Type" aria-label="Tipo de procedimiento">
@@ -2158,12 +2158,7 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
 <option value="nc">Procedimiento no competitivo</option>
 <option value="especial">Otra modalidad especial</option>
 </select></div>
-<div class="sim26-step"><strong>2. ¿Qué escenario deseas evaluar?</strong>
-<div id="sim26Scenarios" class="sim26-scenarios" role="group" aria-label="Escenario de gestión">
-<button type="button" data-sim-scenario="agil">Ágil <small>Menos demoras internas</small></button>
-<button type="button" data-sim-scenario="normal" class="selected" aria-pressed="true">Estándar <small>Estimación central</small></button>
-<button type="button" data-sim-scenario="cauteloso">Conservador <small>Mayor margen preventivo</small></button>
-</div></div>
+<div class="sim26-step"><strong>2. Cálculo conforme a plazos normativos</strong><div class="sim26-instant">Los plazos reglamentarios se aplican automáticamente según la modalidad. Las actuaciones preparatorias, absolución y evaluación no tienen un plazo general fijo y se diferencian como estimaciones de gestión.</div></div>
 <div class="sim26-instant">📍 El cálculo comienza <b>hoy, <span id="sim26TodayLabel">fecha actual</span></b> (hora de Perú). No necesitas ingresar ninguna fecha.</div>
 </div>
 <details class="sim26-extra"><summary>⚙ Ajustar supuestos (opcional)</summary>
@@ -2174,12 +2169,12 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!impo
 <label>Objeto de contratación<input id="sim26Name" placeholder="Ej. Servicio de soporte"></label>
 <label>Cuantía aproximada en S/ <input id="sim26Amount" type="number" min="0" step="0.01" placeholder="Opcional"></label>
 <label>Ubicación<select id="sim26Place"><option value="national">Calendario nacional</option><option value="lima">Lima y Callao (incluir fecha excepcional conocida)</option></select></label>
-<label>Actuaciones preparatorias, días hábiles<input id="sim26Prep" type="number" min="0" max="365" value="15"></label>
-<label>Absolución e integración, días hábiles<input id="sim26Answer" type="number" min="0" max="120" value="5"></label>
-<label>Evaluación y buena pro, días hábiles<input id="sim26Evaluate" type="number" min="0" max="120" value="5"></label>
+<label>Estimación interna: actuaciones preparatorias (no fijada por la ley), días hábiles<input id="sim26Prep" type="number" min="0" max="365" value="15"></label>
+<label>Estimación interna: absolución e integración, días hábiles<input id="sim26Answer" type="number" min="0" max="120" value="5"></label>
+<label>Estimación interna: evaluación y buena pro, días hábiles<input id="sim26Evaluate" type="number" min="0" max="120" value="5"></label>
 <label>Garantía de fiel cumplimiento<select id="sim26Guarantee"><option value="yes">Se exige</option><option value="no">No se exige</option></select></label>
 <label>Ofertas asumidas<select id="sim26Offers"><option value="multiple">Dos o más, sin apelación</option><option value="one">Una oferta</option></select></label>
-<label>Contingencia, días hábiles<input id="sim26Buffer" type="number" min="0" max="365" value="5"></label>
+<label>Contingencia operativa (no normativa), días hábiles<input id="sim26Buffer" type="number" min="0" max="365" value="5"></label>
 <label class="sim26-wide">Días no laborables excepcionales (AAAA-MM-DD, separados por comas)<input id="sim26Blocked" placeholder="Ejemplo: 2026-12-24"></label>
 </div></details>
 <div class="sim26-actions"><button type="button" id="sim26Run">↻ Recalcular ahora</button><button type="button" id="sim26Print">Imprimir / Guardar PDF</button><button type="button" id="sim26Csv">Descargar cronograma CSV</button></div>
@@ -4480,10 +4475,10 @@ const title=$('sim26Name').value.trim()||'Nueva contratación',area=$('sim26Area
 if(!dt){$('sim26Result').innerHTML='<p class="sim26-warning">Selecciona una fecha válida de recepción del requerimiento.</p>';return}
 const rows=[];let cursor=nextWorking(dt,ex);
 const push=(stage,day,duration,basis,category)=>{rows.push({stage,date:day,duration,basis,category});return day};
-push('Recepción del requerimiento',dt,'Fecha proporcionada','Punto inicial de consulta','Dato ingresado');
+push('Fecha de la consulta / requerimiento',dt,'Fecha actual de Perú','Punto de partida para la proyección','Referencia');
 const call=push('Preparación del expediente y convocatoria estimada',addWork(cursor,prep,ex),prep+' días hábiles (editable)','Estimación de gestión, no plazo legal general','Supuesto');
 cursor=call;
-let warnings=['La proyección presupone expediente aprobado, bases elaboradas, sin subsanaciones, sin suspensión, sin elevación, sin apelación y sin declaratoria de desierto.','La selección del tipo de procedimiento requiere verificar objeto, cuantía y supuestos aplicables en las bases estándar.'];
+let warnings=['Solo los hitos identificados como Normativo mínimo o Plazo legal derivan de tiempos establecidos en el Reglamento. Los demás son estimaciones operativas y pueden variar.','La proyección presupone expediente aprobado, bases elaboradas, sin subsanaciones, sin suspensión, sin elevación, sin apelación y sin declaratoria de desierto.','La selección del tipo de procedimiento requiere verificar objeto, cuantía y supuestos aplicables en las bases estándar.'];
 if(kind.kind==='ordinary'||kind.kind==='short'){
  const abbreviated=kind.kind==='short',consult=abbreviated?3:7,offersMin=abbreviated?3:7;
  const q=push('Fin mínimo de consultas y observaciones',addWork(call,consult,ex),consult+' días hábiles','Art. 66.1 Reglamento — mínimo','Normativo mínimo');
@@ -4505,8 +4500,8 @@ if(kind.kind!=='special'){
  const award=push('Evaluación y otorgamiento estimado de buena pro',addWork(cursor,Math.max(1,evaluation),ex),Math.max(1,evaluation)+' días hábiles (estimados)','Duración interna editable; no es mínimo legal','Supuesto');
  const appeal=kind.kind==='short'||kind.kind==='comparison'?5:8;
  if($('sim26Offers').value==='one'){
-  push('Consentimiento de buena pro (una oferta)',award,'Mismo día','Art. 82.2 Reglamento','Normativo condicionado');
-  cursor=award;
+  push('Consentimiento de buena pro (una oferta)',award,'Mismo día de otorgamiento','Art. 82.2: se produce el día de notificación','Normativo condicionado');
+  cursor=push('Registro del consentimiento en Pladicop',nextWorking(addCal(award,1),ex),'Día siguiente (registro)','Art. 82.2 Reglamento modificado','Normativo condicionado');
  }else{
   const endAppeal=push('Vencimiento del plazo de apelación (sin recurso)',addWork(award,appeal,ex),appeal+' días hábiles','Art. 304 Reglamento; sin apelación','Normativo condicionado');
   cursor=push('Publicación estimada de consentimiento',nextWorking(addCal(endAppeal,1),ex),'Siguiente día hábil previsto','Art. 82.1 Reglamento; verificar publicación efectiva en Pladicop','Condicionado');
@@ -4519,7 +4514,7 @@ if(kind.kind!=='special'){
 }
 const days=total?Math.round((total-dt)/86400000):null;
 const currency=$('sim26Amount').value?Number($('sim26Amount').value).toLocaleString('es-PE',{style:'currency',currency:'PEN'}):'No indicada';
-let html='<div class="sim26-outcome"><div class="sim26-outcome-label">FECHA ESTIMADA DE CONTRATO SUSCRITO</div><div class="sim26-outcome-date">'+(total?esc(total.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})):'Requiere revisión de modalidad')+'</div><div class="sim26-outcome-caption">'+(days!==null?'Aproximadamente '+days+' días calendario desde hoy · Escenario '+esc(scenario==='agil'?'ágil':scenario==='cauteloso'?'conservador':'estándar'):'No existe un plazo único extrapolable para este procedimiento')+'</div></div><div class="sim26-summary"><div class="sim26-kpi"><small>Procedimiento consultado</small><strong>'+esc(kind.label)+'</strong></div><div class="sim26-kpi"><small>Fin estimado del escenario</small><strong>'+esc(fmt(total))+'</strong></div><div class="sim26-kpi"><small>Duración aproximada</small><strong>'+(days!==null?days+' días calendario':'No calculable')+'</strong></div></div>';
+let html='<div class="sim26-outcome"><div class="sim26-outcome-label">FECHA REFERENCIAL DE SUSCRIPCIÓN · SUJETA A GESTIÓN</div><div class="sim26-outcome-date">'+(total?esc(total.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})):'Requiere revisión de modalidad')+'</div><div class="sim26-outcome-caption">'+(days!==null?'Aproximadamente '+days+' días calendario desde hoy · Incluye tiempos internos no normativos':'No existe un plazo único extrapolable para este procedimiento')+'</div></div><div class="sim26-summary"><div class="sim26-kpi"><small>Procedimiento consultado</small><strong>'+esc(kind.label)+'</strong></div><div class="sim26-kpi"><small>Fin estimado del escenario</small><strong>'+esc(fmt(total))+'</strong></div><div class="sim26-kpi"><small>Duración aproximada</small><strong>'+(days!==null?days+' días calendario':'No calculable')+'</strong></div></div>';
 html+='<p><b>Objeto:</b> '+esc(title)+' · <b>Área:</b> '+esc(area)+' · <b>Cuantía:</b> '+esc(currency)+'</p>';
 html+='<div class="sim26-tablebox"><table class="sim26-table"><thead><tr><th>Etapa o hito</th><th>Fecha estimada</th><th>Plazo empleado</th><th>Sustento</th><th>Carácter</th></tr></thead><tbody>';
 for(const r of rows)html+='<tr><td>'+esc(r.stage)+'</td><td><b>'+esc(fmt(r.date))+'</b></td><td>'+esc(r.duration)+'</td><td>'+esc(r.basis)+'</td><td>'+esc(r.category)+'</td></tr>';
@@ -4536,28 +4531,6 @@ function todayInPeru(){
  const map=Object.fromEntries(parts.map(x=>[x.type,x.value]));
  return map.year+'-'+map.month+'-'+map.day;
 }
-let scenario='normal';
-const assumptions={
- agil:{prep:7,answer:3,evaluate:3,buffer:2},
- normal:{prep:15,answer:5,evaluate:5,buffer:5},
- cauteloso:{prep:30,answer:10,evaluate:10,buffer:15}
-};
-function setScenario(name){
- if(!assumptions[name])return;
- scenario=name;
- const p=assumptions[name];
- $('sim26Prep').value=p.prep;
- $('sim26Answer').value=p.answer;
- $('sim26Evaluate').value=p.evaluate;
- $('sim26Buffer').value=p.buffer;
- document.querySelectorAll('[data-sim-scenario]').forEach(b=>{
-   const on=b.dataset.simScenario===name;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));
- });
- calculate();
-}
-document.getElementById('sim26Scenarios').addEventListener('click',e=>{
- const b=e.target.closest('[data-sim-scenario]');if(b)setScenario(b.dataset.simScenario);
-});
 for(const id of fields){
  const el=$(id);if(!el)continue;
  el.addEventListener('input',()=>{if(id!=='sim26Date')calculate()});
