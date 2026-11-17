@@ -3166,7 +3166,22 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  };
  const certState=budgetPresence([[r.ccp2026,r.montoCCP2026]]);
  const prevState=budgetPresence([[r.prevision2027,r.montoPrevision2027],[r.prevision2028,r.montoPrevision2028],[r.prevision2029,r.montoPrevision2029],[r.prevision2030,r.montoPrevision2030]]);
- const budget='<div class="gd-grid">'+budgetBadge('Certificación de Crédito Presupuestario (CCP)',certState,'Cuenta con certificación','No cuenta con certificación')+budgetBadge('Previsión presupuestaria',prevState,'Cuenta con previsión','No cuenta con previsión')+'</div>';
+ const budgetDocuments=(values)=>{
+  const exclude=/^(?:-|—|NO(?: CORRESPONDE| APLICA| CUENTA)?|SIN (?:DATO|INFORMACION|CERTIFICACION|PREVISION)|PENDIENTE|POR VERIFICAR|POR DETERMINAR|N\/A)$/i;
+  const unique=new Set();
+  values.forEach(value=>String(value??'').split(/\r?\n+/).map(x=>x.trim()).filter(Boolean).forEach(x=>{
+   if(!exclude.test(x))unique.add(x);
+  }));
+  return Array.from(unique);
+ };
+ const budgetDocCards=(heading,docs)=>{
+  if(!docs.length)return '';
+  return '<div class="gd-cell" style="min-width:0"><small style="margin-bottom:9px;display:block">'+E(heading)+'</small><div style="display:flex;flex-wrap:wrap;gap:8px">'+docs.map(doc=>'<div style="padding:9px 11px;border:1px solid #cbd9ea;background:#fff;border-radius:9px;color:#264666;font-size:13px;font-weight:650;overflow-wrap:anywhere;max-width:100%">▤ '+E(doc)+'</div>').join('')+'</div></div>';
+ };
+ const certDocs=budgetDocuments([r.ccp2026]);
+ const prevDocs=budgetDocuments([r.prevision2027,r.prevision2028,r.prevision2029,r.prevision2030]);
+ const docDetails=(certDocs.length||prevDocs.length)?'<div class="gd-grid" style="margin-top:12px">'+budgetDocCards('Memorándum(s) de certificación',certDocs)+budgetDocCards('Memorándum(s) de previsión',prevDocs)+'</div>':'';
+ const budget='<div class="gd-grid">'+budgetBadge('Certificación de Crédito Presupuestario (CCP)',certState,'Cuenta con certificación','No cuenta con certificación')+budgetBadge('Previsión presupuestaria',prevState,'Cuenta con previsión','No cuenta con previsión')+'</div>'+docDetails;
  const expiry=typeof date==='function'?date(r.vencimiento):null;
  const today=new Date();today.setHours(0,0,0,0);
  const hasCurrentContract=String(r.contratoVigente||'').trim()&&!noContract;
