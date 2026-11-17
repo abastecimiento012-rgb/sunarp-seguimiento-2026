@@ -24,7 +24,7 @@ const ex=calendar(o.extra||[],o.place),rows=[],warnings=[],actual=o.actual||{},d
 const tpl=short?'LP-CP ABREV.':'LP-CP';
 function push(id,label,d,days,basis,category='Normativo',phase='Selección',owner='',source='',startDate=null,note=''){
 const r={id,label,date:iso(d),start:iso(startDate||d),days,basis,category,phase,owner,source,note,actual:false};rows.push(r);return d;}
-function fixed(id,label,predicted,days,basis,category='Normativo',phase='Selección',min=null){let d=predicted;if(actual[id]){d=date(actual[id]);if(!d)throw Error('Fecha real inválida: '+label);if(min&&d<min)throw Error(label+': la fecha ingresada es anterior al hito del que depende.');if(predicted&&d<predicted&&category==='Mínimo legal')warnings.push(label+': la fecha registrada es anterior al mínimo calculado; revisa el cronograma publicado.');}push(id,label,d,days,basis,category,phase,'','',min?addWork(min,1,ex):null);const r=rows[rows.length-1];r.actual=!!actual[id];if(r.actual){r.category='Fecha registrada';if(!working(d,ex))warnings.push(label+' está registrado en un día no hábil. Verifica la publicación efectiva.');}return d;}
+function fixed(id,label,predicted,days,basis,category='Normativo',phase='Selección',min=null){let d=predicted;if(actual[id]){d=date(actual[id]);if(!d)throw Error('Fecha real inválida: '+label);if(min&&d<min)throw Error(label+': la fecha ingresada es anterior al hito del que depende.');if(predicted&&d<predicted&&category==='Mínimo legal')warnings.push(label+': la fecha registrada es anterior al mínimo calculado; revisa el cronograma publicado.');}push(id,label,d,days,basis,category,phase,'','',min?(days===0?min:addWork(min,1,ex)):null);const r=rows[rows.length-1];r.actual=!!actual[id];if(r.actual){r.category='Fecha registrada';if(!working(d,ex))warnings.push(label+' está registrado en un día no hábil. Verifica la publicación efectiva.');}return d;}
 if(kind==='other')return {rows:[],warnings:['El Excel cubre LP/CP y sus modalidades abreviadas para bienes y servicios. Para otros procedimientos o regímenes no se extrapolan estas fechas.'],unsupported:true,type:kind,anchor,template:tpl};
 if(!working(start,ex))warnings.push('La fecha inicial no es hábil. Los plazos posteriores se cuentan desde el día siguiente y solo incluyen días hábiles.');
 push('anchor',stages[anchor],start,0,'Hito indicado por el usuario','Fecha de partida','Inicio');
@@ -32,27 +32,29 @@ if(start.getUTCFullYear()>2026)warnings.push('Proyección futura: verifica modif
 let cursor=start,call=null,award=null,consent=null,documents=null,correction=null;
 function operational(list,firstSameDay=false){for(const [i,r] of list.entries()){
  if(!o.prepObservations&&[14,15].includes(r.row))continue;
- const n=durations[r.row]===undefined?r.days:Number(durations[r.row]);if(!Number.isInteger(n)||n<1||n>365)throw Error('La duración interna debe ser de 1 a 365 días: '+r.label);
- const first=i===0&&firstSameDay?nextWork(cursor,ex):addWork(cursor,1,ex);const end=addWork(first,n-1,ex);
- push('prep-'+r.row,r.label,end,n,'Cronograma de gestión aportado; duración editable','Estimación interna',r.row<10?'CMN':'Actuaciones preparatorias',r.owner,r.source,first);cursor=end;
+ const n=durations[r.row]===undefined?r.days:Number(durations[r.row]);if(!Number.isInteger(n)||n<0||n>365)throw Error('La duración interna debe ser de 0 a 365 días: '+r.label);
+ const first=n===0?nextWork(cursor,ex):i===0&&firstSameDay?nextWork(cursor,ex):addWork(cursor,1,ex);const end=n===0?first:addWork(first,n-1,ex);
+ if(r.row===16&&o.marketTool==='diffusion')throw Error('La difusión del requerimiento tiene plazos específicos (art. 51) y no se calcula con la duración libre de indagación.');
+ const label=r.row===16?(o.marketTool==='inquiry'?'Indagación de mercado':'Interacción con el mercado: consulta a proveedores'):r.label;
+ push('prep-'+r.row,label,end,n,'Cronograma de gestión aportado; duración editable','Estimación interna',r.row<10?'CMN':'Actuaciones preparatorias',r.owner,r.source,first);cursor=end;
 }}
 if(['cmn','prep','review'].includes(anchor)){
  const prep=templates[tpl].filter(r=>r.row<=28&&r.row>=(anchor==='cmn'?5:anchor==='prep'?10:13));operational(prep,anchor!=='review');
- call=fixed('call','Convocatoria estimada',addWork(cursor,1,ex),1,'Excel: 1 día de gestión para publicación','Estimación interna');
+ const callDays=durations.call===undefined?1:Number(durations.call);if(!Number.isInteger(callDays)||callDays<0||callDays>120)throw Error('Revisa los días internos para convocar.');call=fixed('call','Convocatoria estimada',addWork(cursor,callDays,ex),callDays,'Planificación interna de la publicación; editable','Estimación interna','Selección',cursor);
 }else if(anchor==='call')call=start;
 const elevate=!!o.elevation&&!short;
 if(short&&o.elevation)warnings.push('No se aplica la rama de elevación de la hoja ordinaria a una modalidad abreviada.');
 if(call){
  const q=fixed('queries','Fin de consultas y observaciones',addWork(call,short?3:7,ex),short?3:7,'Art. 66.1 · plazo mínimo desde el día siguiente de la convocatoria','Mínimo legal','Selección',call);
- const integDays=durations.integration===undefined?2:Number(durations.integration);if(!Number.isInteger(integDays)||integDays<1||integDays>120)throw Error('Revisa los días internos de integración.');
+ const integDays=durations.integration===undefined?2:Number(durations.integration);if(!Number.isInteger(integDays)||integDays<0||integDays>120)throw Error('Revisa los días internos de integración.');
  let integration=fixed('integration','Absolución e integración de bases',addWork(q,integDays,ex),integDays,'Excel, fila 33 · duración de gestión editable','Estimación interna','Selección',q);
  if(elevate){const request=fixed('elevationRequest','Solicitud de elevación de cuestionamientos',addWork(integration,3,ex),3,'Art. 67.2 · desde publicación de absolución e integración','Máximo legal','Elevación OECE',integration);const register=fixed('elevationRegister','Registro de elevación por la entidad',addWork(request,4,ex),4,'Art. 67.3 · desde vencimiento del plazo de solicitud','Máximo legal','Elevación OECE',request);integration=fixed('definitive','Pronunciamiento e integración definitiva OECE',addWork(register,10,ex),10,'Art. 67.3 · desde registro o recepción de información solicitada','Máximo legal','Elevación OECE',register);warnings.push('El plazo del OECE puede tener como inicio la recepción de información adicional. Sustituye el hito proyectado por la fecha efectiva cuando corresponda.');}
  let offers=addWork(integration,short?3:7,ex);if(!short){const global=addWork(call,22,ex);if(offers<global)offers=global;}
  offers=fixed('offers','Presentación de ofertas',offers,short?3:7,'Arts. 64.1 y 68.1 · '+(short?'mínimo 3 días desde integración':'mínimo 7 días desde integración y 22 desde convocatoria'),'Mínimo legal','Selección',integration);
  push('participants','Registro de participantes',previousWork(offers,ex),null,'Art. 65 · hasta antes del inicio de presentación de ofertas','Ventana paralela','Selección','Participantes','',addWork(call,1,ex),'El cierre exacto depende de la hora de presentación de ofertas publicada; la fecha final mostrada es el último día hábil completo anterior.');
- const evalDays=durations.evaluation===undefined?2:Number(durations.evaluation);if(!Number.isInteger(evalDays)||evalDays<1||evalDays>120)throw Error('Revisa los días internos de evaluación.');
+ const evalDays=durations.evaluation===undefined?2:Number(durations.evaluation);if(!Number.isInteger(evalDays)||evalDays<0||evalDays>120)throw Error('Revisa los días internos de evaluación.');
  const evaluation=fixed('evaluation','Calificación y evaluación de ofertas',addWork(offers,evalDays,ex),evalDays,'Excel · duración de gestión editable','Estimación interna','Selección',offers);
- award=fixed('award','Otorgamiento de la buena pro',addWork(evaluation,1,ex),1,'Excel · 1 día de gestión','Estimación interna','Selección',evaluation);
+ const awardDays=durations.award===undefined?1:Number(durations.award);if(!Number.isInteger(awardDays)||awardDays<0||awardDays>120)throw Error('Revisa los días internos para otorgar buena pro.');award=fixed('award','Otorgamiento de la buena pro',addWork(evaluation,awardDays,ex),awardDays,'Planificación interna del otorgamiento; editable','Estimación interna','Selección',evaluation);
 }else if(anchor==='award')award=start;
 const appealDays=short?5:8;
 if(anchor==='appeal'||(award&&o.appeal&&o.appeal!=='none')){
