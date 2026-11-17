@@ -3710,7 +3710,6 @@ function details(id){
  const years=[...String(r.procedimiento??'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
  const newProcNumber=launched&&years.some(y=>y>=2026)&&!processPlaceholder(r.procedimiento);
  const fields=[
-  field('N.º de registro',r.id),
   field('Especialista responsable del nuevo proceso',spec(r)),
   field('Área usuaria',r.area),
   field('Etapa de la nueva contratación',status(r)),
