@@ -3965,6 +3965,8 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
    const end=expiry(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria))&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
+   const cancelled=norm(r.estado)==='CANCELADO'||norm(r.estadoNueva)==='CANCELADO';
+   const cancellationDetail=cancelled&&field(r.observaciones)!=='—'?String(r.observaciones).replace(/^\s*[-–•]\s*/,'').replace(/\s+/g,' ').trim():'';
    const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-context="'+i+'" aria-label="Abrir detalle correspondiente de '+esc(field(r.descripcion))+'" title="Abrir detalle según estado">👁 Ver ficha</button>';
    const ns=newState(r);
    const active=['ongoing','published','relaunch'].includes(ns.kind);
@@ -3975,9 +3977,9 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
     '<td data-label="Servicio"><button type="button" class="sun-proc2026-name" data-sun-proc-context="'+i+'" style="display:block;border:0;background:transparent;padding:0;text-align:left;color:inherit;font:inherit;font-weight:inherit;cursor:pointer" title="Abrir ficha según estado">'+esc(field(r.descripcion))+'</button>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
-    '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
+    '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(cancelled?(cancellationDetail?'<span class="sun-proc2026-cancel-detail" style="display:inline;margin-left:10px;font-weight:400;line-height:1.5">'+esc(cancellationDetail)+'</span>':''):(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':''))+'</td>'+
 
-    '<td data-label="Seguimiento">'+newButton+(end.date!=='—'?'<button type="button" data-sun-proc-calendar="'+i+'" class="sun-proc2026-sub" style="display:block;margin-top:9px;padding:4px 2px;background:transparent;border:0;color:inherit;font-weight:700;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px" title="Abrir fecha y contrato en el calendario" aria-label="Ver vencimiento '+esc(end.date)+' en el calendario">📅 Vencimiento: '+esc(end.date)+'</button>':'')+'</td>'+
+    '<td data-label="Seguimiento">'+(cancelled?'':newButton)+(cancelled?'':end.date!=='—'?'<button type="button" data-sun-proc-calendar="'+i+'" class="sun-proc2026-sub" style="display:block;margin-top:9px;padding:4px 2px;background:transparent;border:0;color:inherit;font-weight:700;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px" title="Abrir fecha y contrato en el calendario" aria-label="Ver vencimiento '+esc(end.date)+' en el calendario">📅 Vencimiento: '+esc(end.date)+'</button>':'')+'</td>'+
     '</tr>';
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
