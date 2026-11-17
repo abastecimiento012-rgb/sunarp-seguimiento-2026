@@ -3800,6 +3800,7 @@ function openContract(i){
  dlg.showModal();
 }
 window.sunarpOpenNuevaConvocatoria=openRecord;
+window.sunarpOpenContratoContextual2026=openContract;
 function addAlertToRows(){
  if(document.body.dataset.sunPage!=='contratos')return;
  const tbody=el('tbody');if(!tbody)return;
@@ -3932,15 +3933,15 @@ refresh();
   tbody.innerHTML=visible.length?visible.map(({r,i})=>{
    const end=expiry(r),number=field(r.procedimiento),follow=window.sunMonitoring2026.read(r);
    const current=/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria))&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
-   const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-integral="'+i+'" aria-label="Ver ficha de '+esc(field(r.descripcion))+'" title="Consultar ficha">👁 Ver ficha</button>';
+   const eye='<button type="button" class="sun-proc2026-eye" data-sun-proc-context="'+i+'" aria-label="Abrir detalle correspondiente de '+esc(field(r.descripcion))+'" title="Abrir detalle según estado">👁 Ver ficha</button>';
    const ns=newState(r);
    const active=['ongoing','published','relaunch'].includes(ns.kind);
    const pending=['pending','unknown'].includes(ns.kind);
    const state=active?'alert':pending?'pending':hasContract(r)?(end.kind==='expired'?'expired':end.kind==='soon'?'soon':end.kind==='normal'?'valid':'pending'):'empty';
    const title=active?(ns.kind==='published'?'⚠ Nueva convocatoria':ns.kind==='relaunch'?'⚠ Nueva convocatoria pendiente':'⚠ Actuaciones preparatorias'):pending?'◷ Por verificar':state==='valid'?'✓ Contrato vigente':state==='soon'?'◷ Contrato por vencer':state==='expired'?'⚠ Contrato vencido':state==='pending'?'◷ Vigencia por verificar':'— Sin contrato vigente';
-   const newButton=active?'<button type="button" class="sun-proc2026-newbtn sun-proc2026-alertbtn" data-sun-proc-new="'+i+'" title="Abrir seguimiento del nuevo procedimiento">'+title+'</button>':'<span class="sun-proc2026-status sun-proc2026-status-'+state+'">'+title+'</span>'; 
+   const newButton=active?'<button type="button" class="sun-proc2026-newbtn sun-proc2026-alertbtn" data-sun-proc-context="'+i+'" title="Abrir actuaciones del procedimiento">'+title+'</button>':'<button type="button" class="sun-proc2026-status sun-proc2026-status-'+state+'" data-sun-proc-context="'+i+'" title="Abrir detalle correspondiente al estado">'+title+'</button>'; 
    return '<tr class="sun-proc2026-row'+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
-    '<td data-label="Servicio"><div class="sun-proc2026-name">'+esc(field(r.descripcion))+'</div>'+eye+'</td>'+
+    '<td data-label="Servicio"><button type="button" class="sun-proc2026-name" data-sun-proc-context="'+i+'" style="display:block;border:0;background:transparent;padding:0;text-align:left;color:inherit;font:inherit;font-weight:inherit;cursor:pointer" title="Abrir ficha según estado">'+esc(field(r.descripcion))+'</button>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current">'+esc(current)+'</span>'+(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':'')+'</td>'+
 
@@ -3948,7 +3949,26 @@ refresh();
     '</tr>';
   }).join(''):'<tr><td colspan="4" class="sun-proc2026-empty">No hay resultados para esta búsqueda. Borra el texto del buscador para ver todos los registros.</td></tr>';
  }
+ function openContext(i){
+  if(!Number.isInteger(i)||!Array.isArray(data)||!data[i])return;
+  const r=data[i],ns=newState(r),ending=expiry(r);
+  const active=['ongoing','published','relaunch'].includes(ns.kind);
+  const pending=['pending','unknown'].includes(ns.kind);
+  if(active||pending||/ACTUACIONES PREPARATORIAS|CONVOCATORIA|EN EVALUACI[OÓ]N|DESIERTO|CANCELADO/.test(norm(r.estado))){
+   if(typeof window.sunarpOpenNuevaConvocatoria==='function')return window.sunarpOpenNuevaConvocatoria(i);
+  }
+  if(hasContract(r)&&['normal','soon','expired'].includes(ending.kind)){
+   if(typeof window.sunarpOpenContratoContextual2026==='function')return window.sunarpOpenContratoContextual2026(i);
+  }
+  window.sunarpOpenFichaIntegral2026?.(i);
+ }
  panel.addEventListener('click',e=>{
+  const contextual=e.target.closest('[data-sun-proc-context]');
+  if(contextual){
+   e.preventDefault();e.stopPropagation();
+   openContext(Number(contextual.dataset.sunProcContext));
+   return;
+  }
   const calendarLink=e.target.closest('[data-sun-proc-calendar]');
   if(calendarLink){
    e.preventDefault();e.stopPropagation();
