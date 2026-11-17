@@ -2048,7 +2048,26 @@ html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-next.is-missing{color:#
 html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-other{border-color:#69777d!important;background:#2d373b!important}
 html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-other summary{color:#e3ecef!important}
 html[data-sun-theme="dark"] #sunAlertsDaily2026 .sun-due-last{color:#ffd3a0!important}
-</style></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
+</style><script id="sunarpSolesFormat2026">
+window.sunarpFormatSoles2026=function(value){
+ const raw=String(value??'').trim();
+ if(!raw)return raw;
+ let v=raw.replace(/^S\/\s*/i,'').replace(/\s/g,'');
+ if(!/^[+-]?[\d.,]+$/.test(v)||!/[0-9]/.test(v))return raw;
+ const comma=v.lastIndexOf(','),dot=v.lastIndexOf('.');
+ if(comma>=0&&dot>=0){
+  v=comma>dot?v.replace(/\./g,'').replace(',','.'):v.replace(/,/g,'');
+ }else if(comma>=0){
+  const parts=v.split(',');
+  v=parts.length===2&&parts[1].length!==3?v.replace(',','.') :v.replace(/,/g,'');
+ }else if(dot>=0){
+  const parts=v.split('.');
+  if(parts.length>2)v=parts.slice(0,-1).join('')+'.'+parts.at(-1);
+ }
+ const amount=Number(v);
+ return Number.isFinite(amount)?'S/ '+amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):raw;
+};
+</script></head><body data-sun-page="especialistas" data-sun-contract-tab="vigentes"><header class="hero"><div class="hero-inner"><div class="brand"><div class="brand-mark"><img alt="Símbolo del sistema" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxNTM2NWQiLz48cmVjdCB4PSIxNSIgeT0iMTIiIHdpZHRoPSIzNCIgaGVpZ2h0PSI0MSIgcng9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMyAyNGgxOE0yMyAzMmgxME0yMyA0MGg3IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNDMiIGN5PSI0MiIgcj0iMTIiIGZpbGw9IiMxOWE2YTMiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTM3IDQyIDQgNCA3LTkiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" style="width:43px;height:43px;border-radius:10px"/></div><div><h1>Sistema de seguimiento de procedimientos de selección – SUNARP 2026</h1><p>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</p><span class="hero-sub">Seguimiento de actuaciones, convocatorias, adjudicaciones y contratos · Módulo complementario: PAC 2026</span></div></div><div class="actions"><button id="updateExcel" class="primary" type="button" title="Seleccionar un Excel actualizado (.xlsx)">↻ Actualizar desde Excel</button><input id="updateExcelFile" type="file" accept=".xlsx" hidden><button id="reportPdf" title="Abrir reporte listo para guardar como PDF">▤ Reporte PDF</button><button id="reportPpt" class="primary" type="button" title="Descargar directamente un archivo PowerPoint (.pptx) con los registros actuales">▣ Descargar PowerPoint ↓</button><span id="pptDownloadStatus" role="status" aria-live="polite" style="font-size:11px;display:none;max-width:235px;color:#e9f2ff"></span><button id="exportJson" title="Descargar copia de seguridad de los registros">▤ Guardar respaldo</button><button id="importJson" title="Restaurar una copia JSON">↥ Importar respaldo</button><button id="exportCsv">⇩ Exportar CSV</button><button class="primary" id="add">＋ Nuevo registro</button><input accept=".json" hidden="" id="fileInput" type="file"/></div></div></header><div class="hero-stripe"><i></i><i></i><i></i><i></i></div>
 <nav id="sunPrimaryNav" class="sun-primary-nav" aria-label="Menú principal de navegación">
   <div class="sun-nav-inner">
     <span class="sun-nav-title sun-nav-title-stacked" aria-hidden="true"><span class="sun-nav-brand">▦</span><span class="sun-nav-title-words"><span>Menú</span><span>principal</span></span></span>
@@ -2774,7 +2793,7 @@ window.sunMonitoring2026=(function(){
    'CONTRATO VIGENTE','EN ACTUACIONES PREPARATORIAS','SIN REQUERIMIENTO','NO HAY UN CONTRATO VIGENTE',
    'NO HAY CONTRATO VIGENTE'].includes(t)||t.startsWith('NO HAY ')||t.startsWith('SIN CONTRATO');
  };
- const showField=(label,v,extra='')=>invalidValue(v)?'':'<div class="sp-integral-field'+(extra?' '+extra:'')+'"><small>'+safe(label)+'</small><strong>'+safe(plain(v))+'</strong></div>';
+ const showField=(label,v,extra='')=>invalidValue(v)?'':'<div class="sp-integral-field'+(extra?' '+extra:'')+'"><small>'+safe(label)+'</small><strong>'+safe(/monto|cuantía|importe/i.test(label)?window.sunarpFormatSoles2026(v):plain(v))+'</strong></div>';
  const hasContractInfo=r=>!invalidValue(r.contratoVigente)||!invalidValue(r.numeroContrato);
  const validDate=v=>typeof date==='function'?date(v):null;
  function contractView(r){
@@ -3101,7 +3120,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const dlg=document.getElementById('gerDetail'),body=document.getElementById('gdBody');
  const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const V=v=>{const t=String(v??'').trim();return t&&t!=='-'?E(t):'<span style="color:#8493a5">Sin dato registrado</span>'};
- const moneySafe=v=>{const t=String(v??'').trim();if(!t||t==='-'||/NO CORRESPONDE|NO APLICA/i.test(t))return V(t);if(/^\s*(?:S\/\s*)?[\d.,]+\s*$/.test(t)){const n=Number(t.replace(/S\/\s*/i,'').replace(/,/g,''));return Number.isFinite(n)?'S/ '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):E(t)}return E(t)};
+ const moneySafe=v=>{const t=String(v??'').trim();return !t||t==='-'||/NO CORRESPONDE|NO APLICA/i.test(t)?V(t):E(window.sunarpFormatSoles2026(t))};
  const cellMoney=(name,val)=>'<div class="gd-cell"><small>'+E(name)+'</small><strong>'+moneySafe(val)+'</strong></div>';
  const pending='<span class="gd-pending">Datos pendientes de registrar</span>';
  const pendingIfEmpty=v=>{const t=String(v??'').trim();return (!t||t==='-'||/^sin dato registrado$/i.test(t))?pending:E(t)};
@@ -3619,7 +3638,7 @@ function listNew(){
  const result=flagged().filter(({r})=>!search||norm([r.descripcion,r.especialista,r.estadoNueva,r.estado,r.pac].join(' ')).includes(search));
  el('sunNewConvList').innerHTML=result.map(({r,i})=>'<button type="button" class="sun-newconv-item" data-sun-focus-new="'+i+'" aria-current="'+(String(r.id)===focused)+'"><b>'+esc(txt(r.descripcion))+'</b><small>Registro '+esc(r.id)+' · '+esc(spec(r))+' · '+esc(status(r))+'</small></button>').join('')||'<p class="sun-ct-note">Sin resultados para la búsqueda.</p>';
 }
-const field=(label,v)=>'<div class="sun-newconv-field"><small>'+esc(label)+'</small><strong>'+esc(txt(v))+'</strong></div>';
+const field=(label,v)=>'<div class="sun-newconv-field"><small>'+esc(label)+'</small><strong>'+esc(/monto|cuantía|importe/i.test(label)?window.sunarpFormatSoles2026(v):txt(v))+'</strong></div>';
 
 const processPlaceholder=v=>{
  const t=norm(v);
