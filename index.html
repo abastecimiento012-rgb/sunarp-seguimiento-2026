@@ -2097,6 +2097,15 @@ html[data-sun-theme="dark"] .sun-primary-nav .sun-nav-reports summary{background
 html[data-sun-theme="dark"] #sunTimelineSimulator #scRecord{background:#21374f;color:#f2f8ff;border-color:#8ab6df}
 html[data-sun-theme="dark"] #sunTimelineSimulator #scAdjust summary{color:#d5ecff}
 @media print{#sunTimelineSimulator #scResult .sc-result-advanced{display:block!important}#sunTimelineSimulator #scResult .sc-result-advanced .sc-tablewrap{display:block!important}}
+</style><style id="scNewContractMain2026">
+#sunTimelineSimulator>.sc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;background:var(--sc-card);border:1px solid var(--sc-line);border-radius:14px;padding:17px;margin:15px 0}
+#sunTimelineSimulator>.sc-grid label{font-weight:750;color:var(--sc-ink)}
+#sunTimelineSimulator>.sc-grid :is(input,select){min-height:51px;font-size:15px;font-weight:600;border:2px solid #9bb7d1;border-radius:9px;background:var(--sc-bg);color:var(--sc-ink)}
+#sunTimelineSimulator>.sc-grid :is(input,select):focus{outline:3px solid #8dc2fa;outline-offset:1px}
+#sunTimelineSimulator #scExcelLookup,#sunTimelineSimulator #scAdjust{margin:8px 0;padding:10px 13px}
+#sunTimelineSimulator #scResult .sc-simple-steps{margin-top:12px}
+html[data-sun-theme="dark"] #sunTimelineSimulator>.sc-grid :is(input,select){border-color:#7696b8}
+@media(max-width:690px){#sunTimelineSimulator>.sc-grid{grid-template-columns:1fr}}
 </style><script id="sunarpSolesFormat2026">
 window.sunarpFormatSoles2026=function(value){
  const raw=String(value??'').trim();
@@ -2248,17 +2257,22 @@ html[data-sun-theme="dark"] .sc-phase th{background:#43515f;color:#fff}html[data
 <article class="sun-report-card"><span class="sun-report-icon">▣</span><h3>Presentación PowerPoint</h3><p>Diapositivas para una reunión gerencial con indicadores, procedimientos, PAC, contratos y previsiones.</p><button type="button" class="primary" data-sun-report="reportPpt">Descargar PowerPoint (.pptx)</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Resumen de seguimiento listo para imprimir o guardar como PDF.</p><button type="button" data-sun-report="reportPdf">Abrir reporte PDF</button></article>
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
-</div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Cronogramas y consulta de plazos" class="sim26">
-<div class="sim26-head"><h2>📅 Cronograma automático de contrataciones</h2><p>Elige un procedimiento del Excel. El cronograma calcula automáticamente sus etapas y fechas estimadas en días hábiles.</p></div>
-<div class="sc-notice"><b>Uso sencillo:</b> 1. Selecciona el procedimiento. 2. Revisa las fechas calculadas. 3. Descarga el cronograma si lo necesitas. Los resultados son proyecciones; verifica las fechas oficiales publicadas en Pladicop/SEACE.</div>
+</div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Proyección de nueva contratación" class="sim26">
+<div class="sim26-head"><h2>📅 Planificar una nueva contratación</h2><p>Calcula desde cero cuándo podrías convocar, recibir ofertas, otorgar la buena pro y suscribir el contrato.</p></div>
+<div class="sc-notice"><b>Solo necesitas 3 datos:</b> objeto, tipo de procedimiento y fecha prevista de inicio. El cronograma se calcula automáticamente; no necesitas que la contratación esté registrada en el Excel.</div>
 <div class="sc-grid">
-<label class="sc-wide">Procedimiento a consultar<select id="scRecord"><option value="">＋ Nueva contratación / consulta libre</option></select></label>
-<details class="sc-details" id="scAdjust"><summary>⚙ Ajustar tipo de procedimiento, fecha de inicio u objeto (opcional)</summary><div class="sc-grid"><label>Tipo de procedimiento<select id="scType"><option value="cp">Concurso público de servicios</option><option value="lp">Licitación pública de bienes</option><option value="cpa">Concurso público abreviado de servicios</option><option value="lpa">Licitación pública abreviada de bienes</option><option value="other">Otro procedimiento / régimen</option></select></label>
-<label>Objeto de contratación<input id="scName" placeholder="Nombre del servicio o bien"></label>
-<label>¿Desde qué hito calculamos?<select id="scAnchor"><option value="call">Convocatoria publicada o prevista</option><option value="cmn">Inicio de programación / CMN</option><option value="prep">Inicio de actuaciones preparatorias</option><option value="review">Recepción del requerimiento para revisión</option><option value="award">Buena pro notificada</option><option value="consent">Registro del consentimiento</option><option value="documents">Requisitos para el contrato presentados</option><option value="correction">Observaciones contractuales notificadas</option><option value="appeal">Apelación presentada o subsanada</option></select></label>
-<label>Fecha del hito<input id="scDate" type="date" min="2026-01-01"></label>
+<label class="sc-wide">1. ¿Qué servicio o bien deseas contratar?<input id="scName" placeholder="Ej.: Servicio de mantenimiento de servidores" autocomplete="off"></label>
+<label>2. Tipo de procedimiento<select id="scType"><option value="cp">Concurso público (servicios)</option><option value="lp">Licitación pública (bienes)</option><option value="cpa">Concurso público abreviado (servicios)</option><option value="lpa">Licitación pública abreviada (bienes)</option><option value="other">Otro procedimiento / régimen (sin proyección automática)</option></select></label>
+<label>3. Fecha prevista de inicio<input id="scDate" type="date" min="2026-01-01"></label>
 </div>
-</div></details><p id="scRecordHint" role="status" class="sc-help">Selecciona el tipo y la fecha para generar el cronograma automáticamente.</p>
+<p class="sc-help" style="margin:8px 0">Por defecto, el cálculo comienza con las actuaciones preparatorias. El tipo de procedimiento debe corresponder a la cuantía y reglas aplicables.</p>
+<details class="sc-details" id="scAdjust"><summary>⚙ Opciones adicionales: comenzar desde otra etapa</summary><div class="sc-grid">
+<label class="sc-wide">Etapa desde la que deseas proyectar<select id="scAnchor"><option value="prep">Inicio de actuaciones preparatorias</option><option value="cmn">Inicio de programación / CMN</option><option value="review">Recepción del requerimiento para revisión</option><option value="call">Convocatoria publicada o prevista</option><option value="award">Buena pro notificada</option><option value="consent">Registro del consentimiento</option><option value="documents">Requisitos para el contrato presentados</option><option value="correction">Observaciones contractuales notificadas</option><option value="appeal">Apelación presentada o subsanada</option></select></label>
+</div></details>
+<details class="sc-details" id="scExcelLookup"><summary>Consultar un procedimiento existente del Excel (opcional)</summary><div class="sc-grid">
+<label class="sc-wide">Procedimiento registrado<select id="scRecord"><option value="">＋ Nueva contratación sin registro en Excel</option></select></label>
+</div><p class="sc-help">Seleccionar un registro existente cargará sus datos para consultar un cronograma distinto. Para planificar uno nuevo, deja esta opción vacía.</p></details>
+<p id="scRecordHint" role="status" class="sc-help">Nueva contratación: completa los tres datos anteriores; las fechas se recalculan automáticamente.</p>
 <details class="sc-details"><summary>Condiciones del procedimiento</summary><div class="sc-grid">
 <label>Número de ofertas<select id="scSingle"><option value="multiple">Dos o más, sin recurso de apelación</option><option value="one">Una sola oferta</option></select></label>
 <label>Garantía de fiel cumplimiento<select id="scGuarantee"><option value="yes">Se requiere presentación: 8 días</option><option value="no">No se requiere presentación: 5 días</option></select></label>
