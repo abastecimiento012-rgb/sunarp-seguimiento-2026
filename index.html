@@ -3149,7 +3149,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const isMeaningful=v=>{const t=String(v??'').trim();return !!t&&!/^(?:-|—|NO CORRESPONDE|NO APLICA|SIN DATO REGISTRADO|PENDIENTE|POR VERIFICAR)$/i.test(t)};
  const dueDate=isMeaningful(r.fechaEsperada)?r.fechaEsperada:isMeaningful(r.plazoEntrega)?r.plazoEntrega:isMeaningful(r.fechaCompromiso)?r.fechaCompromiso:'';
  const pendingAction=isMeaningful(r.observaciones)?'<div class="gd-observation" style="white-space:pre-line">'+V(r.observaciones)+'</div>':'';
- const dueCard=dueDate?'<div class="gd-cell" style="margin-top:12px;border-left:4px solid #d89012;background:#fff7e7"><small>📅 Plazo máximo para la actuación pendiente</small><strong>'+E(dueDate)+'</strong></div>':'';
+ const dueCard=dueDate?'<div class="gd-cell sun-action-due" style="margin-top:12px;border-left:4px solid #d89012;background:#fff7e7"><small>📅 Plazo máximo para la actuación pendiente</small><strong>'+E(dueDate)+'</strong></div>':'';
  const detailCard=isMeaningful(r.detalleEntrega)?'<div class="gd-cell" style="margin-top:10px"><small>Actuación o entregable pendiente</small><strong>'+V(r.detalleEntrega)+'</strong></div>':'';
  const obs=pendingAction+dueCard+detailCard+'<div class="gd-grid" style="margin-top:12px">'+cell('Seguimiento preventivo',r.seguimientoExcel,true)+cell('Documentos de requerimiento',r.documentosRequerimiento,true)+'</div>';
  const contractNumber=contractValid(r.numeroContrato)?r.numeroContrato:r.contratoVigente;
@@ -3221,6 +3221,7 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  const newRegistered=/^S[IÍ](?:\b|\s|-)/.test(String(r.nuevaConvocatoria||'').trim().toUpperCase());
  const newAlert=isVigente?'<div class="gd-newalert"><div><strong>'+(newRegistered?'⚠ Alerta: nueva convocatoria en seguimiento':'◷ Contrato vigente · revisar futura contratación')+'</strong><p>'+(newRegistered?'Se ha registrado la necesidad de nueva convocatoria. Consulta las actuaciones y el especialista.':'No se registra nueva convocatoria iniciada para este contrato. Consulta el estado de seguimiento.')+'</p></div><button type="button" data-sun-open-new="'+i+'">⚑ Ver seguimiento de convocatoria</button></div>':'';
  body.innerHTML=newAlert+'<div class="gd-metrics">'+metric('Estado del procedimiento',r.estado)+metric('PAC 2026',r.pac)+(contractIdentified&&contractValid(r.vencimiento)?metric('Vencimiento registrado',r.vencimiento):'')+metric('Prioridad de seguimiento',typeof prioridadSeguimiento==='function'?prioridadSeguimiento(r).texto:'Por revisar')+'</div>'+sec('▦ Información general',info)+(isVigente?'':sec('◉ Nuevo procedimiento de selección',nuevo))+sec('◉ Observaciones y actuaciones pendientes',obs)+(contractIdentified&&signedIn2026?sec('◷ Cronología de actuaciones',timeline):'')+sec('▤ Contrato vigente o último contrato registrado',contract||'<p class="gd-note">No hay contrato vigente o no se han registrado datos contractuales verificables.</p>')+sec('▥ Información presupuestaria',budget)+sec('▣ Información administrativa complementaria',extra);
+ if(hidePreparatoryDelivery)body.querySelectorAll('.sun-action-due').forEach(node=>node.remove());
  // En contratos de ejercicios anteriores, omitir campos sin información en la vista, sin alterar el Excel.
  const extractContractYear=v=>{
   const t=String(v??'');
