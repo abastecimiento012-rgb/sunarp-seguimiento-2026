@@ -2812,7 +2812,12 @@ window.sunMonitoring2026=(function(){
  const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const plain=v=>String(v??'').trim();
  const noAsignado=v=>!plain(v)||['-','—','NO APLICA','NO CORRESPONDE','POR ASIGNAR','SIN ASIGNAR'].includes(norm(v));
- const person=r=>noAsignado(r.especialista)?'SIN ESPECIALISTA ASIGNADO':norm(r.especialista);
+ const person=r=>noAsignado(r.especialista)?'SIN ESPECIALISTA ASIGNADO':norm(r.especialista).replace(/\s*\([^)]*\)\s*/g,' ').trim();
+ const personLabel=name=>{
+  const entry=data.find(r=>person(r)===name&&/\([^)]*\)/.test(plain(r.especialista)));
+  const note=entry&&plain(entry.especialista).match(/\([^)]*\)/);
+  return name+(note?' '+note[0].replace(/\s+/g,' '):'');
+ };
  const esPendiente=r=>{
   const st=group(r.estado),nu=norm(r.estadoNueva),req=norm(r.nuevaConvocatoria);
   return ['Actuaciones preparatorias','Sin requerimiento','Convocado / evaluación','Desierto','Cancelado'].includes(st)||
@@ -2836,10 +2841,10 @@ window.sunMonitoring2026=(function(){
    const avatar=x.name==='HERMES'?'👨':'👩';
    const height=x.count?(x.count/max*100).toFixed(1):'0';
    const expanded=selectedName===x.name;
-   return '<button class="sp-vcol sp-color-'+colors[x.name]+'" type="button" data-sp-jump="'+x.name+'" aria-controls="spSelectedCard2026" aria-expanded="'+expanded+'" aria-label="'+x.name+': '+x.count+' procedimientos asignados y '+x.pending+' pendientes. '+(expanded?'Cerrar tarjeta':'Abrir tarjeta')+'" title="'+(expanded?'Cerrar':'Mostrar')+' seguimiento de '+x.name+'">'+
+   return '<button class="sp-vcol sp-color-'+colors[x.name]+'" type="button" data-sp-jump="'+x.name+'" aria-controls="spSelectedCard2026" aria-expanded="'+expanded+'" aria-label="'+safe(personLabel(x.name))+': '+x.count+' procedimientos asignados y '+x.pending+' pendientes. '+(expanded?'Cerrar tarjeta':'Abrir tarjeta')+'" title="'+(expanded?'Cerrar':'Mostrar')+' seguimiento de '+x.name+'">'+
     '<span class="sp-vcount">'+x.count+'</span>'+
     '<span class="sp-vtower" aria-hidden="true"><span class="sp-vbar" style="height:'+height+'%"></span></span>'+
-    '<span class="sp-vperson"><span class="sp-vavatar" aria-hidden="true">'+avatar+'</span>'+x.name+'</span>'+
+    '<span class="sp-vperson"><span class="sp-vavatar" aria-hidden="true">'+avatar+'</span>'+safe(personLabel(x.name))+'</span>'+
     '<span class="sp-vpending">'+x.pending+' pendiente'+(x.pending===1?'':'s')+'</span></button>';
   }).join('');
   return '<div class="sp-head"><div><h3>Procedimientos asignados por especialista</h3><p>Selecciona una barra para desplegar solo la tarjeta de ese especialista. Tócala nuevamente para cerrar.</p></div>'+
