@@ -1,0 +1,57 @@
+/* Procedimientos: tarjetas móviles y tabla amplia en escritorio. */
+@media screen and (max-width:1024px){
+ #sunProcedures2026Panel{padding:14px!important;min-width:0!important}
+ #sunProcedures2026Panel .sun-proc2026-header{gap:12px;align-items:stretch}
+ #sunProcedures2026Panel .sun-proc2026-header h3{font-size:21px!important;line-height:1.3}
+ #sunProcedures2026Panel .sun-proc2026-header p{font-size:15px!important}
+ #sunProcedures2026Panel .sun-proc2026-toolbar{display:flex;flex-wrap:wrap;gap:8px}
+ #sunProcedures2026Panel #sunProc2026Search{width:100%;max-width:none;min-width:0;flex:1 1 100%;font-size:16px!important;min-height:46px}
+ #sunProcedures2026Panel #sunProc2026Count{flex:1 1 100%;margin:0;font-size:13px!important}
+ #sunProcedures2026Panel .sun-proc2026-pulses{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #sunProcedures2026Panel .sun-proc2026-segments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #sunProcedures2026Panel .sun-proc2026-segment{min-width:0;min-height:48px;padding:10px!important;font-size:15px!important;white-space:normal}
+ #sunProcedures2026Panel .sun-proc2026-scroll{display:block!important;overflow:visible!important;border:0!important;background:transparent!important;max-height:none!important}
+ #sunProcedures2026Panel .sun-proc2026-table{display:block!important;min-width:0!important;width:100%!important;max-width:100%!important;table-layout:auto!important}
+ #sunProcedures2026Panel .sun-proc2026-table thead{display:none!important}
+ #sunProcedures2026Panel .sun-proc2026-table tbody{display:grid!important;grid-template-columns:minmax(0,1fr);gap:14px;width:100%;min-width:0}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr{display:block!important;min-width:0;padding:14px!important;border:1px solid var(--etapa-borde,#dbe7f1)!important;border-left:5px solid var(--etapa,#75859b)!important;border-radius:12px!important;background:#fff;overflow:visible!important}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td,
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td:first-child,
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td:last-child{display:block!important;float:none!important;width:100%!important;min-width:0!important;max-width:100%!important;padding:11px 0!important;border:0!important;border-bottom:1px solid #dce5ee!important;background:transparent!important;box-shadow:none!important;text-align:left!important;font-size:16px!important;line-height:1.5!important;overflow-wrap:anywhere}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td:first-child{padding-top:0!important}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td:last-child{border-bottom:0!important;padding-bottom:0!important}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td::before{content:attr(data-label)!important;display:block!important;font-size:12px!important;line-height:1.4;color:#526981;font-weight:750;margin-bottom:6px}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td:empty{display:none!important}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr td.sun-proc2026-empty::before{display:none!important}
+ #sunProcedures2026Panel .sun-proc2026-name{font-size:17px!important;line-height:1.5!important;width:100%;max-width:none!important}
+ #sunProcedures2026Panel :is(.sun-proc2026-type,.sun-proc2026-sub,.sun-proc2026-current){font-size:15px!important;line-height:1.5!important;max-width:100%;white-space:normal!important}
+ #sunProcedures2026Panel :is(.sun-proc2026-eye,.sun-proc2026-newbtn,.sun-proc2026-status,[data-sc-record],[data-sun-proc-calendar]){min-height:44px!important;max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere;font-size:15px!important;padding:10px 12px!important;line-height:1.4!important}
+ #sunProcedures2026Panel .sun-proc2026-cancel-detail{display:block!important;margin:8px 0 0!important}
+ html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-table tbody tr{background:#1b2d41!important}
+ html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-table tbody tr td{background:transparent!important;border-bottom-color:#3c526c!important}
+ html[data-sun-theme="dark"] #sunProcedures2026Panel .sun-proc2026-table tbody tr td::before{color:#bcd0e5!important}
+}
+@media screen and (max-width:520px){
+ #sunProcedures2026Panel{padding:11px!important}
+ #sunProcedures2026Panel .sun-proc2026-segments{grid-template-columns:minmax(0,1fr)}
+ #sunProcedures2026Panel .sun-proc2026-table tbody tr{padding:12px!important}
+ #sunProcedures2026Panel .sun-proc2026-header h3{font-size:19px!important}
+ #sunPrimaryNav .sun-nav-inner{flex-wrap:wrap!important}
+ #sunPrimaryNav .sun-nav-links{width:100%;flex-basis:100%!important}
+}
+@media screen and (min-width:1025px){
+ #sunProcedures2026Panel .sun-proc2026-table{min-width:900px!important;width:100%!important}
+}
+@media screen and (max-width:760px){
+ #sunPrimaryNav{position:static!important}
+ #sunPrimaryNav .sun-nav-inner{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px!important}
+ #sunPrimaryNav .sun-nav-links{order:0!important;flex:1 1 100%!important;width:100%;min-width:0}
+ #sunPrimaryNav .sun-nav-report-sim-stack{order:1!important;display:flex!important;flex:1 1 100%!important;flex-direction:row!important;min-width:0;gap:6px}
+ #sunPrimaryNav .sun-nav-report-sim-stack .sun-nav-link{flex:1;white-space:normal!important;min-width:0;font-size:13px!important;padding:8px!important}
+ #sunPrimaryNav .sun-bell-wrap{order:2!important;flex:none}
+ #sunPrimaryNav .sun-nav-tools{order:3!important;display:flex!important;flex-direction:row!important;flex:1 1 0!important;min-width:0!important;gap:6px!important;align-items:center!important}
+ #sunPrimaryNav .sun-nav-tools .sun-theme-control{flex:1;min-width:0}
+ #sunPrimaryNav .sun-nav-tools .sun-theme-option{min-height:44px;font-size:13px!important;padding:8px!important}
+ #sunPrimaryNav .sun-nav-tools .sun-calendar-shortcut{flex:1;min-width:0;white-space:normal!important;font-size:13px!important;padding:8px!important}
+ #sunPrimaryNav .sun-bell-wrap #sunBellPanel2026{position:fixed!important;left:10px!important;right:10px!important;top:10px!important;max-width:calc(100vw - 20px)!important;max-height:90dvh;overflow:auto}
+}
