@@ -3314,7 +3314,21 @@ if(!confirm(message))return;backup();data=result;save();render();if(typeof draw=
  };
  const budgetDocCards=(heading,docs)=>{
   if(!docs.length)return '';
-  return '<div class="gd-cell" style="min-width:0"><small style="margin-bottom:9px;display:block">'+E(heading)+'</small><div style="display:flex;flex-wrap:wrap;gap:8px">'+docs.map(doc=>'<div style="padding:9px 11px;border:1px solid #cbd9ea;background:#fff;border-radius:9px;color:#264666;font-size:13px;font-weight:650;overflow-wrap:anywhere;max-width:100%">▤ '+E(doc)+'</div>').join('')+'</div></div>';
+  const numericAmount=doc=>{
+   const raw=String(doc??'').trim();
+   if(!/^\\d+(?:[.,]\\d+)?$/.test(raw))return null;
+   const num=Number(raw.replace(',','.'));
+   return Number.isFinite(num)?num:null;
+  };
+  const isPrev=heading==='Memorándum(s) de previsión';
+  const amounts=isPrev?docs.map(numericAmount):[];
+  const allAmounts=isPrev&&amounts.every(n=>n!==null);
+  const displayHeading=allAmounts?'Monto(s) de previsión presupuestaria':isPrev&&amounts.some(n=>n!==null)?'Previsión presupuestaria: importes y memorándums':heading;
+  const formatSoles=n=>'S/ '+new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+  return '<div class="gd-cell" style="min-width:0"><small style="margin-bottom:9px;display:block">'+E(displayHeading)+'</small><div style="display:flex;flex-wrap:wrap;gap:8px">'+docs.map(doc=>{
+   const amount=isPrev?numericAmount(doc):null;
+   return '<div style="padding:9px 11px;border:1px solid #cbd9ea;background:#fff;border-radius:9px;color:#264666;font-size:13px;font-weight:650;overflow-wrap:anywhere;max-width:100%">'+(amount===null?'▤ ':'')+E(amount===null?doc:formatSoles(amount))+'</div>';
+  }).join('')+'</div></div>';
  };
  const certDocs=budgetDocuments([r.ccp2026]);
  const prevDocs=budgetDocuments([r.prevision2027,r.prevision2028,r.prevision2029,r.prevision2030]);
