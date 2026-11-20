@@ -3028,7 +3028,7 @@ window.sunMonitoring2026=(function(){
   const isNew=yes||stagePrep||stageProcess;
   const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
   const pending=/CONTRATO VIGENTE|NO INICIADA|PENDIENTE DE REQUERIMIENTO|PENDIENTE DEL SIGA|PROGRAMADO PARA/.test(stage);
-  const launched=isNew&&!second&&!pending&&/CONVOCATORIA PUBLICADA|ETAPA DE SELECCION|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general);
+  const launched=isNew&&!second&&!pending&&/CONVOCATORIA PUBLICADA|(?:ETAPA|FASE) DE SELECCION|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general);
   const fields=[
     showField('Especialista responsable',r.especialista),
     showField('Área usuaria',r.area),
@@ -3911,7 +3911,7 @@ function details(id){
  const second=/SEGUNDA|2DA|SEGUNDO/.test(stage);
  const pendingStage=general==='SIN REQUERIMIENTO'||/CONTRATO VIGENTE|NO INICIADA|SIN REQUERIMIENTO|PENDIENTE DE REQUERIMIENTO|PROGRAMADO PARA|PENDIENTE DEL SIGA/.test(stage);
  const active=!pendingStage&&!second;
- const launched=active&&(/CONVOCATORIA PUBLICADA|ETAPA DE SELECCION|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
+ const launched=active&&(/CONVOCATORIA PUBLICADA|(?:ETAPA|FASE) DE SELECCION|CONSULTAS|OBSERVACIONES|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|ADJUDICADO|BUENA PRO/.test(stage+' '+general));
  const years=[...String(r.procedimiento??'').matchAll(/20\d{2}/g)].map(m=>Number(m[0]));
  const newProcNumber=launched&&years.some(y=>y>=2026)&&!processPlaceholder(r.procedimiento);
  const fields=[
@@ -4107,7 +4107,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   if(days<=leadDays)return {date:field(r.vencimiento),message:'Vence en '+days+' días',kind:'soon',days};
   return {date:field(r.vencimiento),message:'',kind:'normal',days};
  }
- const isSelectionStage=stage=>/^(?:EN )?ETAPA DE SELECCION$/.test(stage);
+ const isSelectionStage=stage=>/^(?:EN )?(?:ETAPA|FASE) DE SELECCION$/.test(stage);
  function newState(r){
   const announced=/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria));
   if(!announced)return {kind:'none',label:'No registrada',subtitle:''};
@@ -4160,7 +4160,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
  }
  const procedureStage=r=>/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria))&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
  function displayProcedureStage(current, published){
-  return published?'ETAPA DE SELECCIÓN':current;
+  return published?'FASE DE SELECCIÓN':current;
  }
  if (window.sunarpPdfSections) window.sunarpPdfSections.procedimientos.sections=()=>{
   const rows=data.filter(r=>matches(r,norm(search.value)));
@@ -4323,7 +4323,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
  };
  const isReconvocation=r=>/SEGUNDA CONVOCATORIA|2DA CONVOCATORIA|RECONVOCATORIA/.test(norm(r.estadoNueva));
  const isDisierto=r=>/DESIERTO/.test(norm(r.estado))||/DESIERTO/.test(norm(r.estadoNueva));
- const alreadyPublished=r=>[r.estado,r.estadoNueva].map(norm).some(stage=>/CONVOCATORIA PUBLICADA|CONVOCATORIA\s+FORMULACION/.test(stage)||/^(?:EN )?ETAPA DE SELECCION$/.test(stage));
+ const alreadyPublished=r=>[r.estado,r.estadoNueva].map(norm).some(stage=>/CONVOCATORIA PUBLICADA|CONVOCATORIA\s+FORMULACION/.test(stage)||/^(?:EN )?(?:ETAPA|FASE) DE SELECCION$/.test(stage));
  const checksKey=()=> 'sunarp_due_review_2026_'+dateKey(today());
  function loadChecks(){try{const x=JSON.parse(localStorage.getItem(checksKey())||'[]');return new Set(Array.isArray(x)?x:[])}catch{return new Set()}}
  let savedFor=dateKey(today()),checked=loadChecks();
