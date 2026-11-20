@@ -2285,7 +2285,7 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
  <p class="sun-cal-note">La vigencia debe confirmarse con el contrato, sus adendas y las actuaciones registradas. No se muestran registros sin fecha contractual válida.</p>
 </section><section id="sunReportsPage" class="sun-reports-page" aria-label="Reportes y exportaciones"><div class="sun-reports-grid">
 <article class="sun-report-card"><span class="sun-report-icon">▣</span><h3>Presentación PowerPoint</h3><p>Diapositivas para una reunión gerencial con indicadores, procedimientos, PAC, contratos y previsiones.</p><button type="button" class="primary" data-sun-report="reportPpt">Descargar PowerPoint (.pptx)</button></article>
-<article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Resumen de seguimiento listo para imprimir o guardar como PDF.</p><button type="button" data-sun-report="reportPdf">Abrir reporte PDF</button></article>
+<article class="sun-report-card"><span class="sun-report-icon">▤</span><h3>Reporte PDF</h3><p>Elige la sección que quieres imprimir o guardar como PDF.</p><div class="actions"><button type="button" data-sun-pdf="pac">1. PAC 2026</button><button type="button" data-sun-pdf="procedimientos">2. Procedimientos</button><button type="button" data-sun-pdf="alertas">3. Alertas y plazos</button><button type="button" data-sun-pdf="especialistas">4. Especialistas</button></div></article>
 <article class="sun-report-card"><span class="sun-report-icon">⇩</span><h3>Exportación CSV</h3><p>Descarga registros del aplicativo para analizarlos en Excel.</p><button type="button" data-sun-report="exportCsv">Exportar CSV</button></article>
 </div><p class="sun-report-note">Los reportes se generan con los datos y filtros activos. Verifica las cifras y documentos antes de presentarlos.</p><p id="sunReportsStatus" role="status" aria-live="polite"></p></section><p class="footer">Los cambios de este navegador no se sincronizan automáticamente con otros equipos. Verifica la información en documentos oficiales.</p><section id="sunTimelineSimulator" aria-label="Proyección de nueva contratación" class="sim26">
 <div class="sim26-head"><h2>📅 Planificar una nueva contratación</h2><p>Calcula desde cero cuándo podrías convocar, recibir ofertas, otorgar la buena pro y suscribir el contrato.</p></div>
@@ -2715,7 +2715,47 @@ let today=new Date();today.setHours(0,0,0,0);
 let due=rows.filter(r=>{let d=typeof date==='function'?date(r.vencimiento):null;if(!d)return false;let n=Math.ceil((d-today)/86400000);return n>=0&&n<=90});
 let areas={};rows.forEach(r=>{let k=r.area||'SIN ÁREA';areas[k]=(areas[k]||0)+1});
 return {rows,states,yrs,contracts,due,areas,stamp:new Date().toLocaleString('es-PE'),filterNote:'Se respetan los filtros activos. Los importes mostrados son referenciales y deben verificarse con la documentación correspondiente.'};}
-function reportHTML(z){let stateRows=Object.entries(z.states).sort((a,b)=>b[1]-a[1]);let areaRows=Object.entries(z.areas).sort((a,b)=>b[1]-a[1]);let mx=Math.max(1,...stateRows.map(x=>x[1]));return `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Reporte SUNARP 2026</title><style>@page{size:A4;margin:16mm}body{font:12px Arial;color:#23334b;margin:0}header{background:#17365d;color:white;padding:22px;border-bottom:4px solid #dfa92b}h1{font-size:20px;margin:0}h2{font-size:15px;color:#17365d;margin-top:23px;border-bottom:1px solid #cbd7e5;padding-bottom:6px}small{color:#67758a}.kpis{display:flex;gap:12px;margin-top:20px}.kpi{flex:1;border:1px solid #d7e0ec;border-radius:8px;padding:12px}.kpi b{font-size:23px;display:block;color:#17365d;margin-top:7px}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}td,th{border-bottom:1px solid #e0e7ef;padding:8px;text-align:left}th{background:#edf2f8}.bar{height:10px;background:#e8eef5;border-radius:6px}.bar i{display:block;background:#3779aa;height:10px;border-radius:6px}footer{margin-top:24px;font-size:10px;color:#65778b}.noprint{margin:14px 0;background:#17365d;color:white;border:0;border-radius:6px;padding:10px 16px;cursor:pointer}@media print{.noprint{display:none}h2{break-after:avoid}tr{break-inside:avoid}}</style><style>
+const pdfSections = window.sunarpPdfSections = {
+ pac: {title:'PAC 2026', sections() {
+  const rows = pvCurrentRows();
+  const byArea = new Map();
+  rows.forEach(r => {
+   const area = String(r.area || '').trim() || 'Sin área';
+   byArea.set(area, (byArea.get(area) || 0) + 1);
+  });
+  const columns = ['N.° PAC', 'Servicio', 'Área usuaria', 'Estado'];
+  const row = r => [r.pac, r.descripcion, r.area, r.estado];
+  const scheduled = rows.filter(programmed).sort((a,b) => String(a.pac).localeCompare(String(b.pac), 'es', {numeric:true}));
+  return [
+   ['Distribución por área usuaria', ['Área usuaria','Registros'], [...byArea].sort((a,b) => b[1]-a[1])],
+   ['Programados en el PAC', columns, scheduled.map(row)],
+   ['No programados', columns, rows.filter(r => !programmed(r)).map(row)]
+  ];
+ }},
+ procedimientos: {title:'Procedimientos'},
+ alertas: {title:'Alertas y plazos'},
+ especialistas: {title:'Especialistas'}
+};
+function reportSection([heading, columns, rows]) {
+ const body = rows.map(row => '<tr>'+row.map(value => '<td>'+escR(value === '' || value == null ? '—' : value)+'</td>').join('')+'</tr>').join('');
+ return '<section><h2>'+escR(heading)+' <small>('+rows.length+')</small></h2><table><thead><tr>'+
+  columns.map(column => '<th scope="col">'+escR(column)+'</th>').join('')+
+  '</tr></thead><tbody>'+(body || '<tr><td colspan="'+columns.length+'">Sin registros.</td></tr>')+'</tbody></table></section>';
+}
+function openSectionPdf(route) {
+ if (!Object.hasOwn(pdfSections, route)) {
+  window.sunarpNavigate('reportes');
+  document.querySelector('[data-sun-pdf="pac"]').focus();
+  return;
+ }
+ const report = pdfSections[route];
+ if (typeof report.sections !== 'function') { alert('El reporte de esta sección todavía no está disponible.'); return; }
+ const popup = window.open('', '_blank');
+ if (!popup) { alert('Permite las ventanas emergentes para abrir el reporte PDF.'); return; }
+ const title = escR(report.title);
+ const stamp = escR(new Date().toLocaleString('es-PE', {timeZone:'America/Lima'}));
+ popup.document.open();
+ popup.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Reporte · ${title} · SUNARP 2026</title><style>@page{size:A4;margin:16mm}body{font:12px Arial;color:#23334b;margin:0}header{background:#17365d;color:white;padding:22px;border-bottom:4px solid #dfa92b}h1{font-size:20px;margin:0}h2{font-size:15px;color:#17365d;margin-top:23px;border-bottom:1px solid #cbd7e5;padding-bottom:6px}small{color:#67758a}.kpis{display:flex;gap:12px;margin-top:20px}.kpi{flex:1;border:1px solid #d7e0ec;border-radius:8px;padding:12px}.kpi b{font-size:23px;display:block;color:#17365d;margin-top:7px}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}td,th{border-bottom:1px solid #e0e7ef;padding:8px;text-align:left}th{background:#edf2f8}.bar{height:10px;background:#e8eef5;border-radius:6px}.bar i{display:block;background:#3779aa;height:10px;border-radius:6px}footer{margin-top:24px;font-size:10px;color:#65778b}.noprint{margin:14px 0;background:#17365d;color:white;border:0;border-radius:6px;padding:10px 16px;cursor:pointer}@media print{.noprint{display:none}h2{break-after:avoid}tr{break-inside:avoid}}</style><style>
 .pv-pac-controls{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.pv-pac-controls button{background:white;border:1px solid #cbd5e1;border-radius:9px;padding:9px 13px;color:#334155}.pv-pac-controls button.on{background:#17365d;color:white;border-color:#17365d}.pv-pac-list{display:grid;gap:7px;max-height:450px;overflow:auto}.pv-pac-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:white;border:1px solid #e2e8f0;border-radius:10px;font-size:12px;line-height:1.5;color:#334155}.pv-pac-item>span:last-child{flex:1;min-width:0}.pv-pac-item strong{display:block;font-weight:650}.pv-pac-item small{display:block;margin-top:3px;color:#64748b;white-space:pre-wrap}.pv-pac-tag{display:inline-flex;flex-shrink:0;align-items:center;border-radius:18px;padding:5px 9px;font-size:11px;font-weight:750;white-space:nowrap}.pv-pac-tag.is-programado{background:#dbeafe;color:#1d4ed8}.pv-pac-tag.is-no{background:#e2e8f0;color:#475569}@media(max-width:650px){.pv-pac-item{flex-direction:column}}
 </style>
 <style id="pacAvatarEnhanceStyle">
@@ -2731,8 +2771,13 @@ function reportHTML(z){let stateRows=Object.entries(z.states).sort((a,b)=>b[1]-a
 .sun-area-row{grid-template-columns:85px 1fr 30px auto!important}
 .sun-area-eye{padding:4px 8px}
 </style>
-</head><body><header><h1>Seguimiento de procedimientos de selección – SUNARP 2026</h1><div>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</div></header><button class="noprint" onclick="window.print()">Guardar como PDF / Imprimir</button><p>Reporte generado: ${escR(z.stamp)}. ${escR(z.filterNote)}</p><div class="kpis"><div class="kpi">Procedimientos<b>${z.rows.length}</b></div><div class="kpi">Contratos 2026<b>${z.contracts.length}</b></div><div class="kpi">Vencen en 90 días<b>${z.due.length}</b></div></div><h2>Distribución por estado</h2><table><tr><th>Estado</th><th>Cantidad</th><th style="width:42%">Distribución</th></tr>${stateRows.map(([k,v])=>`<tr><td>${escR(k)}</td><td>${v}</td><td><div class="bar"><i style="width:${100*v/mx}%"></i></div></td></tr>`).join('')}</table><h2>Programación y previsiones presupuestales</h2><table><tr><th>Ejercicio</th><th>Importe registrado</th><th>Con monto</th><th>Sin monto numérico</th></tr>${z.yrs.map(y=>`<tr><td>${y.year===2026?'CCP 2026':'Previsión '+y.year}</td><td>${money(y.total)}</td><td>${y.count}</td><td>${y.missing}</td></tr>`).join('')}</table><h2>Distribución por área usuaria</h2><table><tr><th>Área</th><th>Registros</th></tr>${areaRows.map(([a,n])=>`<tr><td>${escR(a)}</td><td>${n}</td></tr>`).join('')}</table><h2>Contratos suscritos en 2026</h2><table><tr><th>Contrato</th><th>Objeto</th><th>Vencimiento</th></tr>${z.contracts.slice(0,30).map(r=>`<tr><td>${escR(r.numeroContrato||'—')}</td><td>${escR((r.descripcion||'').slice(0,110))}</td><td>${escR(r.vencimiento||'—')}</td></tr>`).join('')}</table><footer>Reporte de seguimiento interno. La ausencia de un monto no equivale a S/ 0.00; las previsiones registradas no acreditan por sí solas aprobación presupuestal. Validar contra documentos oficiales.</footer></body></html>`}
-$r('reportPdf').addEventListener('click',()=>{let w=window.open('','_blank');if(!w){alert('Permite las ventanas emergentes para abrir el reporte PDF.');return}w.document.open();w.document.write(reportHTML(snapshot()));w.document.close()});
+</head><body><header><h1>Seguimiento de procedimientos de selección – SUNARP 2026</h1><div>Oficina de Administración · Unidad de Abastecimiento y Patrimonio</div></header><button class="noprint" onclick="window.print()">Guardar como PDF / Imprimir</button><h2>${title}</h2> <p>Generado el ${stamp}</p>${report.sections().map(reportSection).join('')}</body></html>`);
+ popup.document.close();
+}
+$r('reportPdf').addEventListener('click', () => openSectionPdf(document.body.dataset.sunPage));
+document.querySelectorAll('[data-sun-pdf]').forEach(button => {
+ button.addEventListener('click', () => openSectionPdf(button.dataset.sunPdf));
+});
 async function downloadPowerPoint(ppt){
  const generated=await ppt.write({outputType:'blob',compression:true});
  const blob=generated instanceof Blob?generated:new Blob([generated],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'});
@@ -2854,6 +2899,13 @@ window.sunMonitoring2026=(function(){
  let selectedName=null;
  const allAssigned=()=>data.filter(r=>names.includes(person(r)));
  const pendingAll=()=>allAssigned().filter(esPendiente);
+ if (window.sunarpPdfSections) window.sunarpPdfSections.especialistas.sections=()=>names.map(name=>{
+  const assigned=allAssigned().filter(r=>person(r)===name);
+  const pending=assigned.filter(esPendiente).length;
+  return [personLabel(name)+' · '+pending+(pending===1?' pendiente':' pendientes'),
+   ['Servicio','N.° de procedimiento','Estado registrado','Pendiente'],
+   assigned.map(r=>[r.descripcion,r.procedimiento,r.estadoNueva||r.estado,esPendiente(r)?'Sí':'No'])];
+ });
  function summary(){
   const assigned=allAssigned(),pending=pendingAll();
   const counts=names.map(name=>({
@@ -4105,6 +4157,20 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   // aunque siga vigente un contrato anterior.
   return processing?'preparatorias':hasContract(r)&&expiry(r).kind!=='expired'?'vigentes':'preparatorias';
  }
+ const procedureStage=r=>/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria))&&field(r.estadoNueva)!=='—'?field(r.estadoNueva):field(r.estado);
+ function displayProcedureStage(current, published){
+  return published&&norm(current)==='ACTUACIONES PREPARATORIAS'?'PROCEDIMIENTO CONVOCADO':current;
+ }
+ if (window.sunarpPdfSections) window.sunarpPdfSections.procedimientos.sections=()=>{
+  const rows=data.filter(r=>matches(r,norm(search.value)));
+  return [['preparatorias','Procedimientos en seguimiento'],['vigentes','Contratos vigentes']].map(([segment,label])=>[
+   label,['Servicio','N.° de procedimiento','PAC','Etapa','Responsable','Vencimiento'],
+   rows.filter(r=>segmentOf(r)===segment).map(r=>[
+    r.descripcion,r.procedimiento,r.pac,displayProcedureStage(procedureStage(r),newState(r).kind==='published'),
+    window.sunMonitoring2026.read(r).owner,expiry(r).date
+   ])
+  ]);
+ };
  function paint(){
   const items=Array.isArray(data)?data:[];
   const q=norm(search.value);
@@ -4322,6 +4388,17 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
     return rank(a)-rank(b)||(a.when??Infinity)-(b.when??Infinity)||a.service.localeCompare(b.service,'es');
    });
  }
+ if (window.sunarpPdfSections) window.sunarpPdfSections.alertas.sections=()=>{
+  const pending=createTasks().filter(task=>!(savedFor===dateKey(today())?checked.has(task.id):loadChecks().has(task.id)));
+  return people.map(person=>[
+   'Pendientes de '+person.name,['Servicio','Etapa','Hito o plazo','Fecha','Situación'],
+   pending.filter(task=>task.owner===person.name).map(task=>[
+    task.service,task.stage,
+    task.deadlines.map(deadline=>deadline.label).join('\n')||task.unconfirmed||'Fecha por confirmar',
+    task.deadlines.map(deadline=>displayDate(deadline.date)).join('\n'),status(task).label
+   ])
+  ]);
+ };
  function status(t){
   if(t.when===null)return {label:'Fecha por confirmar',kind:'nodate'};
   if(t.when<0)return {label:'Fecha transcurrida · verificar',kind:'overdue'};
