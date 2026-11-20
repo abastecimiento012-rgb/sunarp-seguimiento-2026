@@ -2229,6 +2229,8 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
   <button type="button" class="sun-proc2026-segment is-active" data-sun-proc-segment="vigentes" aria-pressed="true">✓ Contratos vigentes <span id="sunProc2026VigentesCount"></span></button>
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="seleccion" aria-pressed="false">Fase de selección <span id="sunProc2026SeleccionCount"></span></button>
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="preparatorias" aria-pressed="false">Actuaciones preparatorias <span id="sunProc2026PreparatoriasCount"></span></button>
+  <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="cancelado" aria-pressed="false">Cancelado <span id="sunProc2026CanceladoCount"></span></button>
+  <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="sinRequerimiento" aria-pressed="false">Sin requerimiento <span id="sunProc2026SinRequerimientoCount"></span></button>
  </div>
  <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
@@ -4159,6 +4161,8 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   const processing=['ongoing','published','relaunch','pending','unknown'].includes(ns.kind)||
    /ACTUACIONES PREPARATORIAS|CONVOCATORIA|CONSULTAS|OBSERVACIONES|EVALUACION|DESIERTO|CANCELADO|SIN REQUERIMIENTO|PENDIENTE DEL SIGA/.test(stage);
   const current=norm(procedureStage(r));
+  if(current==='CANCELADO')return 'cancelado';
+  if(current==='SIN REQUERIMIENTO')return 'sinRequerimiento';
   const inSelection=isSelectionStage(current)||
    /^(?:PROCEDIMIENTO )?CONVOCADO$|CONVOCATORIA PUBLICADA|PRESENTACION DE OFERTAS|EVALUACION DE OFERTAS|CONSULTAS Y OBSERVACIONES/.test(current);
   if(ns.kind!=='relaunch'&&(inSelection||ns.kind==='published'))return 'seleccion';
@@ -4170,7 +4174,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
  }
  if (window.sunarpPdfSections) window.sunarpPdfSections.procedimientos.sections=()=>{
   const rows=data.filter(r=>matches(r,norm(search.value)));
-  return [['seleccion','Fase de selección'],['preparatorias','Actuaciones preparatorias'],['vigentes','Contratos vigentes']].map(([segment,label])=>[
+  return [['seleccion','Fase de selección'],['preparatorias','Actuaciones preparatorias'],['cancelado','Cancelado'],['sinRequerimiento','Sin requerimiento'],['vigentes','Contratos vigentes']].map(([segment,label])=>[
    label,['Servicio','N.° de procedimiento','PAC','Etapa','Responsable','Vencimiento'],
    rows.filter(r=>segmentOf(r)===segment).map(r=>[
     r.descripcion,r.procedimiento,r.pac,displayProcedureStage(procedureStage(r),newState(r).kind==='published'),
@@ -4182,9 +4186,11 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   const items=Array.isArray(data)?data:[];
   const q=norm(search.value);
   const indexed=items.map((r,i)=>({r,i}));
-  const counts={vigentes:0,seleccion:0,preparatorias:0};
+  const counts={vigentes:0,seleccion:0,preparatorias:0,cancelado:0,sinRequerimiento:0};
   for(const {r} of indexed)counts[segmentOf(r)]++;
   el('sunProc2026SeleccionCount').textContent=counts.seleccion;
+  el('sunProc2026CanceladoCount').textContent=counts.cancelado;
+  el('sunProc2026SinRequerimientoCount').textContent=counts.sinRequerimiento;
   el('sunProc2026VigentesCount').textContent=counts.vigentes;
   el('sunProc2026PreparatoriasCount').textContent=counts.preparatorias;
   const visible=indexed.filter(({r})=>segmentOf(r)===selectedSegment&&matches(r,q));
