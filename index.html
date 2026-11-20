@@ -554,6 +554,13 @@ body[data-sun-page="pac"] #previsionSummary{display:none!important}
 body[data-sun-page="reportes"] #sunReportsPage{display:block!important}
 body[data-sun-page] #sunTimelineSimulator{display:none!important}
 body[data-sun-page="simulador"] #sunTimelineSimulator{display:block!important}
+#sunOeceSchedules{display:none}
+body[data-sun-page="cronogramas-oece"] #sunOeceSchedules{display:grid;gap:16px}
+#sunOeceSchedules figure{margin:0}
+.sun-oece-caption{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px;margin:0 0 12px}
+#sunOeceSchedules .sun-oece-caption h2{font-size:18px;margin:0}
+.sun-oece-zoom{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.sun-oece-image{display:block;width:100%;max-width:max-content;height:auto;border-radius:6px}
 body[data-sun-page] main.shell{min-height:55vh}
 .sun-page-head{background:linear-gradient(110deg,#17365d,#245c8b);color:white;border-radius:15px;padding:21px 24px;margin:0 0 19px}
 .sun-page-head[hidden]{display:none!important}
@@ -2176,6 +2183,7 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
     <div class="sun-nav-report-sim-stack">
       <button type="button" class="sun-nav-link" data-sun-route="reportes" title="5. Reportes para control gerencial">⑤ Reportes</button>
       <button type="button" class="sun-nav-link" data-sun-route="simulador" title="Consultar duración estimada de una nueva contratación">⑥ Cronogramas y plazos</button>
+      <button type="button" class="sun-nav-link" data-sun-route="cronogramas-oece">⑦ Cronogramas OECE</button>
     </div>
     <div class="sun-bell-wrap"><button type="button" id="sunBell2026" aria-label="Notificaciones de entregas" aria-expanded="false" title="Entregas de especialistas">🔔 <span id="sunBellCount2026" hidden>0</span></button><section id="sunBellPanel2026" hidden><header><strong>🔔 Plazos de entrega</strong><button type="button" id="sunBellClose2026">✕</button></header><p id="sunBellSummary2026"></p><div id="sunBellItems2026"></div><footer><button type="button" id="sunBellBrowser2026">Activar avisos del navegador</button><button type="button" data-sun-route="alertas" id="sunBellGo2026">Ver alertas y plazos</button></footer><small>Los avisos se calculan a partir de las fechas registradas. Los avisos del navegador requieren que la aplicación permanezca abierta.</small></section></div><div class="sun-nav-tools" aria-label="Apariencia y calendario">
       <div class="sun-theme-control" role="group" aria-label="Seleccionar apariencia">
@@ -2325,6 +2333,24 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
 <div class="sc-query"><h3>Consultar un plazo</h3><p class="sc-help">Pregunta por una actividad del escenario seleccionado. Por ejemplo: “¿Cuándo se presentan las ofertas?” o “¿Cuál es el plazo para subsanar?”.</p><form id="scQueryForm"><input id="scQuery" aria-label="Consulta de plazos" placeholder="Escribe la actividad o el plazo que quieres consultar"><button type="submit">Consultar</button></form><div class="sc-examples"><button type="button" data-sc-query="consultas observaciones">Consultas y observaciones</button><button type="button" data-sc-query="presentación ofertas">Presentación de ofertas</button><button type="button" data-sc-query="consentimiento">Consentimiento</button><button type="button" data-sc-query="requisitos contrato">Documentos para contrato</button><button type="button" data-sc-query="subsanación">Subsanación</button></div><div id="scAnswer" aria-live="polite"></div></div>
 <div id="scResult" aria-live="polite"></div>
 <details class="sc-details"><summary>Reglas y fuentes del cálculo</summary><p>Plantillas instaladas: <b>LP-CP ABREV.</b> y <b>LP-CP</b> de CRONOGRAMA P. SELECCIÓN_SEGUIMIENTO.xlsx. Se usan las duraciones y actividades; se recalculan sus fechas y no se copian las celdas con fechas históricas o inválidas.</p><p>Reglas: días hábiles (art. 62.2), mínimo global de ofertas (64.1), consultas (66.1), elevación (67), ofertas (68.1), consentimiento y su registro (82), requisitos y firma (90), apelación (304, 307, 310 y 311). El número de días de cada hito aparece en su fila.</p><p><a href="https://www.gob.pe/institucion/oece/informes-publicaciones/6444155-ley-n-32069-ley-general-de-contrataciones-publicas-y-su-reglamento-actualizados" target="_blank" rel="noopener">Reglamento y modificatoria de enero de 2026</a> · <a href="https://busquedas.elperuano.pe/dispositivo/EX/2567159-1" target="_blank" rel="noopener">D. S. 222-2026-EF (certificación de compradores)</a> · <a href="https://www.gob.pe/feriados" target="_blank" rel="noopener">Feriados nacionales</a> · <a href="https://busquedas.elperuano.pe/dispositivo/NL/2516156-2" target="_blank" rel="noopener">Día no laborable 27/07/2026</a> · <a href="https://busquedas.elperuano.pe/dispositivo/NL/2567553-1" target="_blank" rel="noopener">Días no laborables regionales de noviembre de 2026</a>.</p><p>Reglas revisadas al 17/11/2026. Alcance: bienes y servicios bajo Ley 32069, sin precalificación, diálogo, negociación ni reducción por anuncio de contratación futura. Otras modalidades, regímenes y modificaciones normativas requieren revisar su regla específica.</p></details>
+</section>
+<section id="sunOeceSchedules" aria-label="Capturas de cronogramas del OECE">
+  <figure class="panel">
+    <figcaption class="sun-oece-caption"><h2>Fotocopiado y escaneado · Segunda convocatoria</h2><a class="sun-oece-zoom" href="./cronogramas-oece/fotocopiado-y-escaneado.png" target="_blank" rel="noopener" aria-label="Abrir captura de Fotocopiado y escaneado · Segunda convocatoria en tamaño original (nueva pestaña)">Ver en tamaño original ↗</a></figcaption>
+    <img class="sun-oece-image" src="./cronogramas-oece/fotocopiado-y-escaneado.png" width="1169" height="329" loading="lazy" alt="Cronograma del OECE para Fotocopiado y escaneado · Segunda convocatoria con etapas y fechas de inicio y fin">
+  </figure>
+  <figure class="panel">
+    <figcaption class="sun-oece-caption"><h2>Mantenimiento de switches</h2><a class="sun-oece-zoom" href="./cronogramas-oece/mantenimiento-de-switches.png" target="_blank" rel="noopener" aria-label="Abrir captura de Mantenimiento de switches en tamaño original (nueva pestaña)">Ver en tamaño original ↗</a></figcaption>
+    <img class="sun-oece-image" src="./cronogramas-oece/mantenimiento-de-switches.png" width="1098" height="320" loading="lazy" alt="Cronograma del OECE para Mantenimiento de switches con etapas y fechas de inicio y fin">
+  </figure>
+  <figure class="panel">
+    <figcaption class="sun-oece-caption"><h2>VPN</h2><a class="sun-oece-zoom" href="./cronogramas-oece/vpn.png" target="_blank" rel="noopener" aria-label="Abrir captura de VPN en tamaño original (nueva pestaña)">Ver en tamaño original ↗</a></figcaption>
+    <img class="sun-oece-image" src="./cronogramas-oece/vpn.png" width="1174" height="325" loading="lazy" alt="Cronograma del OECE para VPN con etapas y fechas de inicio y fin">
+  </figure>
+  <figure class="panel">
+    <figcaption class="sun-oece-caption"><h2>Uniformes</h2><a class="sun-oece-zoom" href="./cronogramas-oece/uniformes.png" target="_blank" rel="noopener" aria-label="Abrir captura de Uniformes en tamaño original (nueva pestaña)">Ver en tamaño original ↗</a></figcaption>
+    <img class="sun-oece-image" src="./cronogramas-oece/uniformes.png" width="1116" height="317" loading="lazy" alt="Cronograma del OECE para Uniformes con etapas y fechas de inicio y fin">
+  </figure>
 </section>
 </main><script id="sunarpStickyColumns2026">
 (function(){
@@ -3713,6 +3739,7 @@ experts();apply();
   especialistas:['4. Especialistas · Responsables','Consulta la asignación de procedimientos y la carga de trabajo por especialista. Este es un control de gestión transversal.'],
   reportes:['5. Reportes · Control gerencial','Consulta resultados y genera reportes PowerPoint, PDF y CSV para el seguimiento gerencial.'],
   simulador:['6. Cronogramas y consulta de plazos','Consulta fechas por procedimiento, con las actividades de tu cronograma y los plazos reglamentarios.'],
+  'cronogramas-oece':['7. Cronogramas OECE','Capturas de los procedimientos en la hoja Cronogramas Procesos del Excel del 20 de noviembre de 2026.'],
   calendario:['Calendario de vencimientos contractuales','Acceso rápido a las fechas de vencimiento, responsables y fichas contractuales.']
  };
  const tabs={pac:'tabAll'};
