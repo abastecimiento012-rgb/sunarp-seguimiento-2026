@@ -4244,7 +4244,8 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   const d=new Date(+m[3],+m[2]-1,+m[1]);
   return d.getFullYear()===+m[3]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[1]?d:null;
  }
- const isSelected=r=>people.some(p=>norm(r.especialista)===p.name||norm(r.especialista).startsWith(p.name+' /'));
+ const alertOwner=r=>norm(r.especialista).replace(/\s*\([^)]*\)\s*/g,' ').split(/\s*\/\s*/)[0].trim();
+ const isSelected=r=>people.some(p=>alertOwner(r)===p.name);
  const newContract=r=>/^SI(?:\b|\s|-)/.test(norm(r.nuevaConvocatoria));
  const finished=r=>{
   const estado=norm(r.estado),nueva=norm(r.estadoNueva);
@@ -4308,7 +4309,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
     const primary=commitment||actionable[0]||due.list[0]||null;
     return {
      id:String(r.id??index)+'|pendiente',
-     index,r,owner:norm(r.especialista).split(/\s*\/\s*/)[0],
+     index,r,owner:alertOwner(r),
      service:fmt(r.descripcion),
      stage:fmt(r.estadoNueva)!=='—'?fmt(r.estadoNueva):fmt(r.estado),
      deadlines:due.list,
