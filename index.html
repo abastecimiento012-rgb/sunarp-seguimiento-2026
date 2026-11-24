@@ -3268,7 +3268,7 @@ function mapHeaders(cells){const mapping={};let previous='';for(const [col,label
 function recordId(item){if(item.id)return item.id;const key=r=>normalizeHeader(r.descripcion)+'|'+normalizeHeader(r.procedimiento);const existing=typeof data!=='undefined'&&Array.isArray(data)?data:[];const matches=existing.filter(r=>key(r)===key(item));if(matches.length===1)return String(matches[0].id);const byDescription=existing.filter(r=>normalizeHeader(r.descripcion)===normalizeHeader(item.descripcion));if(byDescription.length===1)return String(byDescription[0].id);let hash=2166136261;for(const c of key(item)){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619);}return 'EX-'+(hash>>>0).toString(16);}
 
 const enc=new TextDecoder();const u16=(b,p)=>b[p]|b[p+1]<<8;const u32=(b,p)=>(b[p]|b[p+1]<<8|b[p+2]<<16|b[p+3]<<24)>>>0;
-async function unzip(buf){const b=new Uint8Array(buf);let end=-1;for(let i=b.length-22;i>=Math.max(0,b.length-65557);i--)if(u32(b,i)===0x06054b50){end=i;break}if(end<0)throw Error('El archivo no tiene estructura XLSX válida.');const count=u16(b,end+10);let at=u32(b,end+16);const out={};for(let i=0;i<count;i++){if(u32(b,at)!==0x02014b50)throw Error('Directorio ZIP inválido');const method=u16(b,at+10),size=u32(b,at+20),nameLen=u16(b,at+28),extra=u16(b,at+30),comment=u16(b,at+32),offset=u32(b,at+42),name=enc.decode(b.slice(at+46,at+46+nameLen));at+=46+nameLen+extra+comment;if(!/^(xl\/|\[Content_Types\])/.test(name))continue;if(u32(b,offset)!==0x04034b50)throw Error('Entrada ZIP inválida');const start=offset+30+u16(b,offset+26)+u16(b,offset+28);const compressed=b.slice(start,start+size);let content;if(method===0)content=compressed;else if(method===8){if(typeof DecompressionStream==='undefined')throw Error('Este navegador no permite leer XLSX sin conexión. Utiliza Chrome o Edge actualizado.');const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('deflate-raw'));content=new Uint8Array(await new Response(stream).arrayBuffer())}else throw Error('Compresión XLSX no compatible');out[name]=enc.decode(content)}return out}
+async function unzip(buf){const b=new Uint8Array(buf);let end=-1;for(let i=b.length-22;i>=Math.max(0,b.length-65557);i--)if(u32(b,i)===0x06054b50){end=i;break}if(end<0)throw Error('El archivo no tiene estructura XLSX válida.');const count=u16(b,end+10);let at=u32(b,end+16);const out={};for(let i=0;i<count;i++){if(u32(b,at)!==0x02014b50)throw Error('Directorio ZIP inválido');const method=u16(b,at+10),size=u32(b,at+20),nameLen=u16(b,at+28),extra=u16(b,at+30),comment=u16(b,at+32),offset=u32(b,at+42),name=enc.decode(b.slice(at+46,at+46+nameLen));at+=46+nameLen+extra+comment;if(!/^(xl\/|\[Content_Types\])/.test(name))continue;if(u32(b,offset)!==0x04034b50)throw Error('Entrada ZIP inválida');const start=offset+30+u16(b,offset+26)+u16(b,offset+28);const compressed=b.slice(start,start+size);let content;if(method===0)content=compressed;else if(method===8){if(typeof DecompressionStream==='undefined')throw Error('Este navegador no permite leer XLSX sin conexión. Utiliza Chrome o Edge actualizado.');const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('deflate-raw'));content=new Uint8Array(await new Response(stream).arrayBuffer())}else throw Error('Compresión XLSX no compatible');out[name]=name.startsWith('xl/media/')?content:enc.decode(content)}return out}
 const xml=t=>{const d=new DOMParser().parseFromString(t,'application/xml');if(d.querySelector('parsererror'))throw Error('XML de Excel inválido');return d};
 const nodes=(root,tag)=>Array.from(root.getElementsByTagNameNS('*',tag));
 const textOf=n=>nodes(n,'t').map(x=>x.textContent).join('');
@@ -3295,6 +3295,48 @@ if(!headerFound){
 }
 const descCol=Object.keys(fieldMap).find(c=>fieldMap[c]==='descripcion');if(!r[descCol])continue;const item=Object.fromEntries(Object.values(COLS).map(k=>[k,'']));for(const [col,key] of Object.entries(fieldMap))item[key]=r[col]??'';item.id=recordId(item);item.plazoEntrega=item.plazoEntrega.replace(/^(\d{1,2}\.\d{2})(\d{4})$/,'$1.$2');item.plazoEntrega=item.plazoEntrega.replace(/^(\d{1,2})\.(\d{2})(\d{4})$/, '$1.$2.$3');item.fechaEsperada=item.plazoEntrega;item.fechaCompromiso=/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(item.plazoEntrega)?item.plazoEntrega:'';item.nuevaConvocatoria=/ACTUACIONES PREPARATORIAS|CONVOCATORIA|DESIERTO|EN EVALUACI[ÓO]N/i.test(item.estado+' '+item.estadoNueva)?'SÍ':'NO';item.filaExcel=n;rows.push(item)}if(!rows.length)throw Error('No se encontraron procedimientos debajo de los encabezados de la primera hoja.');return rows}
 window.sunParseExcel=async buffer=>parse(await unzip(buffer));
+function relatedPath(files,source,id){
+ const slash=source.lastIndexOf('/'),dir=source.slice(0,slash+1),name=source.slice(slash+1);
+ const rels=files[dir+'_rels/'+name+'.rels'];
+ if(!rels)return null;
+ const relation=nodes(xml(rels),'Relationship').find(r=>r.getAttribute('Id')===id);
+ if(!relation||relation.getAttribute('TargetMode')==='External')return null;
+ const target=relation.getAttribute('Target')||'';
+ const parts=[];
+ for(const p of (target.startsWith('/')?target.slice(1):dir+target).split('/')){
+  if(p==='..')parts.pop();else if(p&&p!=='.')parts.push(p);
+ }
+ return parts.join('/');
+}
+function parseSchedules(files){
+ const sheet=nodes(xml(files['xl/workbook.xml']),'sheet').find(n=>normalizeHeader(n.getAttribute('name'))==='CRONOGRAMASPROCESOS');
+ if(!sheet)return null;
+ const path=relatedPath(files,'xl/workbook.xml',sheet.getAttribute('r:id'));
+ if(!path||!files[path])throw Error('No se pudo leer la hoja Cronogramas Procesos.');
+ const doc=xml(files[path]),strings=files['xl/sharedStrings.xml']?nodes(xml(files['xl/sharedStrings.xml']),'si').map(textOf):[];
+ const headings=nodes(doc,'c').map(c=>{
+  const ref=c.getAttribute('r')||'',type=c.getAttribute('t'),v=nodes(c,'v')[0]?.textContent||'';
+  return {row:Number(ref.replace(/^[A-Z]+/,'')),col:ref.match(/^[A-Z]+/)?.[0]||'',title:String(type==='s'?strings[Number(v)]||'':type==='inlineStr'?textOf(c):v).trim()};
+ }).filter(c=>c.title&&c.col==='A').sort((a,b)=>a.row-b.row);
+ const result=[];
+ for(const drawing of nodes(doc,'drawing')){
+  const drawingPath=relatedPath(files,path,drawing.getAttribute('r:id'));
+  if(!drawingPath||!files[drawingPath])throw Error('No se pudo leer las imágenes del cronograma.');
+  for(const anchor of Array.from(xml(files[drawingPath]).documentElement.children)){
+   const pic=nodes(anchor,'pic')[0];if(!pic)continue;
+   const blip=nodes(pic,'blip')[0],mediaPath=relatedPath(files,drawingPath,blip?.getAttribute('r:embed'));
+   const bytes=files[mediaPath],ext=mediaPath?.split('.').pop()?.toLowerCase(),mime={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp'}[ext];
+   if(!mime||!(bytes instanceof Uint8Array))throw Error('Hay una captura de cronograma con formato no compatible. Utiliza PNG o JPEG.');
+   const from=nodes(anchor,'from')[0],row=Number(nodes(from||anchor,'row')[0]?.textContent||0)+1,col=Number(nodes(from||anchor,'col')[0]?.textContent||0);
+   const heading=headings.filter(c=>c.row<=row).pop();
+   const title=heading?.title||nodes(pic,'cNvPr')[0]?.getAttribute('name')||'Cronograma';
+   let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
+   result.push({row,col,title,src:'data:'+mime+';base64,'+btoa(binary)});
+  }
+ }
+ return result.sort((a,b)=>a.row-b.row||a.col-b.col).map(({title,src})=>({title,src}));
+}
+window.sunParseExcelPublication=async buffer=>{const files=await unzip(buffer);return {records:parse(files),schedules:parseSchedules(files)};};
 const normKey=s=>String(s||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();
 function backup(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='SUNARP_respaldo_antes_de_actualizar_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
 btn.addEventListener('click',()=>file.click());file.addEventListener('change',async()=>{const f=file.files?.[0];file.value='';if(!f)return;btn.disabled=true;btn.textContent='Leyendo Excel…';try{if(!/\.xlsx$/i.test(f.name))throw Error('Selecciona un archivo .xlsx');const incoming=parse(await unzip(await f.arrayBuffer()));const existingById=new Map(),existingByDesc=new Map();data.forEach((r,i)=>{if(r.id)existingById.set(normKey(r.id),i);const key=normKey(r.descripcion)+'|'+normKey(r.procedimiento);if(r.descripcion)existingByDesc.set(key,i)});let updated=0,added=0,unchanged=0;const result=data.map(r=>({...r}));const used=new Set();for(const item of incoming){let ix=existingById.get(normKey(item.id));if(ix===undefined)ix=existingByDesc.get(normKey(item.descripcion)+'|'+normKey(item.procedimiento));if(ix!==undefined&&used.has(ix))ix=undefined;if(ix===undefined){result.push(item);added++;continue}used.add(ix);const prior=result[ix],merged={...prior,...item};if(JSON.stringify(prior)===JSON.stringify(merged))unchanged++;else updated++;result[ix]=merged}
@@ -3794,7 +3836,7 @@ experts();apply();
   especialistas:['4. Especialistas · Responsables','Consulta la asignación de procedimientos y la carga de trabajo por especialista. Este es un control de gestión transversal.'],
   reportes:['5. Reportes · Control gerencial','Consulta resultados y genera reportes PowerPoint, PDF y CSV para el seguimiento gerencial.'],
   simulador:['6. Cronogramas y consulta de plazos','Consulta fechas por procedimiento, con las actividades de tu cronograma y los plazos reglamentarios.'],
-  'cronogramas-oece':['7. Cronogramas OECE','Capturas de los procedimientos en la hoja Cronogramas Procesos del Excel del 20 de noviembre de 2026.'],
+  'cronogramas-oece':['7. Cronogramas OECE','Capturas de los procedimientos de la hoja Cronogramas Procesos del último Excel publicado.'],
   calendario:['Calendario de vencimientos contractuales','Acceso rápido a las fechas de vencimiento, responsables y fichas contractuales.']
  };
  const tabs={pac:'tabAll'};
@@ -4823,6 +4865,20 @@ html[data-sun-theme="dark"] #sunCentralStatus.is-error{background:#583037;color:
      const {payload,text}=published;
      if(text!==lastText){
        data=payload.records;
+       if(Array.isArray(payload.schedules)){
+         const section=document.getElementById('sunOeceSchedules');
+         const cards=payload.schedules.filter(item=>item&&typeof item.title==='string'&&typeof item.src==='string'&&/^data:image\/(png|jpeg|gif|webp);base64,[A-Za-z0-9+/=]+$/.test(item.src)).map(item=>{
+           const figure=document.createElement('figure');figure.className='panel';
+           const caption=document.createElement('figcaption');caption.className='sun-oece-caption';
+           const heading=document.createElement('h2');heading.textContent=item.title;
+           const link=document.createElement('a');link.className='sun-oece-zoom';link.href=item.src;link.textContent='Ver en tamaño original ↗';
+           link.addEventListener('click',event=>{event.preventDefault();const bytes=Uint8Array.from(atob(item.src.split(',')[1]),c=>c.charCodeAt(0));const url=URL.createObjectURL(new Blob([bytes],{type:item.src.slice(5,item.src.indexOf(';'))}));window.open(url,'_blank','noopener');setTimeout(()=>URL.revokeObjectURL(url),60000);});
+           const img=document.createElement('img');img.className='sun-oece-image';img.src=item.src;img.loading='lazy';img.alt='Cronograma del OECE para '+item.title;
+           caption.append(heading,link);figure.append(caption,img);return figure;
+         });
+         if(!cards.length){const empty=document.createElement('p');empty.textContent='No hay capturas en la hoja Cronogramas Procesos.';cards.push(empty);}
+         section?.replaceChildren(...cards);
+       }
        lastText=text;
        if(typeof render==='function')render();
        window.renderProcedimientos2026?.();
@@ -5038,16 +5094,16 @@ html[data-sun-theme="dark"] #sunLinkedDetails .sun-linked-head #sunLinkedClose:h
 <label for="sunAdminToken">Credencial de GitHub para publicar</label><input type="password" id="sunAdminToken" autocomplete="off" placeholder="Token con permiso sobre este repositorio">
 <label for="sunAdminFile">Excel actualizado (.xlsx)</label><input type="file" id="sunAdminFile" accept=".xlsx">
 <pre id="sunAdminPreview" role="status" aria-live="polite">Selecciona el archivo para revisar los cambios.</pre>
-<p>Se publican los campos de seguimiento de la primera hoja, incluidos los plazos de presentación. El Excel original no se sube. La base publicada es pública. Los registros ausentes del Excel se retirarán de la consulta.</p>
+<p>Se publican los campos de seguimiento de la primera hoja y todas las capturas de la hoja Cronogramas Procesos. El Excel original no se sube. La base publicada es pública. Los registros ausentes del Excel se retirarán de la consulta.</p>
 <button id="sunAdminPublish" disabled type="button">Publicar para todos</button><button id="sunAdminClose" type="button">Cerrar</button>
 </dialog>
 <script>
 (()=>{'use strict';
 const dlg=document.getElementById('sunAdmin'),file=document.getElementById('sunAdminFile'),token=document.getElementById('sunAdminToken'),preview=document.getElementById('sunAdminPreview'),publish=document.getElementById('sunAdminPublish');
-const endpoint='https://api.github.com/repos/abastecimiento012-rgb/sunarp-seguimiento-2026/contents/datos.json';let incoming=null,busy=false,baselineSha=null;
-async function current(){const r=await fetch(endpoint+'?ref=main&_='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error('No se pudo comprobar la base publicada (HTTP '+r.status+').');const v=await r.json();return {sha:v.sha,records:JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(v.content.replace(/\s/g,'')),c=>c.charCodeAt(0)))).records};}
-file.onchange=async()=>{incoming=null;publish.disabled=true;baselineSha=null;const f=file.files[0];if(!f)return;preview.textContent='Leyendo y validando Excel…';try{if(!/\.xlsx$/i.test(f.name))throw Error('Selecciona un archivo .xlsx.');if(f.size>20*1024*1024)throw Error('El archivo supera 20 MB.');const rows=await window.sunParseExcel(await f.arrayBuffer());if(rows.length<10)throw Error('Se requieren al menos 10 registros; revisa la hoja y el formato.');if(rows.some(r=>!r.id)||new Set(rows.map(r=>r.id)).size!==rows.length)throw Error('Hay procedimientos repetidos que no se pueden identificar de forma única. Revisa descripción y número de procedimiento.');const prior=await current();baselineSha=prior.sha;const old=new Map(prior.records.map(r=>[r.id,r]));const ids=new Set(rows.map(r=>r.id));const added=rows.filter(r=>!old.has(r.id)).length,removed=prior.records.filter(r=>!ids.has(r.id)).length,changed=rows.filter(r=>old.has(r.id)&&Object.keys(r).some(k=>r[k]!==old.get(r.id)[k])).length;incoming=rows;preview.textContent=f.name+'\nFormato reconocido por encabezados · compatible con la plantilla simplificada\n'+rows.length+' registros válidos\n'+changed+' modificados · '+added+' nuevos · '+removed+' retirados\n'+rows.filter(r=>r.fechaCompromiso).length+' plazos con fecha para alertas\n\nRevisa el resumen antes de publicar.';publish.disabled=false;}catch(e){preview.textContent='No se puede publicar: '+e.message;}};
-publish.onclick=async()=>{if(busy||!incoming)return;if(!token.value.trim()){preview.textContent='Ingresa tu credencial de GitHub. Puedes conservar el Excel seleccionado.';token.focus();return;}if(!confirm('¿Publicar los '+incoming.length+' registros de este Excel para todos los usuarios?'))return;busy=true;publish.disabled=true;file.disabled=true;token.disabled=true;try{const latest=await current();if(latest.sha!==baselineSha)throw Error('La base cambió desde la revisión. Selecciona nuevamente el Excel para comparar con la última versión.');const payload={schemaVersion:1,publishedAt:new Date().toISOString(),recordCount:incoming.length,records:incoming};const bytes=new TextEncoder().encode(JSON.stringify(payload));let binary='';for(const b of bytes)binary+=String.fromCharCode(b);const r=await fetch(endpoint,{method:'PUT',headers:{Accept:'application/vnd.github+json','Content-Type':'application/json',Authorization:'Bearer '+token.value.trim()},body:JSON.stringify({message:'Actualizar seguimiento desde Excel: '+incoming.length+' registros',content:btoa(binary),sha:baselineSha,branch:'main'})});if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub rechazó el permiso. Revisa el propietario, repositorio, caducidad y Contents: Read and write.':r.status===409?'Otra publicación modificó la base. Vuelve a seleccionar el Excel.':'GitHub respondió HTTP '+r.status+'. La publicación no está confirmada.');token.value='';incoming=null;preview.textContent='✓ Publicación confirmada en GitHub. Todos consultarán esta base. Pulsa Recargar información para verla; la publicación del sitio puede tardar unos minutos.';document.getElementById('sunRefreshShared')?.click();}catch(e){preview.textContent='No se publicó: '+e.message;}finally{busy=false;publish.disabled=!incoming;file.disabled=false;token.disabled=false;}};
+const endpoint='https://api.github.com/repos/abastecimiento012-rgb/sunarp-seguimiento-2026/contents/datos.json';let incoming=null,incomingSchedules=null,busy=false,baselineSha=null;
+async function current(){const r=await fetch(endpoint+'?ref=main&_='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error('No se pudo comprobar la base publicada (HTTP '+r.status+').');const v=await r.json();let payload;if(v.content){payload=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(v.content.replace(/\s/g,'')),c=>c.charCodeAt(0))));}else{const raw=await fetch(endpoint+'?ref=main&_='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github.raw+json'}});if(!raw.ok)throw Error('No se pudo leer la base publicada.');payload=await raw.json();}return {sha:v.sha,records:payload.records,schedules:payload.schedules};}
+file.onchange=async()=>{incoming=null;incomingSchedules=null;publish.disabled=true;baselineSha=null;const f=file.files[0];if(!f)return;preview.textContent='Leyendo y validando Excel…';try{if(!/\.xlsx$/i.test(f.name))throw Error('Selecciona un archivo .xlsx.');if(f.size>20*1024*1024)throw Error('El archivo supera 20 MB.');const parsed=await window.sunParseExcelPublication(await f.arrayBuffer());const rows=parsed.records;if(rows.length<10)throw Error('Se requieren al menos 10 registros; revisa la hoja y el formato.');if(rows.some(r=>!r.id)||new Set(rows.map(r=>r.id)).size!==rows.length)throw Error('Hay procedimientos repetidos que no se pueden identificar de forma única. Revisa descripción y número de procedimiento.');const prior=await current();baselineSha=prior.sha;const old=new Map(prior.records.map(r=>[r.id,r]));const ids=new Set(rows.map(r=>r.id));const added=rows.filter(r=>!old.has(r.id)).length,removed=prior.records.filter(r=>!ids.has(r.id)).length,changed=rows.filter(r=>old.has(r.id)&&Object.keys(r).some(k=>r[k]!==old.get(r.id)[k])).length;incoming=rows;incomingSchedules=parsed.schedules??prior.schedules??null;preview.textContent=f.name+'\nFormato reconocido por encabezados · compatible con la plantilla simplificada\n'+rows.length+' registros válidos\n'+changed+' modificados · '+added+' nuevos · '+removed+' retirados\n'+rows.filter(r=>r.fechaCompromiso).length+' plazos con fecha para alertas\n'+(parsed.schedules===null?'Hoja de cronogramas ausente: se conservan las capturas publicadas.':parsed.schedules.length+' capturas de cronogramas: '+parsed.schedules.map(s=>s.title).join(' · '))+'\n\nRevisa el resumen antes de publicar.';publish.disabled=false;}catch(e){preview.textContent='No se puede publicar: '+e.message;}};
+publish.onclick=async()=>{if(busy||!incoming)return;if(!token.value.trim()){preview.textContent='Ingresa tu credencial de GitHub. Puedes conservar el Excel seleccionado.';token.focus();return;}if(!confirm('¿Publicar los '+incoming.length+' registros de este Excel para todos los usuarios?'))return;busy=true;publish.disabled=true;file.disabled=true;token.disabled=true;try{const latest=await current();if(latest.sha!==baselineSha)throw Error('La base cambió desde la revisión. Selecciona nuevamente el Excel para comparar con la última versión.');const payload={schemaVersion:1,publishedAt:new Date().toISOString(),recordCount:incoming.length,records:incoming,...(incomingSchedules===null?{}:{schedules:incomingSchedules})};const bytes=new TextEncoder().encode(JSON.stringify(payload));let binary='';for(const b of bytes)binary+=String.fromCharCode(b);const r=await fetch(endpoint,{method:'PUT',headers:{Accept:'application/vnd.github+json','Content-Type':'application/json',Authorization:'Bearer '+token.value.trim()},body:JSON.stringify({message:'Actualizar seguimiento desde Excel: '+incoming.length+' registros',content:btoa(binary),sha:baselineSha,branch:'main'})});if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub rechazó el permiso. Revisa el propietario, repositorio, caducidad y Contents: Read and write.':r.status===409?'Otra publicación modificó la base. Vuelve a seleccionar el Excel.':'GitHub respondió HTTP '+r.status+'. La publicación no está confirmada.');token.value='';incoming=null;preview.textContent='✓ Publicación confirmada en GitHub. Todos consultarán esta base. Pulsa Recargar información para verla; la publicación del sitio puede tardar unos minutos.';document.getElementById('sunRefreshShared')?.click();}catch(e){preview.textContent='No se publicó: '+e.message;}finally{busy=false;publish.disabled=!incoming;file.disabled=false;token.disabled=false;}};
 document.getElementById('sunAdminClose').onclick=()=>{if(!busy)dlg.close();};dlg.addEventListener('cancel',e=>{if(busy)e.preventDefault();});dlg.addEventListener('close',()=>{token.value='';});
 })();
 </script>
