@@ -4320,7 +4320,8 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
     :statusColor==='cancelled'?'— CANCELADO'
     :statusColor==='relaunch'?'⚠ SEGUNDA CONVOCATORIA'
     :statusColor==='preparatory'?'⚠ ACTUACIONES PREPARATORIAS':title;
-   const newButton=active?'<button type="button" class="sun-proc2026-newbtn sun-proc2026-alertbtn sun-stage-'+statusColor+'" data-sun-proc-context="'+i+'" title="Abrir actuaciones del procedimiento">'+displayTitle+'</button>':'<button type="button" class="sun-proc2026-status sun-proc2026-status-'+state+'" data-sun-proc-context="'+i+'" title="Abrir detalle correspondiente al estado">'+title+'</button>'; 
+   const repeatedStage=norm(displayTitle).replace(/^[^A-Z]+/,'')===norm(displayStage)||statusColor==='called'&&norm(displayStage)==='FASE DE SELECCION';
+   const newButton=active||repeatedStage||norm(title).replace(/^[^A-Z]+/,'')===norm(displayStage)?'':'<button type="button" class="sun-proc2026-status sun-proc2026-status-'+state+'" data-sun-proc-context="'+i+'" title="Abrir detalle correspondiente al estado">'+title+'</button>'; 
    return '<tr class="sun-proc2026-row sun-stage-'+statusColor+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
     '<td data-label="Servicio"><button type="button" class="sun-proc2026-name" data-sun-proc-context="'+i+'" style="display:block;border:0;background:transparent;padding:0;text-align:left;color:inherit;font:inherit;font-weight:inherit;cursor:pointer" title="Abrir ficha según estado">'+esc(field(r.descripcion))+'</button>'+eye+'</td>'+
     '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>' +window.sunPacBadge2026(r.pac)+'</td>'+
