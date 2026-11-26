@@ -4064,12 +4064,13 @@ function openContract(i){
    onlyContractField('Fecha de vencimiento',r.vencimiento),
    onlyContractField('Plazo contractual',r.plazo),
    onlyContractField('Naturaleza de la prestación',r.naturaleza),
+   field('Estado de la nueva contratación',String(r.estadoNueva??'').trim()||'NO REGISTRADO'),
    onlyContractField('Monto contratado (S/)',r.montoContratado)
   ].filter(Boolean);
   content.innerHTML='<div class="sun-newconv-detail">'+description+
    '<p class="sun-linked-notice"><strong>'+esc(state)+'.</strong> Verifica el contrato, sus adendas y las fechas vigentes.</p>'+
    '<div class="sun-newconv-fields">'+fields.join('')+'</div>'+
-   '<p class="sun-ct-note">El estado contractual se estima únicamente a partir de la fecha de vencimiento. El estado del requerimiento y las etapas de selección se consultan en la ficha independiente de nueva contratación; no equivalen al estado del contrato.</p></div>';
+   '<p class="sun-ct-note">El estado contractual se estima únicamente a partir de la fecha de vencimiento. El estado de la nueva contratación se muestra según el registro del Excel y es independiente de la vigencia contractual.</p></div>';
  }
  if(dlg.open)dlg.close();
  dlg.showModal();
