@@ -3980,8 +3980,7 @@ function details(id){
  const fields=[
   field('Especialista responsable del nuevo proceso',spec(r)),
   field('Área usuaria',r.area),
-  field('Etapa de la nueva contratación',status(r)),
-  ...(general==='SIN REQUERIMIENTO'?[field('Situación del requerimiento','SIN REQUERIMIENTO')]:[])
+  ...(general==='SIN REQUERIMIENTO'&&norm(status(r))!=='SIN REQUERIMIENTO'?[field('Situación del requerimiento','SIN REQUERIMIENTO')]:[])
  ];
  if(active){
   const stageKey=v=>norm(v).replace(/^EN\s+/,'').replace(/^FASE DE\s+|^ETAPA DE\s+/,'');
@@ -4009,7 +4008,7 @@ function details(id){
   '</div>':'';
  const follow=processPlaceholder(r.seguimientoExcel)?'':'<h4>Seguimiento de la nueva contratación</h4><div class="sun-newconv-notes">'+esc(r.seguimientoExcel)+'</div>';
  const explanation=second?'Se registra una segunda convocatoria pendiente o prevista. Las fechas de la primera convocatoria no se muestran como si correspondieran a la segunda.':pendingStage?'La nueva contratación aún no tiene una convocatoria publicada acreditada en los campos de seguimiento.':'Se muestran las actuaciones identificadas de la nueva contratación.';
- host.innerHTML='<div class="sun-newconv-detail"><span class="sun-newconv-status '+(pending(r)?'warn':'')+'">'+esc(status(r))+'</span>'+
+ host.innerHTML='<div class="sun-newconv-detail">'+
   '<h3>'+esc(txt(r.descripcion))+'</h3>'+
   '<p class="sun-linked-notice">'+esc(explanation)+'</p>'+
   '<div class="sun-newconv-fields">'+fields.filter(Boolean).join('')+'</div>'+
@@ -4024,7 +4023,7 @@ function openRecord(i){
  const dlg=el('sunLinkedDetails'),content=el('sunLinkedContent');
  if(!dlg||!content)return;
  const gd=el('gerDetail');if(gd?.open)gd.close();
- el('sunLinkedTitle').textContent='Nueva contratación · seguimiento';
+ el('sunLinkedTitle').textContent=status(r)+' · Seguimiento';
  content.innerHTML='<p class="sun-linked-notice">La Ley 32069 distingue las actuaciones preparatorias de la convocatoria. Verifica la publicación en los documentos oficiales.</p><div class="sun-newconv-detail">'+(content.innerHTML||'<p>Sin información registrada.</p>')+'</div>';
  content.querySelectorAll('.sun-newconv-actions').forEach(node=>node.remove());
  if(dlg.open)dlg.close();
