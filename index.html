@@ -3984,7 +3984,8 @@ function details(id){
   ...(general==='SIN REQUERIMIENTO'?[field('Situación del requerimiento','SIN REQUERIMIENTO')]:[])
  ];
  if(active){
-  if(general!=='CONTRATO VIGENTE'&&general!=='CONTRATO SUSCRITO'&&general!=='CULMINADO')fields.push(processField('Estado del procedimiento en seguimiento',r.estado));
+  const stageKey=v=>norm(v).replace(/^EN\s+/,'').replace(/^FASE DE\s+|^ETAPA DE\s+/,'');
+  if(!['CONTRATO VIGENTE','CONTRATO SUSCRITO','CULMINADO'].includes(general)&&stageKey(r.estado)!==stageKey(status(r)))fields.push(processField('Estado del procedimiento en seguimiento',r.estado));
   fields.push(
    processField('Fecha de requerimiento de la nueva contratación',r.fechaRequerimiento),
    processField('Documentos del requerimiento en seguimiento',r.documentosRequerimiento),
