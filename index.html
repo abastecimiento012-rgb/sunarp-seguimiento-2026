@@ -2179,8 +2179,6 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
       <button type="button" class="sun-nav-link" data-sun-route="procedimientos" title="2. Actuaciones preparatorias, selección y seguimiento contractual">② Procedimientos</button>
       <button type="button" class="sun-nav-link" data-sun-route="alertas" title="3. Revisión diaria de alertas y plazos registrados">③ Alertas y plazos</button>
       <button type="button" class="sun-nav-link" data-sun-route="especialistas" title="4. Asignaciones, responsables y carga de trabajo">④ Especialistas</button>
-    </div>
-    <div class="sun-nav-report-sim-stack">
       <button type="button" class="sun-nav-link" data-sun-route="reportes" title="5. Reportes para control gerencial">⑤ Reportes</button>
       <button type="button" class="sun-nav-link" data-sun-route="simulador" title="Consultar duración estimada de una nueva contratación">⑥ Cronogramas y plazos</button>
       <button type="button" class="sun-nav-link" data-sun-route="cronogramas-oece">⑦ Cronogramas OECE</button>
@@ -5339,3 +5337,35 @@ body :is(button,a,input,select,textarea):focus-visible{outline:2px solid var(--u
 </style>
 
 <style id="sunStageOpen2026">#sunProcedures2026Panel .sun-stage-open-2026{cursor:pointer;text-align:left;white-space:normal;width:fit-content;max-width:100%;font:inherit}#sunProcedures2026Panel .sun-stage-open-2026:hover{text-decoration:underline;text-underline-offset:3px;filter:brightness(.96)}#sunProcedures2026Panel .sun-stage-open-2026:focus-visible{outline:2px solid var(--ui-focus,#2870ad)!important;outline-offset:3px}</style>
+
+<style id="sunElegantHeader20261126">
+@media screen{
+#sunPrimaryNav .sun-nav-inner{display:grid!important;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-areas:"brand links bell tools";align-items:center;gap:10px 16px!important;padding:11px 20px!important;max-width:1700px!important}
+#sunPrimaryNav .sun-nav-title{grid-area:brand;display:flex!important;font-size:18px!important;line-height:1.15!important;font-weight:750!important}
+#sunPrimaryNav .sun-nav-title-words span{font-size:18px!important;line-height:1.15!important}
+#sunPrimaryNav .sun-nav-links{grid-area:links;display:flex!important;flex-wrap:wrap!important;align-items:center;gap:5px!important;width:auto!important;min-width:0;overflow:visible!important;white-space:normal!important;padding:0!important}
+#sunPrimaryNav .sun-nav-report-sim-stack{display:contents!important}
+#sunPrimaryNav .sun-bell-wrap{grid-area:bell}
+#sunPrimaryNav .sun-nav-tools{grid-area:tools;min-width:140px;align-items:stretch;margin:0!important}
+#sunPrimaryNav .sun-nav-link{font-size:17px!important;font-weight:650!important;line-height:1.25!important;min-height:43px!important;padding:9px 12px!important;white-space:nowrap!important;border-radius:8px!important}
+#sunPrimaryNav .sun-nav-link.is-active{font-weight:750!important}
+#sunPrimaryNav .sun-nav-report-sim-stack>.sun-nav-link{font-size:17px!important;font-weight:650!important;padding:9px 12px!important;min-height:43px!important;width:auto!important}
+#sunPrimaryNav .sun-theme-option,#sunPrimaryNav .sun-calendar-shortcut{font-size:14px!important;font-weight:650!important}
+#sunPageHeader h2{font-size:clamp(25px,2.2vw,32px)!important;line-height:1.25!important;font-weight:750!important}
+#sunPageHeader .sun-page-overline{font-size:13px!important;letter-spacing:.045em}
+#sunPageHeader p{font-size:15px!important;line-height:1.5!important}
+@media(max-width:1100px){
+#sunPrimaryNav .sun-nav-inner{grid-template-columns:1fr auto auto;grid-template-areas:"brand bell tools" "links links links";gap:7px 12px!important}
+#sunPrimaryNav .sun-nav-links{justify-content:flex-start}
+}
+@media(max-width:760px){
+#sunPrimaryNav .sun-nav-inner{padding:7px 10px!important;gap:6px!important}
+#sunPrimaryNav .sun-nav-title,#sunPrimaryNav .sun-nav-title-words span{font-size:15px!important}
+#sunPrimaryNav .sun-nav-links{flex-wrap:nowrap!important;overflow-x:auto!important;scrollbar-width:thin;padding-bottom:4px!important}
+#sunPrimaryNav .sun-nav-link,#sunPrimaryNav .sun-nav-report-sim-stack>.sun-nav-link{font-size:15px!important;padding:9px 11px!important;min-height:42px!important}
+#sunPrimaryNav .sun-nav-tools{min-width:110px}
+#sunPrimaryNav .sun-theme-option,#sunPrimaryNav .sun-calendar-shortcut{font-size:12px!important}
+#sunPageHeader h2{font-size:24px!important}
+}
+}
+</style>
