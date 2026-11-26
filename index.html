@@ -2876,6 +2876,26 @@ window.sunMonitoring2026=(function(){
  }
  return {read,parseDate,fmt,daysFromToday,good};
 })();
+</script><style id="sunPacBadgeStyles2026">
+.sun-pac-label-2026{display:inline-block;width:fit-content;max-width:100%;margin:5px 0 0;padding:3px 9px;border:1px solid #a9c5e8;border-radius:6px;background:#e5effc;color:#174d85;font-weight:700;line-height:1.4;white-space:normal}
+.sun-proc2026-type+.sun-pac-label-2026{display:block}
+.sun-pac-label-2026.is-unprogrammed,.sun-pac-label-2026.is-unknown{background:#eef1f5;color:#475569;border-color:#c6d0db}
+html[data-sun-theme="dark"] .sun-pac-label-2026{background:#243f60;color:#d8eaff;border-color:#779bc6}
+html[data-sun-theme="dark"] .sun-pac-label-2026.is-unprogrammed,html[data-sun-theme="dark"] .sun-pac-label-2026.is-unknown{background:#334155;color:#e2e8f0;border-color:#8192a6}
+</style><script id="sunPacLabels2026">
+(function(){
+ const classify=v=>{
+  const raw=String(v??'').trim();
+  const t=raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').toUpperCase();
+  if(/^(?:PAC\s*:\s*)?NO PROGRAMAD[OA]S?$/.test(t))return {label:'PAC: NO PROGRAMADO',kind:'is-unprogrammed'};
+  if(!raw||/^(?:[-—–]+|NO APLICA|NO CORRESPONDE|SIN INFORMACION|NO REGISTRADO|PENDIENTE|POR VERIFICAR|SIN NUMERO PAC|0)$/.test(t))return {label:'PAC: POR VERIFICAR',kind:'is-unknown'};
+  if(/^(?:PAC\s*)?(?:N[.°ºO]*\s*)?\d+(?:\s*[-/]\s*\d+)?$/.test(t))return {label:'PAC N.° '+raw.replace(/^(?:PAC\s*)?(?:N[.°ºO]*\s*)?/i,''),kind:'is-programmed'};
+  return {label:'PAC: '+raw,kind:'is-unknown'};
+ };
+ const escape=v=>v.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ window.sunPacLabel2026=v=>classify(v).label;
+ window.sunPacBadge2026=v=>{const p=classify(v);return '<span class="sun-pac-label-2026 '+p.kind+'">'+escape(p.label)+'</span>'};
+})();
 </script><script id="especialistas2026Script">
 (function(){
  'use strict';
@@ -2906,8 +2926,8 @@ window.sunMonitoring2026=(function(){
   const assigned=allAssigned().filter(r=>person(r)===name);
   const pending=assigned.filter(esPendiente).length;
   return [personLabel(name)+' · '+pending+(pending===1?' pendiente':' pendientes'),
-   ['Servicio','N.° de procedimiento','Estado registrado','Pendiente'],
-   assigned.map(r=>[r.descripcion,r.procedimiento,r.estadoNueva||r.estado,esPendiente(r)?'Sí':'No'])];
+   ['Servicio','N.° de procedimiento','PAC','Estado registrado','Pendiente'],
+   assigned.map(r=>[r.descripcion,r.procedimiento,window.sunPacLabel2026(r.pac),r.estadoNueva||r.estado,esPendiente(r)?'Sí':'No'])];
  });
  function summary(){
   const assigned=allAssigned(),pending=pendingAll();
@@ -2943,22 +2963,22 @@ window.sunMonitoring2026=(function(){
   const holder=root.querySelector('#spPendingGroups2026');
   const count=root.querySelector('#spPendingCount2026');
   if(!holder||!selectedName)return;
-  const pending=pendingAll().filter(r=>person(r)===selectedName);
+  const pending=allAssigned().filter(r=>person(r)===selectedName).sort((a,b)=>Number(esPendiente(b))-Number(esPendiente(a)));
   const visible=pending.filter(r=>matches(r,searchText));
   if(count)count.textContent=searchText?visible.length+' de '+pending.length:pending.length;
   if(!visible.length){
-   holder.innerHTML='<div class="sp-board-empty">'+(pending.length?'Sin resultados para esta búsqueda.':'No hay procedimientos pendientes registrados para '+selectedName+'.')+'</div>';
+   holder.innerHTML='<div class="sp-board-empty">'+(pending.length?'Sin resultados para esta búsqueda.':'No hay procedimientos asignados a '+selectedName+'.')+'</div>';
    return;
   }
   const entries=visible.map(r=>{
    const idx=data.indexOf(r),description=plain(r.descripcion||r.procedimiento)||'Procedimiento sin descripción';
    const state=plain(r.estado)||'Estado no registrado';
-   const pac=plain(r.pac)||'Sin número PAC';
+   const pac=plain(r.pac);
    const next=plain(r.estadoNueva)||'';
    const extra=next&&norm(next)!==norm(state)?'<p class="sp-task-next">Nueva convocatoria: '+safe(next)+'</p>':'';
    return '<article class="sp-task"><div class="sp-task-main">'+
     '<p class="sp-task-title">'+safe(description)+'</p>'+
-    '<div class="sp-task-meta"><span>PAC: '+safe(pac)+'</span><span>Estado: '+safe(state)+'</span></div>'+
+    '<div class="sp-task-meta">'+window.sunPacBadge2026(pac)+'<span>Estado: '+safe(state)+'</span></div>'+
     extra+'</div>'+
     '<button type="button" class="sp-task-eye" data-sp-view="'+idx+'" aria-label="Ver ficha de '+safe(description)+'">👁 Ver ficha</button></article>';
   }).join('');
@@ -2969,10 +2989,10 @@ window.sunMonitoring2026=(function(){
   const avatar=selectedName==='HERMES'?'👨':'👩';
   const selected=!!selectedName;
   const card=selected?
-   '<div class="sp-board sp-accordion-card sp-color-'+colors[selectedName]+'" aria-label="Procedimientos pendientes de '+selectedName+'">'+
-    '<div class="sp-accordion-head"><div class="sp-accordion-heading"><span class="sp-accordion-avatar" aria-hidden="true">'+avatar+'</span><div><h3>Seguimiento de procedimientos</h3><span><b id="spPendingCount2026"></b> pendientes en seguimiento</span></div></div>'+
+   '<div class="sp-board sp-accordion-card sp-color-'+colors[selectedName]+'" aria-label="Procedimientos asignados a '+selectedName+'">'+
+    '<div class="sp-accordion-head"><div class="sp-accordion-heading"><span class="sp-accordion-avatar" aria-hidden="true">'+avatar+'</span><div><h3>Seguimiento de procedimientos</h3><span><b id="spPendingCount2026"></b> registros asignados</span></div></div>'+
     '<button type="button" class="sp-accordion-close" data-sp-close aria-label="Cerrar tarjeta de '+selectedName+'">✕ Cerrar</button></div>'+
-    '<label class="sp-board-search"><span aria-hidden="true">⌕</span><input id="spSearch2026" type="search" autocomplete="off" placeholder="Buscar servicio o estado" aria-label="Buscar pendientes del especialista seleccionado" value="'+safe(searchText)+'"></label>'+
+    '<label class="sp-board-search"><span aria-hidden="true">⌕</span><input id="spSearch2026" type="search" autocomplete="off" placeholder="Buscar servicio, PAC o estado" aria-label="Buscar procedimientos del especialista seleccionado" value="'+safe(searchText)+'"></label>'+
     '<div id="spPendingGroups2026" class="sp-accordion-results"></div>'+
    '</div>'
    :'<p class="sp-collapsed-hint">👆 Selecciona una barra para mostrar los procedimientos asignados.</p>';
@@ -4226,7 +4246,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   return [['seleccion','Fase de selección'],['preparatorias','Actuaciones preparatorias'],['cancelado','Cancelado'],['sinRequerimiento','Sin requerimiento'],['vigentes','Contratos vigentes']].map(([segment,label])=>[
    label,['Servicio','N.° de procedimiento','PAC','Etapa','Responsable','Vencimiento'],
    rows.filter(r=>segmentOf(r)===segment).map(r=>[
-    r.descripcion,r.procedimiento,r.pac,displayProcedureStage(procedureStage(r),newState(r).kind==='published'),
+    r.descripcion,r.procedimiento,window.sunPacLabel2026(r.pac),displayProcedureStage(procedureStage(r),newState(r).kind==='published'),
     window.sunMonitoring2026.read(r).owner,expiry(r).date
    ])
   ]);
@@ -4287,7 +4307,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
    const newButton=active?'<button type="button" class="sun-proc2026-newbtn sun-proc2026-alertbtn sun-stage-'+statusColor+'" data-sun-proc-context="'+i+'" title="Abrir actuaciones del procedimiento">'+displayTitle+'</button>':'<button type="button" class="sun-proc2026-status sun-proc2026-status-'+state+'" data-sun-proc-context="'+i+'" title="Abrir detalle correspondiente al estado">'+title+'</button>'; 
    return '<tr class="sun-proc2026-row sun-stage-'+statusColor+(end.kind==='soon'?' is-near':end.kind==='expired'?' is-expired':'')+'" data-proc-id="'+esc(r.id)+'">'+
     '<td data-label="Servicio"><button type="button" class="sun-proc2026-name" data-sun-proc-context="'+i+'" style="display:block;border:0;background:transparent;padding:0;text-align:left;color:inherit;font:inherit;font-weight:inherit;cursor:pointer" title="Abrir ficha según estado">'+esc(field(r.descripcion))+'</button>'+eye+'</td>'+
-    '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>'+(field(r.pac)!=='—'?'<span class="sun-proc2026-sub">PAC: '+esc(field(r.pac))+'</span>':'')+'</td>'+
+    '<td data-label="Procedimiento"><span class="sun-proc2026-type">'+esc(number)+'</span>' +window.sunPacBadge2026(r.pac)+'</td>'+
     '<td data-label="Etapa / responsable"><span class="sun-proc2026-current sun-stage-label">'+esc(displayStage)+'</span>'+(cancelled?(cancellationDetail?'<span class="sun-proc2026-cancel-detail" style="display:inline;margin-left:10px;font-weight:400;line-height:1.5">'+esc(cancellationDetail)+'</span>':''):(follow.owner?'<span class="sun-proc2026-sub">Responsable: '+esc(follow.owner)+'</span>':''))+'</td>'+
 
     '<td data-label="Seguimiento">'+(cancelled?'':newButton)+(cancelled?'':end.date!=='—'?'<button type="button" data-sun-proc-calendar="'+i+'" class="sun-proc2026-sub" style="display:block;margin-top:9px;padding:4px 2px;background:transparent;border:0;color:inherit;font-weight:700;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px" title="Abrir fecha y contrato en el calendario" aria-label="Ver vencimiento '+esc(end.date)+' en el calendario">📅 Vencimiento: '+esc(end.date)+'</button>':'')+'</td>'+
