@@ -2223,7 +2223,7 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
  <button type="button" class="sun-pac-reset" data-pac-quick="" hidden>× Quitar filtro PAC</button>
 </div><section id="pacVisualNuevo" class="sun-pac-panel" aria-label="Gráficos del PAC 2026"></section><section id="sunProcedures2026Panel" class="sun-proc2026" aria-label="Consulta de procedimientos y contratos">
  <div class="sun-proc2026-header">
-  <div><h3>Control de procedimientos</h3><p>Etapa y responsable en una sola vista. Consulta la nueva contratación desde su botón; usa 👁 para ver la ficha completa.</p></div>
+  <div><h3>Control de procedimientos</h3><p>Filtra los registros y abre su ficha para consultar el detalle.</p></div>
  </div>
  <div class="sun-proc2026-segments" role="group" aria-label="Segmentar los procedimientos por estado">
   <button type="button" class="sun-proc2026-segment is-active" data-sun-proc-segment="vigentes" aria-pressed="true">✓ Contratos vigentes <span id="sunProc2026VigentesCount"></span></button>
@@ -2232,7 +2232,7 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="cancelado" aria-pressed="false">Cancelado <span id="sunProc2026CanceladoCount"></span></button>
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="sinRequerimiento" aria-pressed="false">Sin requerimiento <span id="sunProc2026SinRequerimientoCount"></span></button>
  </div>
- <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Servicio, proveedor, contrato, procedimiento o PAC..." autocomplete="off"></div><div class="sun-proc-filters-2026"><label>Especialista<select id="sunProcOwnerFilter"><option value="">Todos</option></select></label><label>Programación PAC<select id="sunProcPacFilter"><option value="">Todos</option><option value="programado">Programados</option><option value="no">No programados</option><option value="unknown">Por verificar</option></select></label><label>Ordenar por<select id="sunProcSort"><option value="pac">N.º PAC</option><option value="expiry">Vencimiento más próximo</option><option value="name">Servicio A–Z</option><option value="original">Orden del Excel</option></select></label><button type="button" id="sunProcClearFilters">Limpiar filtros</button></div><div class="sun-proc-results-2026"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
+ <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Servicio, proveedor, contrato, procedimiento o PAC..." autocomplete="off"></div><div class="sun-proc-filters-2026"><label>Especialista<select id="sunProcOwnerFilter"><option value="">Todos</option></select></label><label>Programación PAC<select id="sunProcPacFilter"><option value="">Todos</option><option value="programado">Programados</option><option value="no">No programados</option><option value="unknown">Por verificar</option></select></label><label>Ordenar por<select id="sunProcSort"><option value="pac">N.º PAC</option><option value="expiry">Vencimiento más próximo</option><option value="name">Servicio A–Z</option><option value="original">Orden del Excel</option></select></label><button type="button" id="sunProcClearFilters">Limpiar filtros</button></div><div class="sun-proc-results-2026"><span id="sunProc2026Count" role="status" aria-live="polite"></span><span class="sun-proc-legend-2026">PAC registrado · agrupado por especialista</span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
  <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
@@ -2439,7 +2439,7 @@ function render(){cards();refreshFilters();const tw=document.querySelector('.tab
  const pc=n?Math.round(100*yes/n):0;
  const group={};rows.forEach(r=>{const k=(r.area||'SIN ÁREA').trim();group[k]=(group[k]||0)+1});
  const top=Object.entries(group).sort((a,b)=>b[1]-a[1]).slice(0,7);
- target.innerHTML='<div class="sun-visual-head"><div><h3>📊 PAC 2026 · Seguimiento visual</h3><p>Procedimientos programados y no programados, y distribución por área usuaria</p></div><span class="sun-visual-tag">'+n+' registros filtrados</span></div><div class="sun-pac-grid"><div class="sun-pac-donut" style="--pct:'+pc+'%"><div><strong>'+pc+'%</strong><small>Programados</small></div></div><div class="sun-pac-key"><div><i class="sun-dot blue"></i><span>Programados en PAC</span><strong>'+yes+'</strong></div><div><i class="sun-dot orange"></i><span>No programados</span><strong>'+no+'</strong></div><p>Este gráfico refleja los registros del cuadro, no el cumplimiento oficial del PAC.</p></div><div class="sun-area-bars"><h4>Distribución por área usuaria</h4>'+top.map(([k,v],i)=>'<div class="sun-area-row"><span title="'+esc(k)+'">'+esc(k)+'</span><div class="sun-area-track"><div style="width:'+(n?100*v/n:0)+'%;background:var(--sun-chart-'+(i%5)+')"></div></div><b>'+v+'</b></div>').join('')+'</div></div>';
+ target.innerHTML='<div class="sun-visual-head"><div><h3>📊 PAC 2026 · Seguimiento visual</h3><p>Procedimientos programados y no programados, y distribución por área usuaria</p></div><span class="sun-visual-tag">'+n+' registros filtrados</span></div><div class="sun-pac-grid"><div class="sun-pac-donut" style="--pct:'+pc+'%"><div><strong>'+pc+'%</strong><small>Registros programados</small></div></div><div class="sun-pac-key"><div><i class="sun-dot blue"></i><span>Programados en PAC</span><strong>'+yes+'</strong></div><div><i class="sun-dot orange"></i><span>No programados</span><strong>'+no+'</strong></div><p>Este gráfico refleja los registros del cuadro, no el cumplimiento oficial del PAC.</p></div><div class="sun-area-bars"><h4>Distribución por área usuaria</h4>'+top.map(([k,v],i)=>'<div class="sun-area-row"><span title="'+esc(k)+'">'+esc(k)+'</span><div class="sun-area-track"><div style="width:'+(n?100*v/n:0)+'%;background:var(--sun-chart-'+(i%5)+')"></div></div><b>'+v+'</b></div>').join('')+'</div></div>';
  }}
  if(tab!=='all'){const target=document.getElementById('pacVisualNuevo');if(target)target.innerHTML='';}
 
@@ -3850,11 +3850,11 @@ experts();apply();
  'use strict';
  const nav=document.getElementById('sunPrimaryNav');if(!nav)return;
  const pages={
-  pac:['1. PAC 2026 · Programación','Punto de partida: contrataciones programadas en el PAC del CMN, no programadas y distribución por área usuaria.'],
-  procedimientos:['2. Procedimientos · Seguimiento','Actuaciones preparatorias, procedimiento de selección y seguimiento contractual: consulta cada registro y sus alertas automáticas.'],
-  alertas:['3. Alertas y plazos · Revisión diaria','Bandeja diaria de vencimientos, hitos fechados, asuntos sin fecha y alertas preventivas para verificar cada jornada.'],
-  especialistas:['4. Especialistas · Responsables','Consulta la asignación de procedimientos y la carga de trabajo por especialista. Este es un control de gestión transversal.'],
-  reportes:['5. Reportes · Control gerencial','Consulta resultados y genera reportes PowerPoint, PDF y CSV para el seguimiento gerencial.'],
+  pac:['1. PAC 2026 · Programación','Programación del PAC y distribución por área usuaria.'],
+  procedimientos:['2. Procedimientos · Seguimiento','Consulta las etapas, responsables y vencimientos de cada registro.'],
+  alertas:['3. Alertas y plazos · Revisión diaria','Prioriza los plazos vencidos, próximos y pendientes de fecha.'],
+  especialistas:['4. Especialistas · Responsables','Consulta las asignaciones y pendientes de cada especialista.'],
+  reportes:['5. Reportes · Control gerencial','Exporta información para el seguimiento gerencial.'],
   simulador:['6. Cronogramas y consulta de plazos','Consulta fechas por procedimiento, con las actividades de tu cronograma y los plazos reglamentarios.'],
   'cronogramas-oece':['7. Cronogramas OECE','Capturas de los procedimientos de la hoja Cronogramas Procesos del último Excel publicado.'],
   calendario:['Calendario de vencimientos contractuales','Acceso rápido a las fechas de vencimiento, responsables y fichas contractuales.']
@@ -5292,4 +5292,47 @@ html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-relaunch{--etapa:#eaa566
 @media(max-width:1000px){#sunProcedures2026Panel .sun-proc2026-segments{grid-template-columns:repeat(3,minmax(0,1fr))}.sun-proc-filters-2026{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){#sunProcedures2026Panel .sun-proc2026-segments{grid-template-columns:repeat(2,minmax(0,1fr))}#sunProcedures2026Panel .sun-proc2026-table{min-width:0!important;table-layout:auto}#sunProcedures2026Panel .sun-proc2026-row td{padding:10px!important}}
 @media(max-width:420px){.sun-proc-filters-2026{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<style id="sunInstitutionalTheme20261126">
+/* Paleta semántica común. Colores de estado independientes del modo. */
+html{--ui-page:#eef3f8;--ui-surface:#ffffff;--ui-subtle:#f4f7fb;--ui-ink:#172c43;--ui-muted:#4b6178;--ui-line:#cbd8e6;--ui-brand:#17466f;--ui-accent:#185c96;--ui-focus:#176eb5;--ui-nav:#ffffff;--ui-blue-bg:#e7f1ff;--ui-blue:#184c80;--ui-green-bg:#e2f3e9;--ui-green:#155b38;--ui-amber-bg:#fff0d4;--ui-amber:#805009;--ui-red-bg:#fce7e7;--ui-red:#922e32;--ui-neutral-bg:#e9eef4;--ui-neutral:#40556b}
+html[data-sun-theme="dark"]{color-scheme:dark;--ui-page:#101b29;--ui-surface:#192a3b;--ui-subtle:#22364b;--ui-ink:#edf4fc;--ui-muted:#b9cce0;--ui-line:#49617a;--ui-brand:#203e5b;--ui-accent:#306fa4;--ui-focus:#92caff;--ui-nav:#192a3b;--ui-blue-bg:#23466a;--ui-blue:#d8ebff;--ui-green-bg:#204a39;--ui-green:#baf2d2;--ui-amber-bg:#513d22;--ui-amber:#ffe4ac;--ui-red-bg:#593039;--ui-red:#ffd6dc;--ui-neutral-bg:#34465b;--ui-neutral:#e0eaf4}
+@media screen{
+html body{background:var(--ui-page)!important;color:var(--ui-ink)!important}
+#sunPrimaryNav{background:var(--ui-nav)!important;border-bottom:1px solid var(--ui-line)!important;box-shadow:0 2px 8px #0000000a!important}
+#sunPrimaryNav .sun-nav-inner{max-width:1600px;padding:9px 18px!important;gap:10px!important;align-items:center}
+#sunPrimaryNav .sun-nav-link{min-height:40px;line-height:1.3;font-size:14px!important;padding:9px 11px!important}
+#sunPrimaryNav .sun-nav-report-sim-stack{gap:2px}
+#sunPrimaryNav .sun-nav-report-sim-stack>.sun-nav-link{min-height:34px;padding:5px 10px!important;font-size:13px!important}
+#sunPageHeader{background:var(--ui-brand)!important;color:#fff!important;border:1px solid var(--ui-line)!important;border-radius:12px;padding:16px 21px!important;margin-bottom:16px!important;box-shadow:none!important}
+#sunPageHeader h2{font-size:clamp(20px,2vw,26px)!important;line-height:1.3;margin:4px 0!important;color:#fff!important}
+#sunPageHeader p,#sunPageHeader .sun-page-overline{color:#e3eef9!important;line-height:1.45}
+body :is(#sunProcedures2026Panel,#pacVisualNuevo,#sunAlertsDaily2026,#specialistsPanel,#sunReportsPage,#sunTimelineSimulator,.sun-calendar-page){border-color:var(--ui-line)!important;border-radius:12px;box-shadow:none!important}
+body :is(.sun-proc2026-header h3,.sun-daily-head h3,.sp-head h3,.sun-report-card h3){font-size:19px!important;line-height:1.4}
+body :is(.sun-proc2026-header p,.sun-daily-head p,.sp-head p,.sun-report-card p){color:var(--ui-muted)!important;line-height:1.55}
+#sunProcedures2026Panel .sun-proc-filters-2026{padding:10px 12px;background:var(--ui-subtle);border:1px solid var(--ui-line);border-radius:9px;gap:10px}
+#sunProcedures2026Panel :is(input,select),#sunTimelineSimulator :is(input,select,textarea),#specialistsPanel input{background:var(--ui-surface)!important;color:var(--ui-ink)!important;border:1px solid var(--ui-line)!important;border-radius:8px}
+#sunProcedures2026Panel :is(input,select)::placeholder,#specialistsPanel input::placeholder{color:var(--ui-muted)!important;opacity:1}
+#sunProcedures2026Panel .sun-proc-filters-2026 label{color:var(--ui-ink)!important}
+.sun-proc-results-2026{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;color:var(--ui-muted)}
+.sun-proc-legend-2026{font-weight:400;font-size:12px}
+#sunProc2026Count{margin-left:0!important;color:var(--ui-muted)!important}
+#sunProcedures2026Panel .sun-proc2026-table thead th{background:var(--ui-subtle)!important;color:var(--ui-ink)!important;border-color:var(--ui-line)!important}
+#sunProcedures2026Panel .sun-proc2026-table tbody .sun-proc2026-group th{background:var(--ui-brand)!important;color:#fff!important}
+#sunProcedures2026Panel .sun-proc2026-table tbody tr.sun-proc2026-row td{background:var(--ui-surface)!important;color:var(--ui-ink)!important;border-color:var(--ui-line)!important}
+#sunProcedures2026Panel .sun-proc2026-table tbody tr.sun-proc2026-row:hover td{background:var(--ui-subtle)!important}
+#sunProcedures2026Panel .sun-proc2026-row .sun-proc2026-name{color:var(--ui-ink)!important}
+#sunProcedures2026Panel .sun-proc2026-row .sun-proc2026-sub{color:var(--ui-muted)!important}
+.sun-pac-label-2026.is-programmed{background:var(--ui-blue-bg)!important;color:var(--ui-blue)!important;border-color:var(--ui-line)!important}
+.sun-pac-label-2026.is-unprogrammed,.sun-pac-label-2026.is-unknown{background:var(--ui-neutral-bg)!important;color:var(--ui-neutral)!important;border-color:var(--ui-line)!important}
+body :is(.sun-due-status.overdue,.sun-daily-tag.urgent){background:var(--ui-red-bg)!important;color:var(--ui-red)!important}
+body :is(.sun-due-status.today,.sun-due-status.soon,.sun-daily-tag.today,.sun-daily-tag.soon){background:var(--ui-amber-bg)!important;color:var(--ui-amber)!important}
+body :is(.sun-due-status.nodate,.sun-daily-tag.no-date){background:var(--ui-neutral-bg)!important;color:var(--ui-neutral)!important}
+body :is(.sun-report-card,.sp-task,.sun-due-item){border-color:var(--ui-line)!important;box-shadow:none!important;border-radius:10px}
+body .sun-report-card{padding:17px!important;gap:8px!important}
+body .sun-report-card .actions{gap:6px;flex-wrap:wrap}
+body :is(button,a,input,select,textarea):focus-visible{outline:2px solid var(--ui-focus)!important;outline-offset:2px}
+}
+@media screen and (max-width:760px){#sunPrimaryNav .sun-nav-inner{padding:6px 9px!important;gap:6px!important}#sunPrimaryNav .sun-nav-link{font-size:12px!important;padding:8px!important}#sunPrimaryNav .sun-nav-report-sim-stack>.sun-nav-link{font-size:11px!important}#sunPageHeader{padding:13px!important}#sunProcedures2026Panel .sun-proc-filters-2026{padding:9px}#sunProcedures2026Panel .sun-proc2026-table{min-width:0!important}}
 </style>
