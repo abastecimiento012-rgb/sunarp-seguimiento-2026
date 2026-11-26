@@ -2232,7 +2232,7 @@ html[data-sun-theme="dark"] #sunTimelineSimulator .sc-urgency{border-color:#70b8
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="cancelado" aria-pressed="false">Cancelado <span id="sunProc2026CanceladoCount"></span></button>
   <button type="button" class="sun-proc2026-segment" data-sun-proc-segment="sinRequerimiento" aria-pressed="false">Sin requerimiento <span id="sunProc2026SinRequerimientoCount"></span></button>
  </div>
- <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Nombre del servicio, proveedor, número de contrato o proceso..." autocomplete="off"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
+ <div class="sun-proc2026-toolbar"><label for="sunProc2026Search">🔎 Buscar contrato o procedimiento</label><input id="sunProc2026Search" type="search" placeholder="Servicio, proveedor, contrato, procedimiento o PAC..." autocomplete="off"></div><div class="sun-proc-filters-2026"><label>Especialista<select id="sunProcOwnerFilter"><option value="">Todos</option></select></label><label>Programación PAC<select id="sunProcPacFilter"><option value="">Todos</option><option value="programado">Programados</option><option value="no">No programados</option><option value="unknown">Por verificar</option></select></label><label>Ordenar por<select id="sunProcSort"><option value="pac">N.º PAC</option><option value="expiry">Vencimiento más próximo</option><option value="name">Servicio A–Z</option><option value="original">Orden del Excel</option></select></label><button type="button" id="sunProcClearFilters">Limpiar filtros</button></div><div class="sun-proc-results-2026"><span id="sunProc2026Count" role="status" aria-live="polite"></span></div>
  <div class="sun-proc2026-scroll" tabindex="0" aria-label="Tabla de control de procesos; desliza horizontalmente para ver todas las columnas si es necesario">
  <table class="sun-proc2026-table"><thead><tr><th scope="col">Servicio y ficha</th><th scope="col">Tipo y N.º de procedimiento</th><th scope="col">Etapa / responsable</th><th scope="col">Seguimiento</th></tr></thead><tbody id="sunProc2026Rows"></tbody></table>
  </div>
@@ -4164,6 +4164,7 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
  if(!panel)return;
  const el=id=>panel.querySelector('#'+id);
  const tbody=el('sunProc2026Rows'),search=el('sunProc2026Search'),counter=el('sunProc2026Count');
+ const ownerFilter=el('sunProcOwnerFilter'),pacFilter=el('sunProcPacFilter'),sortFilter=el('sunProcSort');
  let selectedSegment='vigentes';
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const norm=v=>String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toUpperCase();
@@ -4262,7 +4263,21 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   el('sunProc2026SinRequerimientoCount').textContent=counts.sinRequerimiento;
   el('sunProc2026VigentesCount').textContent=counts.vigentes;
   el('sunProc2026PreparatoriasCount').textContent=counts.preparatorias;
-  const visible=indexed.filter(({r})=>segmentOf(r)===selectedSegment&&matches(r,q));
+  const ownerKey=r=>{const o=window.sunMonitoring2026.read(r).owner;return o&&!missing(o)?norm(o):'SIN ESPECIALISTA ASIGNADO';};
+  const owners=[...new Set(items.map(ownerKey))].sort((a,b)=>a==='SIN ESPECIALISTA ASIGNADO'?1:b==='SIN ESPECIALISTA ASIGNADO'?-1:a.localeCompare(b,'es'));
+  const prevOwner=ownerFilter.value;
+  ownerFilter.innerHTML='<option value="">Todos</option>'+owners.map(o=>'<option value="'+esc(o)+'">'+esc(o)+'</option>').join('');
+  ownerFilter.value=owners.includes(prevOwner)?prevOwner:'';
+  const pacKind=r=>{const label=window.sunPacLabel2026(r.pac);return label.startsWith('PAC N.° ')?'programado':label==='PAC: NO PROGRAMADO'?'no':'unknown';};
+  const pacNumber=r=>{const m=window.sunPacLabel2026(r.pac).match(/^PAC N\.° (\d+)/);return m?Number(m[1]):Infinity;};
+  const sortItems=(a,b)=>{
+   const name=()=>field(a.r.descripcion).localeCompare(field(b.r.descripcion),'es',{numeric:true});
+   if(sortFilter.value==='original')return a.i-b.i;
+   if(sortFilter.value==='name')return name()||a.i-b.i;
+   if(sortFilter.value==='expiry')return (expiry(a.r).days??Infinity)-(expiry(b.r).days??Infinity)||name()||a.i-b.i;
+   return pacNumber(a.r)-pacNumber(b.r)||name()||a.i-b.i;
+  };
+  const visible=indexed.filter(({r})=>segmentOf(r)===selectedSegment&&matches(r,q)&&(!ownerFilter.value||ownerKey(r)===ownerFilter.value)&&(!pacFilter.value||pacKind(r)===pacFilter.value)).sort(sortItems);
   counter.textContent='Mostrando '+visible.length+' de '+counts[selectedSegment]+' registros · '+items.length+' en total';
   const groups=new Map();
   for(const item of visible){
@@ -4370,7 +4385,9 @@ html[data-sun-theme="dark"] .sun-proc2026-segment[data-sun-proc-segment="prepara
   if(Number.isInteger(i)&&data[i])window.sunarpOpenFichaIntegral2026?.(i);
  });
  search.addEventListener('input',paint);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden&&document.body.dataset.sunPage==='procedimientos')paint()});
+  [ownerFilter,pacFilter,sortFilter].forEach(control=>control.addEventListener('change',paint));
+  el('sunProcClearFilters').addEventListener('click',()=>{search.value='';ownerFilter.value='';pacFilter.value='';sortFilter.value='pac';paint()});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&document.body.dataset.sunPage==='procedimientos')paint()});
  window.addEventListener('focus',()=>{if(document.body.dataset.sunPage==='procedimientos')paint()});
  setInterval(()=>{if(document.body.dataset.sunPage==='procedimientos')paint()},3600000);
  window.addEventListener('sunarp:pagechange',e=>{if(e.detail?.page==='procedimientos')paint()});
@@ -5078,7 +5095,7 @@ html[data-sun-theme="dark"] .sim26-sources a{color:#9fdbff}
 @media(max-width:520px){.sim26{padding:15px}.sim26-form{grid-template-columns:1fr}.sim26-wide{grid-column:auto}}
 @media print{body:has(#sunTimelineSimulator) main.shell>*:not(#sunTimelineSimulator){display:none!important}
 #sunTimelineSimulator{display:block!important;border:0!important}#sunPrimaryNav,.sim26-actions{display:none!important}}
-</style><script src="./schedule-engine-20261117.js?v=tipos-20261118-1"></script><script src="./schedule-ui-20261117.js?v=tipos-20261118-1"></script><style id="sim26QuickStyle">
+</style><script src="./schedule-engine-20261117.js?v=tipos-20261118-1"></script><script src="./schedule-ui-20261117.js?v=sin-boton-plazos-20261126"></script><style id="sim26QuickStyle">
 .sim26-quick{display:grid;gap:17px;margin:18px 0}
 .sim26-step{display:grid;gap:11px}
 .sim26-step>strong{font-size:16px}
@@ -5252,4 +5269,26 @@ html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-awarded,html[data-sun-th
 html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-deserted{--etapa:#ff8a8a;--etapa-fondo:#633338;--etapa-texto:#ffe5e5;--etapa-borde:#bb676e}
 html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-cancelled,html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-pending{--etapa:#a9b8cb;--etapa-fondo:#354357;--etapa-texto:#e1e9f3;--etapa-borde:#718297}
 html[data-sun-theme="dark"] .sun-proc2026-row.sun-stage-relaunch{--etapa:#eaa566;--etapa-fondo:#62472d;--etapa-texto:#ffe0bc;--etapa-borde:#af865b}
+</style>
+<style id="sunOrder20261126">
+#sunProcedures2026Panel .sun-proc2026-segments{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px!important;margin:14px 0!important}
+#sunProcedures2026Panel .sun-proc2026-segment{display:flex!important;align-items:center;justify-content:space-between;gap:8px;min-height:54px;white-space:normal!important;text-align:left;line-height:1.35}
+#sunProcedures2026Panel .sun-proc2026-toolbar{display:grid!important;grid-template-columns:minmax(0,1fr);gap:6px;margin:14px 0 10px}
+#sunProc2026Search{width:100%!important;max-width:none!important;min-height:44px}
+.sun-proc-filters-2026{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;align-items:end;margin:0 0 10px}
+.sun-proc-filters-2026 label{display:grid;gap:5px;font-size:13px;font-weight:700;min-width:0}
+.sun-proc-filters-2026 select,.sun-proc-filters-2026 button{min-height:42px;width:100%;font-size:14px}
+.sun-proc-results-2026{margin:8px 0 13px;font-size:13px;font-weight:600}
+#sunProcedures2026Panel .sun-proc2026-table{table-layout:fixed;min-width:900px}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(1){width:38%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(2){width:23%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(3){width:19%}
+#sunProcedures2026Panel .sun-proc2026-table th:nth-child(4){width:20%}
+#sunProcedures2026Panel .sun-proc2026-row td{vertical-align:top;padding:14px 12px!important}
+#sunProcedures2026Panel .sun-proc2026-name{line-height:1.45!important;font-size:15px!important}
+#sunProcedures2026Panel .sun-proc2026-group th{text-align:left;padding:10px 14px!important}
+#sunProcedures2026Panel .sun-proc2026-eye{margin-top:8px;font-size:14px!important}
+@media(max-width:1000px){#sunProcedures2026Panel .sun-proc2026-segments{grid-template-columns:repeat(3,minmax(0,1fr))}.sun-proc-filters-2026{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){#sunProcedures2026Panel .sun-proc2026-segments{grid-template-columns:repeat(2,minmax(0,1fr))}#sunProcedures2026Panel .sun-proc2026-table{min-width:0!important;table-layout:auto}#sunProcedures2026Panel .sun-proc2026-row td{padding:10px!important}}
+@media(max-width:420px){.sun-proc-filters-2026{grid-template-columns:minmax(0,1fr)}}
 </style>
